@@ -95,7 +95,7 @@ class CatalogAdmin::ItemsController < CatalogAdmin::BaseController
       :page => params[:page],
       :item_type_slug => params[:item_type_slug]
     )
-    @items = apply_sort(policy_scope(@search_results.items))
+    @items = apply_sort(policy_scope(item_scope))
     @items = @items.page(params[:page]).per(25)
     @fields = @item_type.all_list_view_fields
     render("index", :layout => "catalog_admin/data")
