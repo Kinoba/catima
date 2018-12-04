@@ -55,7 +55,7 @@ class AdvancedSearchesController < ApplicationController
 
   def advanced_search_params
     search = ItemList::AdvancedSearchResult.new(:model => @advanced_search)
-    search.permit_criteria(params.require(:advanced_search))
+    search.permit_criteria(params.except(:condition, :item_type).require(:advanced_search))
   end
 
   def scope

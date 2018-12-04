@@ -51,6 +51,7 @@ en:
       after: "after"
       before: "before"
     new:
+      item_type: Item type
       tab: "%{type} search"
       title: "Advanced search"
       start_over: "Start over"

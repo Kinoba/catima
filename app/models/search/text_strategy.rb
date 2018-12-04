@@ -11,8 +11,6 @@ class Search::TextStrategy < Search::BaseStrategy
     scope = exact_search(scope, criteria[:exact])
     scope = contains_search(scope, criteria[:contains])
     scope = excludes_search(scope, criteria[:excludes])
-    p "__________________"
-    p scope.inspect
     scope
   end
 

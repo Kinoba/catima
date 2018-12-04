@@ -1,13 +1,16 @@
-<%= f.text_field("exact", :hide_label => true) %>
-<%= f.select("condition", [
-  [t(".has_exact_phrase"), "exact"],
-  [t(".contains_words"), "contains"],
-  [t(".excludes_words"), "excludes"]
-  ],
-  { :hide_label => true },
-  { :class => "text-condition"}
-) %>
-
-<%#= f.text_field("exact", :label => t(".has_exact_phrase")) %>
-<%#= f.text_field("contains", :label => t(".contains_words")) %>
-<%#= f.text_field("excludes", :label => t(".excludes_words")) %>
+<div class="row">
+  <div class="col-md-8">
+    <%= f.text_field("exact", :hide_label => true) %>
+    <%= f.hidden_field("__filter__", :hide_label => true, :class => 'template', :disabled => true) %>
+  </div>
+  <div class="col-md-4">
+    <%= f.select("condition", [
+      [t(".has_exact_phrase"), "exact"],
+      [t(".contains_words"), "contains"],
+      [t(".excludes_words"), "excludes"]
+      ],
+      { :hide_label => true },
+      { :class => "filter-condition" }
+    ) %>
+  </div>
+</div>
