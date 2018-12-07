@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+<<<<<<< HEAD
 import axios from 'axios';
+=======
+>>>>>>> Add React components for Reference advanced search
 
 class ItemTypesReferenceSearch extends Component {
   constructor(props){
     super(props);
+<<<<<<< HEAD
 
     this.state = {
       items: [],
@@ -85,14 +89,20 @@ class ItemTypesReferenceSearch extends Component {
     } else {
       return <input id={this.referenceSearchId} type="text" className="form-control"/>
     }
+=======
+>>>>>>> Add React components for Reference advanced search
   }
 
   render() {
     return (
+<<<<<<< HEAD
       <div className="single-reference-container">
         { this.state.isLoading && <div className="loader"></div> }
         { this.renderInput() }
       </div>
+=======
+        <div>ItemTypesReferenceSearch</div>
+>>>>>>> Add React components for Reference advanced search
     );
   }
 }
