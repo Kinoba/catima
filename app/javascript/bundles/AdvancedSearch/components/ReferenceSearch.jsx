@@ -100,6 +100,7 @@ class ReferenceSearch extends Component {
     this.setState({ selectedFilter: value });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     if(typeof value !== 'undefined' && value === null) {
       this.setState({ itemTypeSearch: false });
     } else {
@@ -113,7 +114,12 @@ class ReferenceSearch extends Component {
     if(typeof this.state.selectedFilter !== 'undefined' && this.state.selectedFilter === null) {
       this.setState({ itemTypeSearch: true });
     } else {
+=======
+    if(typeof value !== 'undefined' && value === null) {
+>>>>>>> Improve reference advanced search component
       this.setState({ itemTypeSearch: false });
+    } else {
+      this.setState({ itemTypeSearch: true });
     }
 >>>>>>> Add conditional rendering for reference advanced search component
   }
@@ -174,7 +180,12 @@ class ReferenceSearch extends Component {
       return <ItemTypesReferenceSearch
                 items={this.state.items}
                 fields={this.state.fields}
+<<<<<<< HEAD
 >>>>>>> Add conditional rendering for reference advanced search component
+=======
+                selectedFilter={this.state.selectedFilter}
+                itemType={this.props.itemType}
+>>>>>>> Improve reference advanced search component
                 srcRef={this.props.srcRef}
                 srcId={this.props.srcId}
                 req={this.props.req} />
@@ -193,7 +204,6 @@ class ReferenceSearch extends Component {
 >>>>>>> Add React components for Reference advanced search
 =======
                 updateSelectedItem={this.updateSelectedItem}
-                isDisabled={this.state.selectedFilter}
                 items={this.state.items}
                 fields={this.state.fields}
 >>>>>>> Add conditional rendering for reference advanced search component
