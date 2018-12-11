@@ -13,12 +13,13 @@ class ReferenceSearch extends Component {
       items: [],
       fields: [],
       isLoading: true,
-      searchPlaceholder: '',
-      filterPlaceholder: '',
-      selectedFilter: null
+      selectedFilter: null,
+      itemTypeSearch: this.props.itemTypeSearch,
+      selectedItem: []
     };
 
     this.selectFilter = this._selectFilter.bind(this);
+    this.updateSelectedItem = this._updateSelectedItem.bind(this);
   }
 
   componentDidMount(){
@@ -29,8 +30,6 @@ class ReferenceSearch extends Component {
 
     axios.get(`/api/v2/${this.props.catalog}/${this.props.locale}/${this.props.itemType}`, config)
     .then(res => {
-      this.setState({ searchPlaceholder: res.data.search_placeholder });
-      this.setState({ filterPlaceholder: res.data.filter_placeholder });
       this.setState({ items: res.data.items });
       this.setState({ fields: res.data.fields });
       this.setState({ isLoading: false });
@@ -62,8 +61,18 @@ class ReferenceSearch extends Component {
     });
   }
 
-  _selectFilter(filter){
-    this.setState({ selectedFilter: filter });
+  _updateSelectedItem(newVal) {
+    this.setState({ selectedItem: newVal });
+  }
+
+  _selectFilter(value){
+    this.setState({ selectedFilter: value });
+
+    if(typeof this.state.selectedFilter !== 'undefined' && this.state.selectedFilter === null) {
+      this.setState({ itemTypeSearch: true });
+    } else {
+      this.setState({ itemTypeSearch: false });
+    }
   }
 
   _getFilterOptions(){
@@ -77,42 +86,49 @@ class ReferenceSearch extends Component {
     return optionsList;
   }
 
+  _isFilterDisabled() {
+    if(typeof this.state.selectedItem !== 'undefined' && this.state.selectedItem.length > 0) {
+       return true;
+    }
+    else {
+      return false;
+    }
+  }
+
   _getJSONFilter(field) {
     if(!field.primary) return {value: field.slug, label: field.name};
   }
 
   renderSearch(){
     if (this.state.isLoading) return null;
-    if (this.props.itemTypeSearch)
+    if (this.state.itemTypeSearch)
       return <ItemTypesReferenceSearch
                 items={this.state.items}
                 fields={this.state.fields}
-                searchPlaceholder={this.state.searchPlaceholder}
-                filterPlaceholder={this.state.filterPlaceholder}
                 srcRef={this.props.srcRef}
                 srcId={this.props.srcId}
                 req={this.props.req} />
     else
       return <SelectedReferenceSearch
+                updateSelectedItem={this.updateSelectedItem}
+                isDisabled={this.state.selectedFilter}
                 items={this.state.items}
                 fields={this.state.fields}
-                searchPlaceholder={this.state.searchPlaceholder}
-                filterPlaceholder={this.state.filterPlaceholder}
                 srcRef={this.props.srcRef}
                 srcId={this.props.srcId}
                 req={this.props.req} />
   }
 
   renderFilter(){
-    return <ReactSelect className="single-reference-filter" isSearchable={false} isClearable={true} value={this.state.selectedFilter} onChange={this.selectFilter} options={this._getFilterOptions()} placeholder={this.props.filterPlaceholder}/>
+    return <ReactSelect className="single-reference-filter" isSearchable={false} isClearable={true} isDisabled={this._isFilterDisabled()} value={this.state.selectedFilter} onChange={this.selectFilter} options={this._getFilterOptions()} placeholder={this.props.filterPlaceholder}/>
   }
 
   render() {
     return (
       <div id={this.editorId} className="referenceSearch row">
-      { this.state.isLoading && <div className="loader"></div> }
-      <div className="col-md-8">{ this.renderSearch() }</div>
-      <div className="col-md-4">{ this.renderFilter() }</div>
+        { this.state.isLoading && <div className="loader"></div> }
+        <div className="col-md-8">{ this.renderSearch() }</div>
+        <div className="col-md-4">{ this.renderFilter() }</div>
     </div>
     );
   }

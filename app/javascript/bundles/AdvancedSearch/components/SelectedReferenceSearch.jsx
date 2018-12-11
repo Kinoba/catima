@@ -7,16 +7,25 @@ class SelectedReferenceSearch extends Component {
   constructor(props){
     super(props);
 
-    // const v = document.getElementById(this.props.srcRef).value;
-    // const selItem = this._load(v);
-
     this.state = {
-      // selectedItem: selItem,
-      // selectedFilter: null
+      selectedItem: []
     };
 
     this.editorId = `${this.props.srcRef}-editor`;
     this.filterId = `${this.props.srcRef}-filters`;
+    this.selectItem = this._selectItem.bind(this);
+  }
+
+  _selectItem(item, event){
+    if(typeof event === 'undefined' || event.action !== "pop-value" || !this.props.req) {
+      if(typeof item !== 'undefined') {
+        this.setState({ selectedItem: item });
+      } else {
+        this.setState({ selectedItem: [] });
+      }
+
+      this.props.updateSelectedItem(item);
+    }
   }
 
   _getItemOptions(){
@@ -29,18 +38,23 @@ class SelectedReferenceSearch extends Component {
   }
 
   _itemName(item){
-    //if(typeof this.state === 'undefined') return striptags(item.default_display_name);
-    //if(typeof this.state !== 'undefined' && (this.state.selectedFilter === null || item[this.state.selectedFilter.value] === null || item[this.state.selectedFilter.value].length === 0)) return striptags(item.default_display_name);
     return striptags(item.default_display_name);
   }
-  
+
   _getJSONItem(item) {
     return {value: item.id, label: this._itemName(item)};
   }
 
+  _isDisabled() {
+    if(typeof this.props.isDisabled !== 'undefined' && this.props.isDisabled === null) return false;
+    return true;
+  }
+
   render() {
     return (
-      <ReactSelect isMulti name="colors" options={this._getItemOptions()} className="basic-multi-select" classNamePrefix="select"/>
+      <div>
+      <ReactSelect isMulti name="colors" options={this._getItemOptions()} className="basic-multi-select" onChange={this.selectItem} classNamePrefix="select" isDisabled={this._isDisabled()}/>
+      </div>
     );
   }
 }
