@@ -11,7 +11,7 @@ class SelectedReferenceSearch extends Component {
       selectedItem: []
     };
 
-    this.editorId = `${this.props.srcRef}-editor`;
+    this.referenceSearchId = `${this.props.srcRef}-editor`;
     this.filterId = `${this.props.srcRef}-filters`;
     this.selectItem = this._selectItem.bind(this);
   }
@@ -45,15 +45,10 @@ class SelectedReferenceSearch extends Component {
     return {value: item.id, label: this._itemName(item)};
   }
 
-  _isDisabled() {
-    if(typeof this.props.isDisabled !== 'undefined' && this.props.isDisabled === null) return false;
-    return true;
-  }
-
   render() {
     return (
       <div>
-      <ReactSelect isMulti name="colors" options={this._getItemOptions()} className="basic-multi-select" onChange={this.selectItem} classNamePrefix="select" isDisabled={this._isDisabled()}/>
+        <ReactSelect id={this.referenceSearchId} isMulti name="colors" options={this._getItemOptions()} className="basic-multi-select" onChange={this.selectItem} classNamePrefix="select"/>
       </div>
     );
   }

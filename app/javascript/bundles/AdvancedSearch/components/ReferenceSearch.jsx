@@ -68,10 +68,10 @@ class ReferenceSearch extends Component {
   _selectFilter(value){
     this.setState({ selectedFilter: value });
 
-    if(typeof this.state.selectedFilter !== 'undefined' && this.state.selectedFilter === null) {
-      this.setState({ itemTypeSearch: true });
-    } else {
+    if(typeof value !== 'undefined' && value === null) {
       this.setState({ itemTypeSearch: false });
+    } else {
+      this.setState({ itemTypeSearch: true });
     }
   }
 
@@ -105,13 +105,14 @@ class ReferenceSearch extends Component {
       return <ItemTypesReferenceSearch
                 items={this.state.items}
                 fields={this.state.fields}
+                selectedFilter={this.state.selectedFilter}
+                itemType={this.props.itemType}
                 srcRef={this.props.srcRef}
                 srcId={this.props.srcId}
                 req={this.props.req} />
     else
       return <SelectedReferenceSearch
                 updateSelectedItem={this.updateSelectedItem}
-                isDisabled={this.state.selectedFilter}
                 items={this.state.items}
                 fields={this.state.fields}
                 srcRef={this.props.srcRef}
