@@ -8,6 +8,7 @@ class SelectedReferenceSearch extends Component {
     super(props);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     this.state = {
       selectedItem: []
     };
@@ -31,14 +32,31 @@ class SelectedReferenceSearch extends Component {
     // const v = document.getElementById(this.props.srcRef).value;
     // const selItem = this._load(v);
 
+=======
+>>>>>>> Add conditional rendering for reference advanced search component
     this.state = {
-      // selectedItem: selItem,
-      // selectedFilter: null
+      selectedItem: []
     };
 
     this.editorId = `${this.props.srcRef}-editor`;
     this.filterId = `${this.props.srcRef}-filters`;
+<<<<<<< HEAD
 >>>>>>> Add React components for Reference advanced search
+=======
+    this.selectItem = this._selectItem.bind(this);
+  }
+
+  _selectItem(item, event){
+    if(typeof event === 'undefined' || event.action !== "pop-value" || !this.props.req) {
+      if(typeof item !== 'undefined') {
+        this.setState({ selectedItem: item });
+      } else {
+        this.setState({ selectedItem: [] });
+      }
+
+      this.props.updateSelectedItem(item);
+    }
+>>>>>>> Add conditional rendering for reference advanced search component
   }
 
   _getItemOptions(){
@@ -52,6 +70,7 @@ class SelectedReferenceSearch extends Component {
 
   _itemName(item){
 <<<<<<< HEAD
+<<<<<<< HEAD
     return striptags(item.default_display_name);
   }
 
@@ -62,12 +81,23 @@ class SelectedReferenceSearch extends Component {
   }
   
 >>>>>>> Add React components for Reference advanced search
+=======
+    return striptags(item.default_display_name);
+  }
+
+>>>>>>> Add conditional rendering for reference advanced search component
   _getJSONItem(item) {
     return {value: item.id, label: this._itemName(item)};
   }
 
+  _isDisabled() {
+    if(typeof this.props.isDisabled !== 'undefined' && this.props.isDisabled === null) return false;
+    return true;
+  }
+
   render() {
     return (
+<<<<<<< HEAD
 <<<<<<< HEAD
       <div>
         <ReactSelect id={this.referenceSearchId} isMulti name="colors" options={this._getItemOptions()} className="basic-multi-select" onChange={this.selectItem} classNamePrefix="select"/>
@@ -75,6 +105,11 @@ class SelectedReferenceSearch extends Component {
 =======
       <ReactSelect isMulti name="colors" options={this._getItemOptions()} className="basic-multi-select" classNamePrefix="select"/>
 >>>>>>> Add React components for Reference advanced search
+=======
+      <div>
+      <ReactSelect isMulti name="colors" options={this._getItemOptions()} className="basic-multi-select" onChange={this.selectItem} classNamePrefix="select" isDisabled={this._isDisabled()}/>
+      </div>
+>>>>>>> Add conditional rendering for reference advanced search component
     );
   }
 }
