@@ -45,6 +45,11 @@ class SelectedReferenceSearch extends Component {
     return {value: item.id, label: this._itemName(item)};
   }
 
+  _isDisabled() {
+    if(typeof this.props.isDisabled !== 'undefined' && this.props.isDisabled === null) return false;
+    return true;
+  }
+
   render() {
     return (
       <div>
