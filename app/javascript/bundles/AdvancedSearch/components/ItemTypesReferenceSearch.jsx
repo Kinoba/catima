@@ -33,10 +33,6 @@ class ItemTypesReferenceSearch extends Component {
       retryDelay: 1000
     };
 
-    _updateSelectCondition(array) {
-      this.props.updateSelectCondition(array);
-    }
-
     // TODO - uncomment when API call has been developed
     /*axios.get(`/api/v2/${this.props.catalog}/${this.props.locale}/${this.props.itemType}/${this.props.selectFilter.value}`, config)
     .then(res => {
@@ -71,6 +67,10 @@ class ItemTypesReferenceSearch extends Component {
         return axios(config);
       });
     });*/
+  }
+
+  _updateSelectCondition(array) {
+    this.props.updateSelectCondition(array);
   }
 
   // TODO - adapt this portion of code when API call has been created
