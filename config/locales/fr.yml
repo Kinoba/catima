@@ -26,6 +26,10 @@ fr:
       group:
         name: "Nom"
         description: "Description"
+      advanced_search_configuration:
+        title: Titre
+        description: Description
+        item_type: Type de fiche
   "yes": "Oui"
   "no": "Non"
   boolean_field: Champ booléen (oui/non)
@@ -45,6 +49,7 @@ fr:
   slug_help_text: "Minuscules, chiffres et traits d'union seulement. Pas de caractères accentués."
   add_another: "Créer et ajouter un autre"
   advanced_searches:
+    menu: Recherches avancées
     choice_set_search_field:
       any: "est l'un de"
     date_time_search_field:
@@ -444,6 +449,20 @@ fr:
       create:
         invalid_category: "Format d'exportation invalide"
 
+    advanced_search_configurations:
+      index:
+        advanced_search_configurations: Configurations de recherche
+        new_advanced_search_configuration: Nouvelle configuration de recherche
+        no_advanced_search_configurations_for_catalog_warning: Il n'y a pas de configuration de recherche avancée pour
+          ce catalogue.
+        nothing: Aucun champs
+      new:
+        title: Nouvelle configuration de recherche
+        next: Suivant
+      edit:
+        title: Modification de la configuration de recherche
+        add_field: Ajouter
+        submit: Modifier
     fields:
       choice_set_modals:
         create_new_choice_set: Créer nouvel ensemble de choix
