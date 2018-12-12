@@ -145,6 +145,7 @@ Rails.application.routes.draw do
                 :except => :show
     end
     resources :users, :path => "_users"
+    resources :advanced_search_configurations, :path => "_advanced_search_configurations"
     resources :menu_items, path: '_menu_items'
 
     # Data entry

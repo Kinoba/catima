@@ -35,4 +35,18 @@ module AdvancedSearchesHelper
     result = capture(content, &block)
     strip_tags(partial_rendered).blank? ? nil : result
   end
+
+  def render_item_types_as_options(item_types, selected_item_type_slug)
+    options = []
+    item_types.each do |item_type|
+      options << [
+        item_type.name,
+        item_type.slug,
+        "data-url".to_sym => url_for(:item_type => item_type.slug),
+        :selected => item_type.slug == selected_item_type_slug
+      ]
+    end
+
+    options
+  end
 end
