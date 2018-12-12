@@ -108,23 +108,6 @@ class Field::Reference < ::Field
     "(ref_items.data->>'#{related_item_type.field_for_select.uuid}') ASC" unless related_item_type.field_for_select.nil?
   end
 
-  def search_conditions_as_hash
-    []
-  end
-
-  def field_value_for_all_item(item)
-    item_type.primary_text_field&.field_value_for_all_item(item)
-  end
-
-  def sql_type
-    "INT"
-    # return "INT" if related_item_type.primary_field.blank?
-    #
-    # related_item_type.primary_field.sql_type
-    # while related_primary_field.is_a?(Field::Reference) && related_primary_field.related_item_type.present?
-    #   related_primary_field = related_item_type.primary_field.sql_type
-    # end
-  end
 
   def search_conditions_as_hash
     []
