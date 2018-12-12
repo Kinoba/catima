@@ -17,6 +17,7 @@ class ReferenceSearch extends Component {
 <<<<<<< HEAD
       selectedFilter: null,
       itemTypeSearch: this.props.itemTypeSearch,
+      selectCondition: this.props.selectCondition,
       selectedItem: []
     };
 
@@ -96,6 +97,10 @@ class ReferenceSearch extends Component {
     this.setState({ selectedItem: newVal });
   }
 
+  _updateSelectCondition(newVal) {
+    this.setState({ selectCondition: newVal });
+  }
+
   _selectFilter(value){
     this.setState({ selectedFilter: value });
 
@@ -163,6 +168,7 @@ class ReferenceSearch extends Component {
 <<<<<<< HEAD
     if (this.state.itemTypeSearch)
       return <ItemTypesReferenceSearch
+                updateSelectCondition={this.updateSelectCondition}
                 items={this.state.items}
                 fields={this.state.fields}
                 selectedFilter={this.state.selectedFilter}
@@ -222,6 +228,17 @@ class ReferenceSearch extends Component {
 =======
     return <ReactSelect className="single-reference-filter" isSearchable={false} isClearable={true} isDisabled={this._isFilterDisabled()} value={this.state.selectedFilter} onChange={this.selectFilter} options={this._getFilterOptions()} placeholder={this.props.filterPlaceholder}/>
 >>>>>>> Add conditional rendering for reference advanced search component
+  }
+
+  renderSelectConditionElement(){
+    return (
+      <select className="form-control filter-condition" disabled={this._isFilterDisabled()}>
+        { this.props.selectCondition.map(function(condition){
+            return <option key={condition.key} value={condition.key}>{condition.name}</option>
+          })
+        }
+      </select>
+    );
   }
 
   render() {
