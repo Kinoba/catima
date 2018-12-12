@@ -1,6 +1,5 @@
-class API::V2::FieldsController < API::ApplicationController
+class API::V2::FieldsController < ActionController::Base
   include ControlsItemSorting
-  before_action :catalog_request_clearance
 
   InvalidItemType = Class.new(RuntimeError)
   InvalidField = Class.new(RuntimeError)
@@ -15,8 +14,6 @@ class API::V2::FieldsController < API::ApplicationController
     render(:json => error, :status => status)
   end
 
-  # Mainly used to get the fields of an ItemType
-  # or a Category in the advanced search react components
   def index
     it = item_type
     category = find_category
@@ -28,8 +25,7 @@ class API::V2::FieldsController < API::ApplicationController
         name: it&.name,
         search_placeholder: t("catalog_admin.items.reference_editor.reference_editor_search", locale: params[:locale]),
         filter_placeholder: t("catalog_admin.items.reference_editor.reference_editor_filter", locale: params[:locale]),
-        selectCondition: field.search_conditions_as_hash(params[:locale]),
-        displayFieldCondition: true,
+        selectCondition: field.search_conditions_as_hash,
         inputType: field.type,
         inputData: field.search_data_as_hash,
         inputOptions: field.search_options_as_hash
@@ -57,22 +53,22 @@ class API::V2::FieldsController < API::ApplicationController
   end
 
   def find_field(item_type, category)
-    return nil if params[:field_uuid].blank?
+    return nil if params[:field_slug].blank?
 
     if category.blank?
-      field = item_type.fields.find_by(:uuid => params[:field_uuid])
+      field = item_type.fields.find_by(:slug => params[:field_slug])
       # In case we search for a category field in a reference
-      field = item_type.all_fields.select { |fld| fld.slug == params[:field_uuid] }.first if field.nil?
+      field = item_type.all_fields.select { |fld| fld.slug == params[:field_slug] }.first if field.nil?
     else
-      field = category.fields.find_by(:slug => params[:field_uuid])
+      field = category.fields.find_by(:slug => params[:field_slug])
     end
 
-    raise InvalidField, "field not found: #{params[:field_uuid]}" if field.nil?
+    raise InvalidField, "field not found: #{params[:field_slug]}" if field.nil?
 
     field
   end
 
   def catalog
-    @catalog ||= Catalog.find_by!(:slug => params[:catalog_slug])
+    @catalog ||= Catalog.active.find_by!(:slug => params[:catalog_slug])
   end
 end
