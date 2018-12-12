@@ -37,7 +37,7 @@ it:
       after: "prima"
       before: "dopo"
     new:
-      tab: "%{type} ricerca"
+      tab: "%{title} ricerca"
       title: "Ricerca avanzata"
       start_over: "Nuova ricerca"
       submit: "Ricerca"

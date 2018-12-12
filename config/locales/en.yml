@@ -53,7 +53,7 @@ en:
       before: "before"
     new:
       item_type: Item type
-      tab: "%{type} search"
+      tab: "%{title} search"
       title: "Advanced search"
       start_over: "Start over"
       submit: "Search"
@@ -63,6 +63,10 @@ en:
         one: "1 advanced search result"
         other: "%{count_delimited} advanced search results"
     text_search_field:
+      contains_words: "contains words"
+      excludes_words: "excludes words"
+      has_exact_phrase: "has exact phrase"
+    reference_search_field:
       contains_words: "contains words"
       excludes_words: "excludes words"
       has_exact_phrase: "has exact phrase"

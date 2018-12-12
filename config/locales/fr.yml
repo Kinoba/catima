@@ -56,7 +56,7 @@ fr:
       after: "après"
       before: "avant"
     new:
-      tab: "Recherche %{type}"
+      tab: "Recherche %{title}"
       title: "Recherche avancée"
       start_over: "Nouvelle recherche"
       submit: "Chercher"
@@ -66,6 +66,10 @@ fr:
         one: "1 résultat de recherche avancée"
         other: "%{count_delimited} résultats de recherche avancée"
     text_search_field:
+      contains_words: "contient les mots"
+      excludes_words: "ne contient pas les mots"
+      has_exact_phrase: "possède l'expression exacte"
+    reference_search_field:
       contains_words: "contient les mots"
       excludes_words: "ne contient pas les mots"
       has_exact_phrase: "possède l'expression exacte"

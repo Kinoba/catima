@@ -1,23 +1,42 @@
 <% provide(:title, t(".title")) %>
 
+<% if @advance_search_confs.many? %>
+  <ul class="nav nav-tabs">
+    <% @advance_search_confs.each do |search_config| %>
+      <%= content_tag(
+            :li,
+            :role => "presentation",
+            :class => ("active" if search_config.id == @advanced_search_config&.id)) do %>
+        <%= link_to(t(".tab", :title => search_config.title), :advanced_search_conf => search_config.id) %>
+      <% end %>
+    <% end %>
+  </ul>
+<% end %>
+
+<% if @advanced_search_config.present? %>
+  <h1><%= @advanced_search_config.title %></h1>
+  <hr>
+  <p><%= @advanced_search_config.description %></p>
+<% end %>
+
 <%= bootstrap_form_for(@advanced_search) do |f| %>
   <%= hidden_field_tag(:type, params[:type]) %>
 
   <table class="table">
     <tbody>
-      <% if @advanced_search.item_types.many? %>
+      <% if @item_types.many? && @advanced_search_config.blank? %>
         <tr>
           <th>
-            <%= t('.item_type') %>
+            <%= t('item_type') %>
           </th>
           <td>
-            <%= f.select("item_type", render_item_types_as_options(@advanced_search.item_types, params[:type]),
+            <%= f.select("item_type", render_item_types_as_options(@item_types, params[:item_type]),
               { :hide_label => true }
             ) %>
           </td>
         </tr>
       <% end %>
-      <% @advanced_search.fields.each do |field| %>
+      <% @fields.each do |field| %>
         <%= render_advanced_search_field(f, field) do |content| %>
           <tr>
             <th><%= field.name %></th>

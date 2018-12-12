@@ -1,6 +1,6 @@
 module CatalogAdmin::AdvancedSearchesHelper
   def setup_catalog_advanced_searches_nav_link
-    active = (params[:controller] == "catalog_admin/advanced_searches")
+    active = (params[:controller] == "catalog_admin/advanced_search_configurations")
     klass = "list-group-item"
     klass << " active" if active
 

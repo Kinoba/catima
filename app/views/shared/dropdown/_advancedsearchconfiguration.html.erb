@@ -2,7 +2,7 @@
   <li>
     <%= link_to(
             fa_icon("pencil", :text => t("edit")),
-            edit_catalog_admin_advanced_search_configuration_path(model.catalog, I18n.locale, model)
+            edit_catalog_admin_advanced_search_configuration_path(model.catalog.slug, I18n.locale, model.id)
         )%>
   </li>
 <% end %>
@@ -10,7 +10,7 @@
   <li>
     <%= link_to(
             fa_icon("trash-o", :text => t("delete")),
-            catalog_admin_advanced_search_configuration_path(model.catalog, I18n.locale, model),
+            catalog_admin_advanced_search_configuration_path(model.catalog.slug, I18n.locale, model.id),
             :method => :delete,
             :data => {
                 :confirm => t("delete_confirm", model: model.title)

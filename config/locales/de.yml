@@ -37,7 +37,7 @@ de:
       after: "nach"
       before: "vor"
     new:
-      tab: "%{type} Suche"
+      tab: "%{title} Suche"
       title: "Erweiterte Suche"
       start_over: "Neue Suche"
       submit: "Suchen"
