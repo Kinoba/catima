@@ -21,7 +21,7 @@ class ItemTypesReferenceSearch extends Component {
       items: [],
       fields: [],
       isLoading: true,
-      inputType: 'Field::Decimal',
+      inputType: 'Field::Text',
     };
 
     this.referenceSearchId = `${this.props.srcRef}-search`;
@@ -33,9 +33,14 @@ class ItemTypesReferenceSearch extends Component {
       retryDelay: 1000
     };
 
+    _updateSelectCondition(array) {
+      this.props.updateSelectCondition(array);
+    }
+
     // TODO - uncomment when API call has been developed
     /*axios.get(`/api/v2/${this.props.catalog}/${this.props.locale}/${this.props.itemType}/${this.props.selectFilter.value}`, config)
     .then(res => {
+      this._updateSelectCondition(res.data.selectCondition);
       this.setState({ items: res.data.items });
       this.setState({ fields: res.data.fields });
       this.setState({ inputType: res.data.inputType });

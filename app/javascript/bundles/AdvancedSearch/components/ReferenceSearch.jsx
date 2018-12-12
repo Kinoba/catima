@@ -21,6 +21,8 @@ class ReferenceSearch extends Component {
       selectedItem: []
     };
 
+    console.log(this.state.selectCondition);
+
     this.selectFilter = this._selectFilter.bind(this);
     this.updateSelectedItem = this._updateSelectedItem.bind(this);
 =======
@@ -162,6 +164,15 @@ class ReferenceSearch extends Component {
     if(!field.primary) return {value: field.slug, label: field.name};
   }
 
+  _getConditionOptions(){
+    var optionsList = [];
+    optionsList = this.state.selectCondition.map(item =>
+      this._getJSONItem(item)
+    );
+
+    return optionsList;
+  }
+
   renderSearch(){
     if (this.state.isLoading) return null;
 <<<<<<< HEAD
@@ -233,11 +244,11 @@ class ReferenceSearch extends Component {
   renderSelectConditionElement(){
     return (
       <select className="form-control filter-condition" disabled={this._isFilterDisabled()}>
-        { this.props.selectCondition.map(function(condition){
-            return <option key={condition.key} value={condition.key}>{condition.name}</option>
-          })
-        }
-      </select>
+          { this.state.selectCondition.map((item) => {
+              return <option key={item.key} value={item.key}>{item.value}</option>
+            })
+          }
+        </select>
     );
   }
 
