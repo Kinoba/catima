@@ -85,7 +85,7 @@ class ItemTypesReferenceSearch extends Component {
       return <input id={this.referenceSearchId} type="url" className="form-control"/>
     } else if (this.state.inputType === 'Field::ChoiceSet') {
       return (
-        <select id={this.referenceSearchId} type="text" className="form-control">
+        <select id={this.referenceSearchId} className="form-control">
           <option value="choice1" selected>Choice 1</option>
           <option value="choice2">Choice 2</option>
           <option value="choice3">Choice 3</option>

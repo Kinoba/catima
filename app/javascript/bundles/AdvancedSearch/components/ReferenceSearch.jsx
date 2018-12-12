@@ -21,8 +21,6 @@ class ReferenceSearch extends Component {
       selectedItem: []
     };
 
-    console.log(this.state.selectCondition);
-
     this.selectFilter = this._selectFilter.bind(this);
     this.updateSelectedItem = this._updateSelectedItem.bind(this);
 =======
