@@ -99,6 +99,16 @@ class ReferenceSearch extends Component {
 
   _updateSelectCondition(newVal) {
     this.setState({ selectCondition: newVal });
+    console.log(newVal);
+  }
+
+  _isConditionDisabled() {
+    if(typeof this.state.selectedItem !== 'undefined' && this.state.selectedItem.length >= 0 && this.state.selectedFilter === null) {
+       return true;
+    }
+    else {
+      return false;
+    }
   }
 
   _selectFilter(value){
@@ -243,7 +253,7 @@ class ReferenceSearch extends Component {
 
   renderSelectConditionElement(){
     return (
-      <select className="form-control filter-condition" disabled={this._isFilterDisabled()}>
+      <select className="form-control filter-condition" disabled={this._isConditionDisabled()}>
           { this.state.selectCondition.map((item) => {
               return <option key={item.key} value={item.key}>{item.value}</option>
             })
