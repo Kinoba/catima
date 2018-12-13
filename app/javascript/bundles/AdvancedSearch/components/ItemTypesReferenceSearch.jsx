@@ -22,24 +22,25 @@ class ItemTypesReferenceSearch extends Component {
       fields: [],
       isLoading: true,
       inputType: 'Field::Text',
+      inputData: [],
+      inputOptions: {},
     };
 
     this.referenceSearchId = `${this.props.srcRef}-search`;
   }
 
-  componentDidMount(){
+  componentDidMount() {
     let config = {
       retry: 1,
       retryDelay: 1000
     };
 
-    // TODO - uncomment when API call has been developed
-    /*axios.get(`/api/v2/${this.props.catalog}/${this.props.locale}/${this.props.itemType}/${this.props.selectFilter.value}`, config)
+    axios.get(`/api/v2/${this.props.catalog}/${this.props.locale}/${this.props.itemType}/${this.props.selectedFilter.value}`, config)
     .then(res => {
       this._updateSelectCondition(res.data.selectCondition);
-      this.setState({ items: res.data.items });
-      this.setState({ fields: res.data.fields });
       this.setState({ inputType: res.data.inputType });
+      this.setState({ inputData: res.data.inputData });
+      this.setState({ inputOptions: res.data.inputOptions });
       this.setState({ isLoading: false });
     });
 
@@ -66,7 +67,7 @@ class ItemTypesReferenceSearch extends Component {
       return backoff.then(function() {
         return axios(config);
       });
-    });*/
+    });
   }
 
   _updateSelectCondition(array) {
