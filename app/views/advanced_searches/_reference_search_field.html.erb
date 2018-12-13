@@ -1,16 +1,11 @@
 <div class="row">
-    <!-- TODO - create a presenter for advanced search -->
-      <%= react_component('ReferenceSearch',
+    <%= react_component('ReferenceSearch',
       props: {
         catalog: 'library',
         itemType: 'book',
         locale: 'en',
         itemTypeSearch: false,
-        selectCondition: [
-            {value: t(".has_exact_phrase"), key: "exact"},
-            {value: t(".contains_words"), key: "contains"},
-            {value: t(".excludes_words"), key: "excludes"},
-          ]
+        selectCondition: field.search_conditions_as_hash
       },
       prerender: false) %>
     <div class="invisible">a</div> <!-- TODO - remove this -->

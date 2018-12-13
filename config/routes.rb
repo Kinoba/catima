@@ -18,6 +18,7 @@ Rails.application.routes.draw do
           get '/' => 'catalogs#show'
           get '/users' => 'users#index', as: 'users'
           get ':item_type' => 'items#index', as: 'items'
+          get ':item_type/:field' => 'fields#index', as: 'fields'
         end
       end
     end

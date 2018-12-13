@@ -249,6 +249,23 @@ class Field < ApplicationRecord
     "data->>'#{uuid}' ASC"
   end
 
+  # Useful for the advanced search
+  def search_conditions_as_options
+    [
+      [I18n.t("advanced_searches.text_search_field.has_exact_phrase"), "exact"],
+      [I18n.t("advanced_searches.text_search_field.contains_words"), "contains"],
+      [I18n.t("advanced_searches.text_search_field.excludes_words"), "excludes"]
+    ]
+  end
+
+  def search_conditions_as_hash
+    [
+      { :value => I18n.t("advanced_searches.text_search_field.has_exact_phrase"), :key => "exact"},
+      { :value => I18n.t("advanced_searches.text_search_field.contains_words"), :key => "contains"},
+      { :value => I18n.t("advanced_searches.text_search_field.excludes_words"), :key => "excludes"}
+    ]
+  end
+
   private
 
   def exclude_base64(string)

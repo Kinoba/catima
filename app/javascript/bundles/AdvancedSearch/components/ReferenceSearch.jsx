@@ -203,7 +203,9 @@ class ReferenceSearch extends Component {
 >>>>>>> Improve reference advanced search component
                 srcRef={this.props.srcRef}
                 srcId={this.props.srcId}
-                req={this.props.req} />
+                req={this.props.req}
+                catalog={this.props.catalog}
+                locale={this.props.locale} />
     else
       return <SelectedReferenceSearch
 <<<<<<< HEAD
