@@ -93,6 +93,7 @@ class ItemTypesReferenceSearch extends Component {
 
   // TODO - adapt this portion of code when API call has been created
   renderInput(){
+    if (this.state.isLoading) return null;
     if (this.state.inputType === 'Field::DateTime') {
       return <input id={this.referenceSearchId} type="text" className="form-control"/>
     } else if (this.state.inputType === 'Field::Email') {
