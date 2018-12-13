@@ -24,12 +24,25 @@ class ItemTypesReferenceSearch extends Component {
       inputType: 'Field::Text',
       inputData: [],
       inputOptions: {},
+      selectedFilter: {},
     };
 
     this.referenceSearchId = `${this.props.srcRef}-search`;
   }
 
-  componentDidMount() {
+  componentWillReceiveProps(nextProps) {
+  // You don't have to do this check first, but it can help prevent an unneeded render
+  if (nextProps.selectedFilter !== this.state.selectedFilter) {
+    this._getDataFromServer();
+    this.setState({ selectedFilter: nextProps.selectedFilter });
+  }
+}
+
+  componentDidMount(){
+    this._getDataFromServer();
+  }
+
+  _getDataFromServer() {
     let config = {
       retry: 1,
       retryDelay: 1000
@@ -42,6 +55,10 @@ class ItemTypesReferenceSearch extends Component {
       this.setState({ inputData: res.data.inputData });
       this.setState({ inputOptions: res.data.inputOptions });
       this.setState({ isLoading: false });
+
+      if(res.data.inputType === 'Field::DateTime') {
+        $('#' + this.referenceSearchId).datetimepicker();
+      }
     });
 
     // Retry failed requests
