@@ -18,6 +18,7 @@ class ItemList::AdvancedSearchResult < ItemList
     strategies.each do |strategy|
       permitted[strategy.field.uuid] = strategy.permitted_keys
     end
+    p permitted
     params.permit(:criteria => permitted)
   end
 

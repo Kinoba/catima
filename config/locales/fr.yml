@@ -66,6 +66,9 @@ fr:
         one: "1 résultat de recherche avancée"
         other: "%{count_delimited} résultats de recherche avancée"
     text_search_field:
+      all_words: tous les mots
+      exact: expression exacte
+      one_word: au moins un des mots
       contains_words: "contient les mots"
       excludes_words: "ne contient pas les mots"
       has_exact_phrase: "possède l'expression exacte"
@@ -75,6 +78,10 @@ fr:
       has_exact_phrase: "possède l'expression exacte"
     int_search_field:
       contains_number: "possède chiffre/nombre exact"
+      less_than: Est inférieur à
+      less_than_or_equal_to: Est inférieur ou égal à
+      greater_than: Est supérieur à
+      greater_than_or_equal_to: Est supérieur ou égal à
     decimal_search_field:
       contains_number: "possède chiffre/nombre exact"
     email_search_field:

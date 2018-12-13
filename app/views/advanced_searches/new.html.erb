@@ -20,7 +20,7 @@
 <% end %>
 
 <%= bootstrap_form_for(@advanced_search) do |f| %>
-  <%= hidden_field_tag(:type, params[:type]) %>
+  <%= hidden_field_tag(:item_type, params[:item_type].presence || @advanced_search_config&.item_type&.slug) %>
 
   <table class="table">
     <tbody>
@@ -30,18 +30,22 @@
             <%= t('item_type') %>
           </th>
           <td>
-            <%= f.select("item_type", render_item_types_as_options(@item_types, params[:item_type]),
-              { :hide_label => true }
+            <%= f.select("item_type",
+                  render_item_types_as_options(@item_types, params[:item_type]),
+                  {:hide_label => true, :include_blank => true}
             ) %>
           </td>
         </tr>
       <% end %>
-      <% @fields.each do |field| %>
-        <%= render_advanced_search_field(f, field) do |content| %>
-          <tr>
-            <th><%= field.name %></th>
-            <td><%= content %></td>
-          </tr>
+
+      <% if params[:item_type].present? || @advanced_search_config.present? %>
+        <% @fields.each do |field| %>
+          <%= render_advanced_search_field(f, field) do |content| %>
+            <tr>
+              <th><%= field.name %></th>
+              <td><%= content %></td>
+            </tr>
+          <% end %>
         <% end %>
       <% end %>
     </tbody>

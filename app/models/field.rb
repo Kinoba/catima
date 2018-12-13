@@ -252,9 +252,9 @@ class Field < ApplicationRecord
   # Useful for the advanced search
   def search_conditions_as_options
     [
-      [I18n.t("advanced_searches.text_search_field.has_exact_phrase"), "exact"],
-      [I18n.t("advanced_searches.text_search_field.contains_words"), "contains"],
-      [I18n.t("advanced_searches.text_search_field.excludes_words"), "excludes"]
+      [I18n.t("advanced_searches.text_search_field.exact"), "exact"],
+      [I18n.t("advanced_searches.text_search_field.all_words"), "all_words"],
+      [I18n.t("advanced_searches.text_search_field.one_word"), "one_word"]
     ]
   end
 

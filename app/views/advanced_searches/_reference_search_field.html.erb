@@ -1,9 +1,9 @@
 <div class="row">
     <%= react_component('ReferenceSearch',
       props: {
-        catalog: 'library',
-        itemType: 'book',
-        locale: 'en',
+        catalog: field.catalog.slug,
+        itemType: field.item_type.slug,
+        locale: I18n.locale,
         itemTypeSearch: false,
         selectCondition: field.search_conditions_as_hash
       },

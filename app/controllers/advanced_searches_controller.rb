@@ -33,6 +33,7 @@ class AdvancedSearchesController < ApplicationController
   def create
     build_advanced_search
     if @advanced_search.update(advanced_search_params)
+      # return redirect_back(fallback_location: root_path)
       redirect_to(:action => :show, :uuid => @advanced_search)
     else
       render("new")
@@ -47,6 +48,8 @@ class AdvancedSearchesController < ApplicationController
 
   def build_advanced_search
     type = catalog.item_types.where(:slug => params[:item_type]).first
+    p "-----------------------"
+    p type
     @advanced_search = scope.new do |model|
       model.item_type = type || catalog.item_types.sorted.first
       model.creator = current_user if current_user.authenticated?
@@ -57,6 +60,9 @@ class AdvancedSearchesController < ApplicationController
     model = scope.where(:uuid => params[:uuid]).first
     redirect_to(:action => :new) if model.nil?
 
+    p "----------"
+    p model
+
     @search = ItemList::AdvancedSearchResult.new(
       :model => model,
       :page => params[:page]
@@ -65,7 +71,7 @@ class AdvancedSearchesController < ApplicationController
 
   def advanced_search_params
     search = ItemList::AdvancedSearchResult.new(:model => @advanced_search)
-    search.permit_criteria(params.except(:condition, :item_type).require(:advanced_search))
+    search.permit_criteria(params.require(:advanced_search))
   end
 
   def find_advanced_search_configuration

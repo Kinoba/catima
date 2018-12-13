@@ -13,6 +13,6 @@ init = ->
     filerFieldName = templateField.attr('name').replace(/__filter__/g, selectedFilter);
     filerFieldId = templateField.attr('id').replace(/__filter__/g, selectedFilter);
 
-    $(this).parents('.row').find("input[type='text']").attr('name', filerFieldName)
-    $(this).parents('.row').find("input[type='text']").attr('id', filerFieldId)
+    $(this).parents('.row').find("input.form-control").first().attr('name', filerFieldName)
+    $(this).parents('.row').find("input.form-control").first().attr('id', filerFieldId)
 $(document).ready(init)
