@@ -99,7 +99,6 @@ class ReferenceSearch extends Component {
 
   _updateSelectCondition(newVal) {
     this.setState({ selectCondition: newVal });
-    console.log(newVal);
   }
 
   _isConditionDisabled() {

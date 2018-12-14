@@ -1,10 +1,22 @@
-<%= f.viim_datetime_select(
-      "after",
-      :label => t(".after"),
-      :format => field.format
-      ) %>
-<%= f.viim_datetime_select(
-      "before",
-      :label => t(".before"),
-      :format => field.format
-      ) %>
+
+      <div>
+          <%= react_component('DateTimeSearch',
+            props: {
+              catalog: 'library',
+              itemType: 'book',
+              locale: 'en',
+              label: t(".after"),
+              srcId: 'current-element-id',
+              srcRef: 'current-element-ref',
+              inputName: 'date-time-search',
+              format: field.format,
+              #selectCondition: field.search_conditions_as_hash
+              selectCondition: [
+                {value: "Choice 1", key: "choice1"},
+                {value: "Choice 2", key: "choice2"},
+                {value: "Choice 3", key: "choice3"},
+              ]
+            },
+            prerender: false) %>
+              <div class="invisible">a</div> <!-- TODO - remove this -->
+      </div>

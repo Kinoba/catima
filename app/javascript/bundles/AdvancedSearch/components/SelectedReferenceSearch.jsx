@@ -102,7 +102,7 @@ class SelectedReferenceSearch extends Component {
 >>>>>>> Add React components for Reference advanced search
 =======
       <div>
-        <ReactSelect id={this.referenceSearchId} isMulti options={this._getItemOptions()} className="basic-multi-select" onChange={this.selectItem} classNamePrefix="select"/>
+        <ReactSelect id={this.referenceSearchId} name={this.props.inputName} isMulti options={this._getItemOptions()} className="basic-multi-select" onChange={this.selectItem} classNamePrefix="select"/>
       </div>
 >>>>>>> Add conditional rendering for reference advanced search component
     );
