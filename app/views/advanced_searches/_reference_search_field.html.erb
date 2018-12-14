@@ -1,10 +1,11 @@
 <div class="row">
+    <%= f.hidden_field("exact") %>
     <%= react_component('ReferenceSearch',
       props: {
         catalog: field.catalog.slug,
-        itemType: field.item_type.slug,
+        itemType: field.slug,
         locale: I18n.locale,
-        inputName: 'reference-search',
+        inputName: 'coucou',
         itemTypeSearch: false,
         selectCondition: field.search_conditions_as_hash
       },

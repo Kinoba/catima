@@ -24,7 +24,8 @@
 
   <table class="table">
     <tbody>
-      <% if @item_types.many? && @advanced_search_config.blank? %>
+      <%# if @item_types.many? && @advanced_search_config.blank? %>
+      <% if @advanced_search_config.blank? %>
         <tr>
           <th>
             <%= t('item_type') %>
