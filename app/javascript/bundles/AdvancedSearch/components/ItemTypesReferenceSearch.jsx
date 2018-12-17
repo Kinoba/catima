@@ -75,7 +75,10 @@ class ItemTypesReferenceSearch extends Component {
       this.setState({ isLoading: false });
 
       if(res.data.inputType === 'Field::DateTime') {
-        $(this.refs[this.referenceSearchRef]).datetimepicker();
+        $(this.refs[this.referenceSearchRef]).datetimepicker({
+          format: res.data.inputOptions.format,
+          locale: this.props.locale
+        });
       }
     });
 

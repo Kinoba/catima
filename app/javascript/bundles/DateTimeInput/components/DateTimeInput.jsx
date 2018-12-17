@@ -1,7 +1,10 @@
 import 'es6-shim';
 import PropTypes from 'prop-types';
 import React from 'react';
-
+import ReactDOM from 'react-dom';
+import $ from 'jquery';
+import moment from 'moment';
+import 'eonasdan-bootstrap-datetimepicker';
 
 class DateTimeInput extends React.Component {
 
@@ -29,11 +32,45 @@ class DateTimeInput extends React.Component {
     this.handleChangeMinutes = this._handleChangeMinutes.bind(this);
     this.handleChangeSeconds = this._handleChangeSeconds.bind(this);
 
-    this.isRequired = (document.querySelector(this.props.input).getAttribute('data-field-required') == 'true')
+    //TODO - uncomment this when input property is dynamically generated in DateTimeSearch.jsx
+    //this.isRequired = (document.querySelector(this.props.input).getAttribute('data-field-required') == 'true')
   }
 
   componentDidMount() {
+    this._initDatePicker();
     if (jQuery.isEmptyObject(this.getData())) return this.initData(DateTimeInput.defaultValues, this.getFieldOptions().format);
+  }
+
+  _initDatePicker() {
+    if(typeof this.props.datepicker !== 'undefined' && this.props.datepicker) {
+      const node = ReactDOM.findDOMNode(this);
+      const dateInputElements = node.querySelectorAll('.form-control');
+
+      dateInputElements.forEach((element, index) => {
+        if(index===0) {
+          $(element).datetimepicker({
+            format: this.getCurrentFormat(),
+            locale: this.props.locale
+          });
+
+          $(element).datetimepicker().on('dp.change', (event) => this._onDatepickerChangerDate(event));
+        } else {
+          element.addEventListener('focus', () => {
+            dateInputElements[0].focus();
+          });
+        }
+      });
+    }
+  }
+
+  _onDatepickerChangerDate(data) {
+    this.updateData({ Y: data.date.year(), M: (data.date.month() + 1), D: data.date.date(), h: data.date.hour(), m: data.date.minute(), s: data.date.second()});
+  }
+
+  _openDatePicker(event) {
+    /*const node = ReactDOM.findDOMNode(this);
+    const dateInputElements = node.querySelectorAll('.form-control');
+    dateInputElements[0].focus();*/
   }
 
   _handleChangeDay(e){
@@ -115,7 +152,7 @@ class DateTimeInput extends React.Component {
   getAllowedFormats() {
     const granularity = this.getFieldOptions().format;
     return DateTimeInput.types.filter(obj => {
-        if (granularity.includes(obj) || granularity == obj) return obj;
+      if (granularity.includes(obj) || granularity == obj) return obj;
     });
   }
 
@@ -143,49 +180,53 @@ class DateTimeInput extends React.Component {
     let fmt = this.getFieldOptions().format;
     return (
       <div>
-        <div className="dateTimeInput rails-bootstrap-forms-datetime-select">
-          {fmt.includes('D') ? (
-              <input  style={errorStl} type="number" min="0" max="31" className="input-2 form-control" value={this.state.D} onChange={this.handleChangeDay} />
-            ) : null
-          }
-          {fmt.includes('M') ? (
-            <select  style={errorStl} className="form-control" value={this.state.M} onChange={this.handleChangeMonth}>
-              <option value=""></option>
-              <option value="1">January</option>
-              <option value="2">February</option>
-              <option value="3">March</option>
-              <option value="4">April</option>
-              <option value="5">May</option>
-              <option value="6">June</option>
-              <option value="7">July</option>
-              <option value="8">August</option>
-              <option value="9">September</option>
-              <option value="10">October</option>
-              <option value="11">November</option>
-              <option value="12">December</option>
-            </select>) : null
-          }
-          {fmt.includes('Y') ? (
-              <input  style={errorStl} className="input-4 margin-right form-control" value={this.state.Y} onChange={this.handleChangeYear} />
-          ) : null
-          }
-          {fmt.includes('h') ? (
-              <input  style={errorStl} min="0" max="23" type="number" className="input-2 form-control" value={this.state.h} onChange={this.handleChangeHours} />
-            ) : null
-          }
-          {fmt.includes('m') ? (
-              <input  style={errorStl} min="0" max="59" type="number" className="input-2 form-control" value={this.state.m} onChange={this.handleChangeMinutes} />
-            ) : null
-          }
-          {fmt.includes('s') ? (
-              <input  style={errorStl} min="0" max="59" type="number" className="input-2 form-control" value={this.state.s} onChange={this.handleChangeSeconds} />
-            ) : null
-          }
-        </div>
-        <span className="error helptext">{errorMsg}</span>
-      </div>
-    );
+      <div className="dateTimeInput rails-bootstrap-forms-datetime-select" ref={this.props.inputRef}>
+      <a href="#" onClick={this._openDatePicker}>
+      <i className="fa fa-calendar"></i>
+      <input type="text" className="form-control hidden-datepicker"/>
+      </a>
+      {fmt.includes('D') ? (
+        <input  style={errorStl} type="number" min="0" max="31" className="input-2 form-control" value={this.state.D} onChange={this.handleChangeDay} />
+      ) : null
+    }
+    {fmt.includes('M') ? (
+      <select  style={errorStl} className="form-control" value={this.state.M} onChange={this.handleChangeMonth}>
+      <option value=""></option>
+      <option value="1">January</option>
+      <option value="2">February</option>
+      <option value="3">March</option>
+      <option value="4">April</option>
+      <option value="5">May</option>
+      <option value="6">June</option>
+      <option value="7">July</option>
+      <option value="8">August</option>
+      <option value="9">September</option>
+      <option value="10">October</option>
+      <option value="11">November</option>
+      <option value="12">December</option>
+      </select>) : null
+    }
+    {fmt.includes('Y') ? (
+      <input  style={errorStl} className="input-4 margin-right form-control" value={this.state.Y} onChange={this.handleChangeYear} />
+    ) : null
   }
+  {fmt.includes('h') ? (
+    <input  style={errorStl} min="0" max="23" type="number" className="input-2 form-control" value={this.state.h} onChange={this.handleChangeHours} />
+  ) : null
+}
+{fmt.includes('m') ? (
+  <input  style={errorStl} min="0" max="59" type="number" className="input-2 form-control" value={this.state.m} onChange={this.handleChangeMinutes} />
+) : null
+}
+{fmt.includes('s') ? (
+  <input  style={errorStl} min="0" max="59" type="number" className="input-2 form-control" value={this.state.s} onChange={this.handleChangeSeconds} />
+) : null
+}
+</div>
+<span className="error helptext">{errorMsg}</span>
+</div>
+);
+}
 
 };
 
