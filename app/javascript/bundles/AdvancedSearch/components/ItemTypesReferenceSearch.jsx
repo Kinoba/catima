@@ -118,8 +118,18 @@ class ItemTypesReferenceSearch extends Component {
   }
 
   _getDateTimeFormat() {
-    //TODO - search in input options for key format instead of accessing by position
-    return this.state.inputOptions[0].format;
+    var formatOption = this._searchInArray(this.state.inputOptions, 'format');
+    if (formatOption === -1) return false;
+    else return formatOption.format;
+  }
+
+  _searchInArray(array, key) {
+    for (var i = 0; i < array.length; i++) {
+        if (typeof array[i][key] !== 'undefined') {
+            return array[i];
+        }
+    }
+    return -1;
   }
 
   // TODO - adapt this portion of code when API call has been created
