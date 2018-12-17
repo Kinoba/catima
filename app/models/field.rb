@@ -266,6 +266,12 @@ class Field < ApplicationRecord
     ]
   end
 
+  def search_data_as_hash
+  end
+
+  def search_options_as_hash
+  end
+
   private
 
   def exclude_base64(string)

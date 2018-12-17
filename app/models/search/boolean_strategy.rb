@@ -1,5 +1,5 @@
 class Search::BooleanStrategy < Search::BaseStrategy
-  permit_criteria :exact
+  permit_criteria :exact, :field_condition
 
   def search(scope, criteria)
     exact_search(scope, criteria[:exact])

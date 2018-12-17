@@ -41,8 +41,8 @@ class API::V2::FieldsController < ActionController::Base
         # items: apply_sort(it.items).map { |itm| itm.describe([:default_display_name], [:requires_review, :uuid], true) },
         selectCondition: field.search_conditions_as_hash,
         inputType: field.type,
-        inputData:  apply_sort(it.items).map { |itm| itm.describe([:default_display_name], [:requires_review, :uuid], true) },
-        inputOptions: ""
+        inputData: field.search_data_as_hash,
+        inputOptions: field.search_options_as_hash
       })
   end
 

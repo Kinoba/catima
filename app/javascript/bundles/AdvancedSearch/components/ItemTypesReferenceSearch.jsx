@@ -137,7 +137,7 @@ class ItemTypesReferenceSearch extends Component {
     } else if (this.state.inputType === 'Field::Boolean') {
       return (
         <select id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} className="form-control">
-          <option value="Oui" selected>Oui</option>
+          <option value="Oui" defaultValue>Oui</option>
           <option value="Non">Non</option>
         </select>
       );

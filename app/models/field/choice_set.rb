@@ -120,6 +120,16 @@ class Field::ChoiceSet < ::Field
     "(choices.long_name_translations->>'long_name_#{I18n.locale}') ASC" unless choices.nil?
   end
 
+  def search_data_as_hash
+    choices_as_options = []
+
+    choices.each do |choice|
+      choices_as_options << { :value => choice.short_name, :key => choice.uuid }
+    end
+
+    choices_as_options
+  end
+
   private
 
   # TODO: validate choice belongs to specified ChoiceSet

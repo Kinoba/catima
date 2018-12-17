@@ -6,7 +6,7 @@
     <%= react_component('ReferenceSearch',
       props: {
         catalog: field.catalog.slug,
-        itemType: field.item_type.slug,
+        itemType: field.related_item_type.slug,
         field: field.slug,
         locale: I18n.locale,
         inputName: "advanced_search[criteria][#{field.uuid}][exact]",

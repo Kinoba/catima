@@ -133,6 +133,12 @@ class Field::DateTime < ::Field
     NULLIF(data->'#{uuid}'->>'s', '')::int ASC"
   end
 
+  def search_options_as_hash
+    [
+      { :format => format },
+    ]
+  end
+
   private
 
   def transform_value(v)
