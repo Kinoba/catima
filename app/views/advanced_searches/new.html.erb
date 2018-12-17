@@ -1,21 +1,21 @@
 <% provide(:title, t(".title")) %>
 
 <% if @advance_search_confs.many? %>
+  <h2>Recherches préconfigurées</h2>
   <ul class="nav nav-tabs">
     <% @advance_search_confs.each do |search_config| %>
       <%= content_tag(
             :li,
             :role => "presentation",
             :class => ("active" if search_config.id == @advanced_search_config&.id)) do %>
-        <%= link_to(t(".tab", :title => search_config.title), :advanced_search_conf => search_config.id) %>
+        <%= link_to(search_config.title, :advanced_search_conf => search_config.id) %>
       <% end %>
     <% end %>
   </ul>
 <% end %>
 
 <% if @advanced_search_config.present? %>
-  <h1><%= @advanced_search_config.title %></h1>
-  <hr>
+  <h3><%= @advanced_search_config.title %></h3>
   <p><%= @advanced_search_config.description %></p>
 <% end %>
 
@@ -26,6 +26,11 @@
     <tbody>
       <%# if @item_types.many? && @advanced_search_config.blank? %>
       <% if @advanced_search_config.blank? %>
+        <tr>
+          <th>
+            <h2>Recherche sur un type de fiche</h2>
+          </th>
+        </tr>
         <tr>
           <th>
             <%= t('item_type') %>
@@ -40,6 +45,11 @@
       <% end %>
 
       <% if params[:item_type].present? || @advanced_search_config.present? %>
+        <tr>
+          <th>
+            <h3>Recherche avancée sur <%= @advanced_search.item_type.name %></h3>
+          </th>
+        </tr>
         <% @fields.each do |field| %>
           <%= render_advanced_search_field(f, field) do |content| %>
             <tr>
@@ -47,6 +57,9 @@
               <td><%= content %></td>
             </tr>
           <% end %>
+        <% end %>
+        <% if @fields.count.zero? %>
+          <th>Aucun champ de recherche configuré</th>
         <% end %>
       <% end %>
     </tbody>

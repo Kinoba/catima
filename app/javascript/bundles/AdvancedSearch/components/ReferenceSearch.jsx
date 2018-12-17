@@ -102,7 +102,10 @@ class ReferenceSearch extends Component {
   }
 
   _isConditionDisabled() {
-    if(typeof this.state.selectedItem !== 'undefined' && this.state.selectedItem.length >= 0 && this.state.selectedFilter === null) {
+    if ((typeof this.state.selectedItem !== 'undefined'
+        && this.state.selectedItem.length >= 0
+        && this.state.selectedFilter === null)
+        || this.state.selectCondition.length === 0) {
        return true;
     }
     else {

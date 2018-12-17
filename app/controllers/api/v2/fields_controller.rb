@@ -49,19 +49,19 @@ class API::V2::FieldsController < ActionController::Base
   private
 
   def item_type
-    return nil if params[:item_type].blank?
+    return nil if params[:item_type_slug].blank?
 
-    item_type = catalog.item_types.where(:slug => params[:item_type]).first
-    raise InvalidItemType, "item_type not found: #{params[:item_type]}" if item_type.nil?
+    item_type = catalog.item_types.where(:slug => params[:item_type_slug]).first
+    raise InvalidItemType, "item_type not found: #{params[:item_type_slug]}" if item_type.nil?
 
     item_type
   end
 
   def find_field(item_type)
-    return nil if params[:field].blank?
+    return nil if params[:field_slug].blank?
 
-    field = item_type.fields.find_by(:slug => params[:field])
-    raise InvalidField, "field not found: #{params[:field]}" if field.nil?
+    field = item_type.fields.find_by(:slug => params[:field_slug])
+    raise InvalidField, "field not found: #{params[:field_slug]}" if field.nil?
 
     field
   end

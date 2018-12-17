@@ -20,7 +20,7 @@ class SelectedReferenceSearch extends Component {
 
   _save(){
     if(this.state.selectedItem !== null && this.state.selectedItem.length !== 0) {
-      document.getElementById(this.props.srcRef).value = this.state.selectedItem;
+      document.getElementsByName(this.props.inputName)[0].value = this.state.selectedItem;
     }
   }
 

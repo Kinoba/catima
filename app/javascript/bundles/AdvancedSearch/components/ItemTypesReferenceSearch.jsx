@@ -66,6 +66,9 @@ class ItemTypesReferenceSearch extends Component {
       retryDelay: 1000
     };
 
+    if (typeof this.props.field !== 'undefined') {
+      this.props.selectedFilter.value = this.props.field;
+    }
     axios.get(`/api/v2/${this.props.catalog}/${this.props.locale}/${this.props.itemType}/${this.props.selectedFilter.value}`, config)
     .then(res => {
       this._updateSelectCondition(res.data.selectCondition);
