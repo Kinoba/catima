@@ -10,7 +10,8 @@ class SelectedReferenceSearch extends Component {
 <<<<<<< HEAD
 <<<<<<< HEAD
     this.state = {
-      selectedItem: []
+      selectedItem: [],
+      hiddenInputValue: []
     };
 
     this.referenceSearchId = `${this.props.srcRef}-editor`;
@@ -20,7 +21,15 @@ class SelectedReferenceSearch extends Component {
 
   _save(){
     if(this.state.selectedItem !== null && this.state.selectedItem.length !== 0) {
-      document.getElementsByName(this.props.inputName)[0].value = this.state.selectedItem;
+
+      var idArray = [];
+      this.state.selectedItem.forEach((item) => {
+        idArray.push(item.value);
+      });
+
+      this.setState({ hiddenInputValue: idArray });
+
+      document.getElementsByName(this.props.inputName)[0].value = this.state.hiddenInputValue;
     }
   }
 

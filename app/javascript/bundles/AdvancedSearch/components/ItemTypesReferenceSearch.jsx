@@ -26,6 +26,7 @@ class ItemTypesReferenceSearch extends Component {
       inputOptions: {},
       selectedFilter: {},
       selectedItem: [],
+      hiddenInputValue: []
     };
 
     this.referenceSearchId = `${this.props.srcId}-search`;
@@ -46,7 +47,15 @@ class ItemTypesReferenceSearch extends Component {
 
   _save(){
     if(this.state.selectedItem !== null && this.state.selectedItem.length !== 0) {
-      document.getElementById(this.props.srcRef).value = this.state.selectedItem;
+
+      var idArray = [];
+      this.state.selectedItem.forEach((item) => {
+        idArray.push(item.value);
+      });
+
+      this.setState({ hiddenInputValue: idArray });
+
+      document.getElementsByName(this.props.inputName)[0].value = this.state.hiddenInputValue;
     }
   }
 
