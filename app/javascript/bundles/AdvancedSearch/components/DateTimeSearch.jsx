@@ -88,7 +88,7 @@ render() {
       }
     </div>
     <div className="col-md-4">
-    { this.renderSelectConditionElement() }
+    { this.props.selectCondition.length > 0 && this.renderSelectConditionElement() }
     </div>
     </div>
   );

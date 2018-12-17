@@ -18,14 +18,13 @@ class ItemTypesReferenceSearch extends Component {
 >>>>>>> Improve reference advanced search component
 
     this.state = {
-      items: [],
-      fields: [],
       isLoading: true,
-      inputType: 'Field::DateTime',
-      inputData: [],
-      inputOptions: {},
+      inputType: 'Field::Text',
+      inputData: null,
+      inputOptions: null,
       selectedFilter: {},
       selectedItem: [],
+      selectCondition: [],
       hiddenInputValue: []
     };
 
@@ -85,13 +84,6 @@ class ItemTypesReferenceSearch extends Component {
       this.setState({ inputData: res.data.inputData });
       this.setState({ inputOptions: res.data.inputOptions });
       this.setState({ isLoading: false });
-
-      if(res.data.inputType === 'Field::DateTime') {
-        $(this.refs[this.referenceSearchRef]).datetimepicker({
-          format: res.data.inputOptions.format,
-          locale: this.props.locale
-        });
-      }
     });
 
     // Retry failed requests
@@ -122,32 +114,42 @@ class ItemTypesReferenceSearch extends Component {
 
   _updateSelectCondition(array) {
     this.props.updateSelectCondition(array);
+    this.setState({ selectCondition: array });
+  }
+
+  _getDateTimeFormat() {
+    //TODO - search in input options for key format instead of accessing by position
+    return this.state.inputOptions[0].format;
   }
 
   // TODO - adapt this portion of code when API call has been created
   renderInput(){
     if (this.state.isLoading) return null;
     if (this.state.inputType === 'Field::DateTime') {
-      return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} type="text" className="form-control"/>
+      return <DateTimeSearch
+                id={this.referenceSearchId}
+                selectCondition={[]}
+                catalog={this.props.catalog}
+                itemType={this.props.itemType}
+                inputName={this.props.inputName}
+                isRange={true}
+                format={this._getDateTimeFormat()}
+                locale={this.props.locale}
+                onChange={this.selectItem}
+              />
     } else if (this.state.inputType === 'Field::Email') {
       return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} type="email" className="form-control"/>
     } else if (this.state.inputType === 'Field::Int' || this.state.inputType === 'Field::Decimal') {
       return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} type="number" className="form-control"/>
     } else if (this.state.inputType === 'Field::URL') {
       return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} type="url" className="form-control"/>
-    } else if (this.state.inputType === 'Field::ChoiceSet') {
+    } else if (this.state.inputType === 'Field::ChoiceSet' || this.state.inputType === 'Field::Boolean') {
       return (
         <select id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} className="form-control">
-          <option value="choice1" selected>Choice 1</option>
-          <option value="choice2">Choice 2</option>
-          <option value="choice3">Choice 3</option>
-        </select>
-      );
-    } else if (this.state.inputType === 'Field::Boolean') {
-      return (
-        <select id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} className="form-control">
-          <option value="Oui" defaultValue>Oui</option>
-          <option value="Non">Non</option>
+          { this.state.inputData.map((item) => {
+            return <option key={item.key}>{item.value}</option>
+            })
+          }
         </select>
       );
     } else {
