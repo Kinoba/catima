@@ -53,7 +53,7 @@ module AdvancedSearchesHelper
   end
 
   def render_and_or_exclude_select(form, field)
-    form.select("condition", [
+    form.select("field_condition", [
         [I18n.t(".and"), "and"],
         [I18n.t(".or"), "or"],
         [I18n.t(".exclude"), "exclude"]
