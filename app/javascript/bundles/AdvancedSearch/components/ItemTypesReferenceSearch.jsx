@@ -25,10 +25,12 @@ class ItemTypesReferenceSearch extends Component {
       inputData: [],
       inputOptions: {},
       selectedFilter: {},
+      selectedItem: [],
     };
 
     this.referenceSearchId = `${this.props.srcId}-search`;
     this.referenceSearchRef = `${this.props.srcRef}-search`;
+    this.selectItem = this._selectItem.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -40,6 +42,22 @@ class ItemTypesReferenceSearch extends Component {
 
   componentDidMount(){
     this._getDataFromServer();
+  }
+
+  _save(){
+    if(this.state.selectedItem !== null && this.state.selectedItem.length !== 0) {
+      document.getElementById(this.props.srcRef).value = this.state.selectedItem;
+    }
+  }
+
+  _selectItem(event){
+    if(typeof event === 'undefined' || event.action !== "pop-value" || !this.props.req) {
+      if(typeof item !== 'undefined') {
+        this.setState({ selectedItem: event.target.value }, () => this._save());
+      } else {
+        this.setState({ selectedItem: [] }, () => this._save());
+      }
+    }
   }
 
   _getDataFromServer() {
@@ -95,16 +113,16 @@ class ItemTypesReferenceSearch extends Component {
   renderInput(){
     if (this.state.isLoading) return null;
     if (this.state.inputType === 'Field::DateTime') {
-      return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} type="text" className="form-control"/>
+      return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} type="text" className="form-control"/>
     } else if (this.state.inputType === 'Field::Email') {
-      return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} type="email" className="form-control"/>
+      return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} type="email" className="form-control"/>
     } else if (this.state.inputType === 'Field::Int' || this.state.inputType === 'Field::Decimal') {
-      return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} type="number" className="form-control"/>
+      return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} type="number" className="form-control"/>
     } else if (this.state.inputType === 'Field::URL') {
-      return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} type="url" className="form-control"/>
+      return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} type="url" className="form-control"/>
     } else if (this.state.inputType === 'Field::ChoiceSet') {
       return (
-        <select id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} className="form-control">
+        <select id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} className="form-control">
           <option value="choice1" selected>Choice 1</option>
           <option value="choice2">Choice 2</option>
           <option value="choice3">Choice 3</option>
@@ -112,13 +130,13 @@ class ItemTypesReferenceSearch extends Component {
       );
     } else if (this.state.inputType === 'Field::Boolean') {
       return (
-        <select id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} className="form-control">
+        <select id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} className="form-control">
           <option value="Oui" selected>Oui</option>
           <option value="Non">Non</option>
         </select>
       );
     } else {
-      return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} type="text" className="form-control"/>
+      return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} type="text" className="form-control"/>
     }
 <<<<<<< HEAD
 =======

@@ -3,9 +3,10 @@
     <%= react_component('ReferenceSearch',
       props: {
         catalog: field.catalog.slug,
-        itemType: field.slug,
+        itemType: field.item_type.slug,
         locale: I18n.locale,
         inputName: 'coucou',
+        srcRef: 'advanced_search_criteria__2704a8eb_d70b_4e12_bf8f_3003220cd0ef_exact',
         itemTypeSearch: false,
         selectCondition: field.search_conditions_as_hash
       },

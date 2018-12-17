@@ -18,12 +18,18 @@ class SelectedReferenceSearch extends Component {
     this.selectItem = this._selectItem.bind(this);
   }
 
+  _save(){
+    if(this.state.selectedItem !== null && this.state.selectedItem.length !== 0) {
+      document.getElementById(this.props.srcRef).value = this.state.selectedItem;
+    }
+  }
+
   _selectItem(item, event){
     if(typeof event === 'undefined' || event.action !== "pop-value" || !this.props.req) {
       if(typeof item !== 'undefined') {
-        this.setState({ selectedItem: item });
+        this.setState({ selectedItem: item }, () => this._save());
       } else {
-        this.setState({ selectedItem: [] });
+        this.setState({ selectedItem: [] }, () => this._save());
       }
 
       this.props.updateSelectedItem(item);
