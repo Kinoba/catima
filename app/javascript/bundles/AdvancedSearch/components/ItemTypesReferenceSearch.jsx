@@ -117,19 +117,40 @@ class ItemTypesReferenceSearch extends Component {
     this.setState({ selectCondition: array });
   }
 
-  _getDateTimeFormat() {
+  _getDateTimeFormatOption() {
     var formatOption = this._searchInArray(this.state.inputOptions, 'format');
-    if (formatOption === -1) return false;
+    if (formatOption === false) return false;
     else return formatOption.format;
   }
 
+  _getChoiceSetMultipleOption() {
+    var multipleOption = this._searchInArray(this.state.inputOptions, 'multiple');
+    if (multipleOption === false) return false;
+    else return multipleOption.multiple;
+  }
+
   _searchInArray(array, key) {
-    for (var i = 0; i < array.length; i++) {
-        if (typeof array[i][key] !== 'undefined') {
-            return array[i];
-        }
+    if(array !== null) {
+      for (var i = 0; i < array.length; i++) {
+          if (typeof array[i][key] !== 'undefined') {
+              return array[i];
+          }
+      }
     }
-    return -1;
+    return false;
+  }
+
+  _getMultipleChoiceSetOptions(){
+    var optionsList = [];
+    optionsList = this.state.inputData.map(option =>
+      this._getJSONOption(option)
+    );
+
+    return optionsList;
+  }
+
+  _getJSONOption(option) {
+    return {value: option.key, label: option.value};
   }
 
   // TODO - adapt this portion of code when API call has been created
@@ -143,7 +164,7 @@ class ItemTypesReferenceSearch extends Component {
                 itemType={this.props.itemType}
                 inputName={this.props.inputName}
                 isRange={true}
-                format={this._getDateTimeFormat()}
+                format={this._getDateTimeFormatOption()}
                 locale={this.props.locale}
                 onChange={this.selectItem}
               />
@@ -153,7 +174,7 @@ class ItemTypesReferenceSearch extends Component {
       return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} type="number" className="form-control"/>
     } else if (this.state.inputType === 'Field::URL') {
       return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} type="url" className="form-control"/>
-    } else if (this.state.inputType === 'Field::ChoiceSet' || this.state.inputType === 'Field::Boolean') {
+    } else if ((this.state.inputType === 'Field::ChoiceSet' && !this._getChoiceSetMultipleOption()) || this.state.inputType === 'Field::Boolean') {
       return (
         <select id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} className="form-control">
           { this.state.inputData.map((item) => {
@@ -161,6 +182,10 @@ class ItemTypesReferenceSearch extends Component {
             })
           }
         </select>
+      );
+    } else if (this.state.inputType === 'Field::ChoiceSet' && this._getChoiceSetMultipleOption()) {
+      return (
+        <ReactSelect id={this.referenceSearchId} name={this.props.inputName} isMulti options={this._getMultipleChoiceSetOptions()} className="basic-multi-select" onChange={this.selectItem} classNamePrefix="select" placeholder={this.props.searchPlaceholder}/>
       );
     } else {
       return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} type="text" className="form-control"/>
