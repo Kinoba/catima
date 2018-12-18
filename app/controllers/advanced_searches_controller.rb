@@ -58,7 +58,7 @@ class AdvancedSearchesController < ApplicationController
 
   def find_advanced_search_or_redirect
     model = scope.where(:uuid => params[:uuid]).first
-    redirect_to(:action => :new) if model.nil?
+    return redirect_to(:action => :new) if model.nil?
 
     p "----------"
     p model

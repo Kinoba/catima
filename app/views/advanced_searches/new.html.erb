@@ -1,7 +1,7 @@
 <% provide(:title, t(".title")) %>
 
-<% if @advance_search_confs.many? %>
-  <h2>Recherches préconfigurées</h2>
+<h2>Recherches préconfigurées</h2>
+<% if @advance_search_confs.any? %>
   <ul class="nav nav-tabs">
     <% @advance_search_confs.each do |search_config| %>
       <%= content_tag(
@@ -12,6 +12,8 @@
       <% end %>
     <% end %>
   </ul>
+<% else %>
+  <p>Pas de recherche préconfigurées</p>
 <% end %>
 
 <% if @advanced_search_config.present? %>
@@ -22,34 +24,38 @@
 <%= bootstrap_form_for(@advanced_search) do |f| %>
   <%= hidden_field_tag(:item_type, params[:item_type].presence || @advanced_search_config&.item_type&.slug) %>
 
+  <% if @advanced_search_config.blank? %>
+    <h2>Recherche sur un type de fiche</h2>
+
+    <div class="row">
+      <div class="col-md-2 col-sm-12">
+        <%= t('item_type') %>
+      </div>
+      <div class="col-md-4 col-sm-12">
+        <%= f.select("item_type",
+              render_item_types_as_options(@item_types, params[:item_type]),
+              {:hide_label => true, :include_blank => true}
+        ) %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if params[:item_type].present? || @advanced_search_config.present? %>
+    <div class="row">
+      <div class="col-md-12">
+        <h3>Recherche avancée sur <%= @advanced_search_config.present? ? @advanced_search_config.item_type.name : @advanced_search.item_type.name %></h3>
+      </div>
+      <% if @fields.count.zero? %>
+        <div class="col-md-12">
+          Aucun champ de recherche configuré
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
   <table class="table">
     <tbody>
-      <%# if @item_types.many? && @advanced_search_config.blank? %>
-      <% if @advanced_search_config.blank? %>
-        <tr>
-          <th>
-            <h2>Recherche sur un type de fiche</h2>
-          </th>
-        </tr>
-        <tr>
-          <th>
-            <%= t('item_type') %>
-          </th>
-          <td>
-            <%= f.select("item_type",
-                  render_item_types_as_options(@item_types, params[:item_type]),
-                  {:hide_label => true, :include_blank => true}
-            ) %>
-          </td>
-        </tr>
-      <% end %>
-
       <% if params[:item_type].present? || @advanced_search_config.present? %>
-        <tr>
-          <th>
-            <h3>Recherche avancée sur <%= @advanced_search.item_type.name %></h3>
-          </th>
-        </tr>
         <% @fields.each do |field| %>
           <%= render_advanced_search_field(f, field) do |content| %>
             <tr>
@@ -57,9 +63,6 @@
               <td><%= content %></td>
             </tr>
           <% end %>
-        <% end %>
-        <% if @fields.count.zero? %>
-          <th>Aucun champ de recherche configuré</th>
         <% end %>
       <% end %>
     </tbody>
