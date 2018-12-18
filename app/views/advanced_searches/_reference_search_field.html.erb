@@ -10,6 +10,7 @@
         field: field.slug,
         locale: I18n.locale,
         inputName: "advanced_search[criteria][#{field.uuid}][exact]",
+        hiddenInputFilterType: "hiddenInputName",
         srcRef: "advanced_search_criteria_#{field.uuid}_exact",
         itemTypeSearch: false,
         selectCondition: field.search_conditions_as_hash
