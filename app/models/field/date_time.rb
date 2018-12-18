@@ -133,9 +133,19 @@ class Field::DateTime < ::Field
     NULLIF(data->'#{uuid}'->>'s', '')::int ASC"
   end
 
+  def search_conditions_as_hash
+    [
+      { :value => I18n.t("advanced_searches.date_time_search_field.exact"), :key => "exact" },
+      { :value => I18n.t("advanced_searches.date_time_search_field.after"), :key => "after" },
+      { :value => I18n.t("advanced_searches.date_time_search_field.before"), :key => "before" },
+      { :value => I18n.t("advanced_searches.date_time_search_field.between"), :key => "between" },
+      { :value => I18n.t("advanced_searches.date_time_search_field.outside"), :key => "outside" }
+    ]
+  end
+
   def search_options_as_hash
     [
-      { :format => format },
+      { :format => format }
     ]
   end
 

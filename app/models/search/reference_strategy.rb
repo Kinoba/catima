@@ -9,7 +9,7 @@ class Search::ReferenceStrategy < Search::BaseStrategy
 
   def search(scope, criteria)
     negate = criteria[:field_condition] == "exclude"
-    scope = id_search(scope, criteria[:exact], negate)
+    scope = search_data_matching_one_or_more(scope, criteria[:exact], negate)
 
     scope
   end
@@ -29,16 +29,5 @@ class Search::ReferenceStrategy < Search::BaseStrategy
       item = Item.find_by(id: key)
       array << item.default_display_name(locale) if item
     end
-  end
-
-  def id_search(scope, id, negate)
-    return scope if id.blank?
-
-    sql_operator = "#{'NOT' if negate} IN"
-    scope.where("#{data_field_expr} #{sql_operator} (?)", id.strip.to_s)
-  end
-
-  def data_field_expr
-    "items.id"
   end
 end

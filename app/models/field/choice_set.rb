@@ -124,7 +124,7 @@ class Field::ChoiceSet < ::Field
     choices_as_options = []
 
     choices.each do |choice|
-      choices_as_options << { :value => choice.short_name, :key => choice.uuid }
+      choices_as_options << { :value => choice.short_name, :key => choice.id }
     end
 
     choices_as_options

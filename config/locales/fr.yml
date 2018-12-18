@@ -53,8 +53,11 @@ fr:
     choice_set_search_field:
       any: "est l'un de"
     date_time_search_field:
+      exact: date exact
       after: "après"
       before: "avant"
+      between: entre les dates
+      outside: en dehors des dates
     new:
       tab: "Recherche %{title}"
       title: "Recherche avancée"

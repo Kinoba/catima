@@ -1,5 +1,5 @@
 class Search::DateTimeStrategy < Search::BaseStrategy
-  permit_criteria :before, :after
+  permit_criteria :before, :after, :filter_condition
 
   def keywords_for_index(item)
     date_for_keywords(item)

@@ -29,9 +29,7 @@ module AdvancedSearchesHelper
     partial_rendered = ""
     content = form.fields_for(:criteria) do |f|
       f.fields_for(field.uuid) do |f|
-        p "----------------------"
         partial_rendered = render(partial, :f => f, :field => field)
-        p partial_rendered
       end
     end
     result = capture(content, &block)

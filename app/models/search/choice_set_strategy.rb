@@ -1,6 +1,6 @@
 class Search::ChoiceSetStrategy < Search::BaseStrategy
   include Search::MultivaluedSearch
-  permit_criteria :any => []
+  permit_criteria :field_condition, :any => []
 
   def keywords_for_index(item)
     choices = field.selected_choices(item)
@@ -15,7 +15,8 @@ class Search::ChoiceSetStrategy < Search::BaseStrategy
   end
 
   def search(scope, criteria)
-    search_data_matching_one_or_more(scope, criteria[:any])
+    negate = criteria[:field_condition] == "exclude"
+    search_data_matching_one_or_more(scope, criteria[:any], negate)
   end
 
   private
