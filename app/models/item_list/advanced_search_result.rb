@@ -36,23 +36,14 @@ class ItemList::AdvancedSearchResult < ItemList
       p "°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°"
       p strategy
       p criteria
-      items[criteria[:field_condition]] << strategy.search(original_scope, criteria) if %w[or exclude and].include?(criteria[:field_condition])
-
-      case criteria[:field_condition]
-      when 'or'
-        # items = strategy.search(original_scope, criteria)
-        # strategy_search = strategy.search(original_scope, criteria)
-        # p "ORRRR"
-        # p strategy_search.to_sql
-        # items << strategy_search
-      when 'exclude'
-        items << strategy.search(original_scope, criteria)
-      when 'and'
-        # items << strategy.search(original_scope, criteria)
+      if %w[or exclude and].include?(criteria[:field_condition])
+        items[criteria[:field_condition]] << strategy.search(original_scope, criteria)
       end
     end
 
-    # WORKING FOR AND
+    # AND relations are grouped together as well as OR relations because we don't know
+    # the order of the field condition.
+    # e.g.: (a OR b) AND c is not the same as (a AND b) OR c
     relations = items["and"].first
     items["and"].drop(1).each do |relation|
       relations = relations.merge(relation)

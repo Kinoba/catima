@@ -63,6 +63,11 @@ fr:
       title: "Recherche avancée"
       start_over: "Nouvelle recherche"
       submit: "Chercher"
+      advanced_search_configurations: Recherches préconfigurées
+      item_type_selection: Recherche sur un type de fiche
+      item_type_search: Recherche avancée sur le type de fiche %{item_type}
+      no_advanced_search_configuration: Aucune recherche préconfigurée
+      no_field_in_advance_search_configuration: Aucun champ de recherche configuré
     show:
       title:
         zero: "Votre recherche avancée n'a pas donné de résultat"
@@ -75,16 +80,12 @@ fr:
       contains_words: "contient les mots"
       excludes_words: "ne contient pas les mots"
       has_exact_phrase: "possède l'expression exacte"
-    reference_search_field:
-      contains_words: "contient les mots"
-      excludes_words: "ne contient pas les mots"
-      has_exact_phrase: "possède l'expression exacte"
     int_search_field:
       contains_number: "possède chiffre/nombre exact"
-      less_than: Est inférieur à
-      less_than_or_equal_to: Est inférieur ou égal à
-      greater_than: Est supérieur à
-      greater_than_or_equal_to: Est supérieur ou égal à
+      less_than: est inférieur à
+      less_than_or_equal_to: est inférieur ou égal à
+      greater_than: est supérieur à
+      greater_than_or_equal_to: est supérieur ou égal à
     decimal_search_field:
       contains_number: "possède chiffre/nombre exact"
     email_search_field:
@@ -477,7 +478,7 @@ fr:
         new_advanced_search_configuration: Nouvelle configuration de recherche
         no_advanced_search_configurations_for_catalog_warning: Il n'y a pas de configuration de recherche avancée pour
           ce catalogue.
-        nothing: Aucun champs
+        nothing: Aucun champs défini
       new:
         title: Nouvelle configuration de recherche
         next: Suivant

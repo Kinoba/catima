@@ -1,6 +1,6 @@
 <% provide(:title, t(".title")) %>
 
-<h2>Recherches préconfigurées</h2>
+<h2><%= t("advanced_searches.new.advanced_search_configurations") %></h2>
 <% if @advance_search_confs.any? %>
   <ul class="nav nav-tabs">
     <% @advance_search_confs.each do |search_config| %>
@@ -13,7 +13,7 @@
     <% end %>
   </ul>
 <% else %>
-  <p>Pas de recherche préconfigurées</p>
+  <p><%= t("advanced_searches.new.no_advanced_search_configuration") %></p>
 <% end %>
 
 <% if @advanced_search_config.present? %>
@@ -25,7 +25,7 @@
   <%= hidden_field_tag(:item_type, params[:item_type].presence || @advanced_search_config&.item_type&.slug) %>
 
   <% if @advanced_search_config.blank? %>
-    <h2>Recherche sur un type de fiche</h2>
+    <h2><%= t("advanced_searches.new.item_type_selection") %></h2>
 
     <div class="row">
       <div class="col-md-2 col-sm-12">
@@ -43,11 +43,11 @@
   <% if params[:item_type].present? || @advanced_search_config.present? %>
     <div class="row">
       <div class="col-md-12">
-        <h3>Recherche avancée sur <%= @advanced_search_config.present? ? @advanced_search_config.item_type.name : @advanced_search.item_type.name %></h3>
+        <h3><%= t("advanced_searches.new.item_type_search",  item_type: @advanced_search_config.present? ? @advanced_search_config.item_type.name : @advanced_search.item_type.name) %></h3>
       </div>
       <% if @fields.count.zero? %>
         <div class="col-md-12">
-          Aucun champ de recherche configuré
+          <%= t("advanced_searches.new.no_field_in_advance_search_configuration") %>
         </div>
       <% end %>
     </div>
