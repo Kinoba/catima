@@ -134,6 +134,14 @@ button[data-active=true]:focus {
   }
 }
 
+.datetime-search-container {
+  .condition-input-container {
+    .col-md-12 {
+      padding-right: 0;
+    }
+  }
+}
+
 .dateTimeInput {
   .hidden-datepicker {
     width: 0;
