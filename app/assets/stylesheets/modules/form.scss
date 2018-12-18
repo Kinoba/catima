@@ -120,6 +120,20 @@ button[data-active=true]:focus {
   }
 }
 
+.reference-search-container {
+  .reference-input-container {
+    padding: 0;
+  }
+
+  .condition-input-container {
+    padding-right: 0;
+
+    .col-md-12 {
+      padding-right: 0;
+    }
+  }
+}
+
 .dateTimeInput {
   .hidden-datepicker {
     width: 0;

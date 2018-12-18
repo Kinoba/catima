@@ -15,7 +15,6 @@ class DateTimeSearch extends Component {
     this.dateTimeSearchRef = `${this.props.srcRef}-datetime`;
     this.dateTimeSearchRef2 = `${this.props.srcRef}-datetime2`;
     this.dateTimeCollapseId = `${this.props.srcId}-collapse`;
-    this.openInterval = this._openInterval.bind(this);
   }
 
   componentDidMount(){
@@ -57,7 +56,6 @@ render() {
   return (
     <div>
       <div>
-
           <div className="row">
             <div className="col-md-12"><label>Start date:</label></div>
           </div>
