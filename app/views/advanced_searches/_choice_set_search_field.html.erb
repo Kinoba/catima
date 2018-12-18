@@ -1,12 +1,14 @@
-<div class="col-md-2">
-  <%= render_and_or_exclude_select(f, field) %>
-</div>
-<div class="col-md-10">
-  <%= f.collection_select(
-        :any,
-        field.choices,
-        :id,
-        :short_name,
-        { :label => t(".any") },
-        :multiple => true) %>
+<div class="row">
+  <div class="col-md-2">
+    <%= render_and_or_exclude_select(f, field) %>
+  </div>
+  <div class="col-md-10">
+    <%= f.collection_select(
+          :any,
+          field.choices,
+          :id,
+          :short_name,
+          { :label => t(".any") },
+          :multiple => true) %>
+  </div>
 </div>
