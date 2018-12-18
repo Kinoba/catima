@@ -130,6 +130,12 @@ class Field::ChoiceSet < ::Field
     choices_as_options
   end
 
+  def search_options_as_hash
+    [
+      { :multiple => multiple? }
+    ]
+  end
+
   private
 
   # TODO: validate choice belongs to specified ChoiceSet
