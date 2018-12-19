@@ -121,6 +121,12 @@ button[data-active=true]:focus {
 }
 
 .reference-search-container {
+  a {
+     &:hover {
+       cursor: pointer;
+     }
+  }
+
   .reference-input-container {
     padding: 0;
   }

@@ -187,6 +187,26 @@ class ReferenceSearch extends Component {
     return optionsList;
   }
 
+  _addReferenceSearchComponent() {
+    let config = {
+      retry: 1,
+      retryDelay: 1000
+    };
+
+    axios.get(`/api/v2/${this.props.catalog}/${this.props.locale}/${this.props.itemType}/add-reference-search-component`, config)
+    .then(res => {});
+  }
+
+  _deleteReferenceSearchComponent() {
+    let config = {
+      retry: 1,
+      retryDelay: 1000
+    };
+
+    axios.get(`/api/v2/${this.props.catalog}/${this.props.locale}/${this.props.itemType}/delete-reference-search-component`, config)
+    .then(res => {});
+  }
+
   renderSearch(){
     if (this.state.isLoading) return null;
 <<<<<<< HEAD
