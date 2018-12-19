@@ -5,14 +5,15 @@
   <div class="col-md-10">
       <%= react_component('DateTimeSearch',
         props: {
-          catalog: 'library',
+          catalog: field.catalog.slug,
           itemType: 'book',
-          locale: 'en',
           label: t(".after"),
-          srcId: 'current-element-id',
-          srcRef: 'current-element-ref',
-          inputName: 'date-time-search',
+          locale: I18n.locale,
+          srcId: "advanced_search_criteria_#{field.uuid}_id",
+          srcRef: "advanced_search_criteria_#{field.uuid}_exact",
+          inputName: "advanced_search[criteria][#{field.uuid}][exact]",
           format: field.format,
+          selectConditionName: "select_condition_#{field.uuid}_name",
           selectCondition: field.search_conditions_as_hash
         },
         prerender: false) %>

@@ -261,7 +261,7 @@ class ReferenceSearch extends Component {
 
   renderSelectConditionElement(){
     return (
-      <select className="form-control filter-condition" disabled={this._isConditionDisabled()}>
+      <select className="form-control filter-condition" name={this.props.selectConditionName} disabled={this._isConditionDisabled()}>
           { this.state.selectCondition.map((item) => {
               return <option key={item.key} value={item.key}>{item.value}</option>
             })

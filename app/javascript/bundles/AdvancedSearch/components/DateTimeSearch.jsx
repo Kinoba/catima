@@ -76,7 +76,7 @@ class DateTimeSearch extends Component {
 
   renderSelectConditionElement(){
     return (
-      <select className="form-control filter-condition" value={this.state.selectedCondition} onChange={this.selectCondition}>
+      <select className="form-control filter-condition" name={this.props.selectConditionName} value={this.state.selectedCondition} onChange={this.selectCondition}>
       { this.props.selectCondition.map((item) => {
         return <option key={item.key} value={item.key}>{item.value}</option>
       })}
