@@ -3,12 +3,21 @@
     <%= render_and_or_exclude_select(f, field) %>
   </div>
   <div class="col-md-10">
-    <%= f.collection_select(
-          :any,
-          field.choices,
-          :id,
-          :short_name,
-          { :label => t(".any") },
-          :multiple => true) %>
+      <%= react_component('ChoiceSetSearch',
+        props: {
+          catalog: field.catalog.slug,
+          itemType: 'book',
+          label: t(".any"),
+          items: field.choices,
+          locale: I18n.locale,
+          searchPlaceholder: 'Search...',
+          srcId: "advanced_search_criteria_#{field.uuid}_id",
+          srcRef: "advanced_search_criteria_#{field.uuid}_exact",
+          inputName: "advanced_search[criteria][#{field.uuid}][exact]",
+          selectConditionName: "select_condition_#{field.uuid}_name",
+          selectCondition: field.search_conditions_as_hash,
+          multiple: true
+        },
+        prerender: false) %>
   </div>
 </div>

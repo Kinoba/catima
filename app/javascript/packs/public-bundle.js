@@ -5,6 +5,7 @@ import SelectedReferenceSearch from '../bundles/AdvancedSearch/components/Select
 import ItemTypesReferenceSearch from '../bundles/AdvancedSearch/components/ItemTypesReferenceSearch';
 import DateTimeSearch from '../bundles/AdvancedSearch/components/DateTimeSearch';
 import DateTimeInput from '../bundles/DateTimeInput/components/DateTimeInput';
+import ChoiceSetSearch from '../bundles/AdvancedSearch/components/ChoiceSetSearch';
 
 import ImageViewer from '../bundles/ImageViewer/components/ImageViewer';
 import GeoViewer from '../bundles/GeoViewer/components/GeoViewer';
@@ -12,6 +13,7 @@ import GeoViewer from '../bundles/GeoViewer/components/GeoViewer';
 ReactOnRails.register({
   ReferenceSearch, SelectedReferenceSearch, ItemTypesReferenceSearch,
   DateTimeSearch, DateTimeInput,
+  ChoiceSetSearch,
   ImageViewer,
   GeoViewer
 });
