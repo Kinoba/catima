@@ -19,7 +19,8 @@ class DateTimeInput extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      disabled: false
+      disabled: false,
+      selectedDate: ''
     };
     const date = this.getData();
     const granularity = this.getFieldOptions().format;
@@ -38,6 +39,8 @@ class DateTimeInput extends React.Component {
     if(document.querySelector(this.props.input) !== null) {
       this.isRequired = (document.querySelector(this.props.input).getAttribute('data-field-required') == 'true');
     }
+
+    this.selectDate = this._selectDate.bind(this);
   }
 
   componentDidMount() {
@@ -76,7 +79,18 @@ class DateTimeInput extends React.Component {
   }
 
   _onDatepickerChangerDate(data) {
+    this.setState({selectedDate: data.date});
     this.updateData({ Y: data.date.year(), M: (data.date.month() + 1), D: data.date.date(), h: data.date.hour(), m: data.date.minute(), s: data.date.second()});
+  }
+
+  _selectDate(event){
+    if(typeof event === 'undefined' || event.action !== "pop-value" || !this.props.req) {
+      if(typeof event !== 'undefined') {
+        this.setState({ selectedDate: event.target.value });
+      } else {
+        this.setState({ selectedDate: '' });
+      }
+    }
   }
 
   _handleChangeDay(e){
@@ -188,7 +202,7 @@ class DateTimeInput extends React.Component {
       <div>
         <div className="dateTimeInput rails-bootstrap-forms-datetime-select">
           <div className="row hidden-datepicker">
-            <input type="text" ref="hiddenInput"/>
+            <input type="text" ref="hiddenInput" value={this.state.selectedDate} name={this.props.inputName} onChange={this.selectDate}/>
           </div>
           {fmt.includes('D') ? (
             <input  style={errorStl} type="number" min="0" max="31" className="input-2 form-control" value={this.state.D} onChange={this.handleChangeDay} disabled={this.state.disabled} />

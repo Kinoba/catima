@@ -11,7 +11,8 @@
           locale: I18n.locale,
           srcId: "advanced_search_criteria_#{field.uuid}_id",
           srcRef: "advanced_search_criteria_#{field.uuid}_exact",
-          inputName: "advanced_search[criteria][#{field.uuid}][exact]",
+          startDateInputName: "advanced_search[criteria][#{field.uuid}][start][exact]",
+          endDateInputName: "advanced_search[criteria][#{field.uuid}][end][exact]",
           format: field.format,
           selectConditionName: "select_condition_#{field.uuid}_name",
           selectCondition: field.search_conditions_as_hash

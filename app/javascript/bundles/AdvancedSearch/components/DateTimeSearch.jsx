@@ -81,7 +81,7 @@ class DateTimeSearch extends Component {
     return (
       <div className="row">
         <div className="col-md-7 d-inline-block">
-          <DateTimeInput input="input1" ref={this.dateTimeSearchRef} datepicker={true} locale={this.props.locale}/>
+          <DateTimeInput input="input1" inputName={this.props.startDateInputName} ref={this.dateTimeSearchRef} datepicker={true} locale={this.props.locale}/>
           <a href={'#' + this.dateTimeCollapseId} data-toggle="collapse" aria-expanded="false" aria-controls={this.dateTimeCollapseId}><i className="fa fa-chevron-down"></i></a>
         </div>
         <div className="col-md-5 condition-input-container">
@@ -95,7 +95,7 @@ class DateTimeSearch extends Component {
     return (
       <div className="row">
         <div className="col-md-12 d-inline-block">
-          <DateTimeInput input="input1" ref={this.dateTimeSearchRef} inputRef={this.dateTimeSearchRef} datepicker={true} locale={this.props.locale}/>
+          <DateTimeInput input="input1" inputName={this.props.startDateInputName} ref={this.dateTimeSearchRef} inputRef={this.dateTimeSearchRef} datepicker={true} locale={this.props.locale}/>
           <a href={'#' + this.dateTimeCollapseId} data-toggle="collapse" aria-expanded="false" aria-controls={this.dateTimeCollapseId}><i className="fa fa-chevron-down"></i></a>
         </div>
       </div>
@@ -120,7 +120,7 @@ class DateTimeSearch extends Component {
               <div className="col-md-12"><label>End date:</label></div>
             </div>
             <div className="row">
-              <div className="col-md-12"><DateTimeInput input="input2" disabled={this.state.disabled} ref={this.dateTimeSearchRef2} datepicker={true} locale={this.props.locale}/></div>
+              <div className="col-md-12"><DateTimeInput input="input2" inputName={this.props.endDateInputName} disabled={this.state.disabled} ref={this.dateTimeSearchRef2} datepicker={true} locale={this.props.locale}/></div>
             </div>
           </div>
       </div>
