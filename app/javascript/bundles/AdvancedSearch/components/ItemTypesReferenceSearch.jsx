@@ -34,8 +34,9 @@ class ItemTypesReferenceSearch extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+
   if (nextProps.selectedFilter !== this.state.selectedFilter) {
-    this._getDataFromServer();
+    this._getDataFromServer(nextProps.selectedFilter);
     this.setState({ selectedFilter: nextProps.selectedFilter });
   }
 }
@@ -68,20 +69,31 @@ class ItemTypesReferenceSearch extends Component {
     }
   }
 
-  _getDataFromServer() {
+  _getDataFromServer(selectedFilter) {
     let config = {
       retry: 1,
       retryDelay: 1000
     };
 
-    if (typeof this.props.field !== 'undefined') {
-      this.props.selectedFilter.value = this.props.field;
+
+
+    if (typeof selectedFilter !== 'undefined') {
+      this.props.selectedFilter.value = selectedFilter.value;
+      this.props.selectedFilter.label = selectedFilter.label;
+    } else {
+      if (typeof this.props.field !== 'undefined') {
+        this.props.selectedFilter.value = this.props.field;
+      }
     }
+
     axios.get(`/api/v2/${this.props.catalog}/${this.props.locale}/${this.props.itemType}/${this.props.selectedFilter.value}`, config)
     .then(res => {
+
+      if(res.data.inputData === null) this.setState({ inputData: [] });
+      else this.setState({ inputData: res.data.inputData });
+
       this._updateSelectCondition(res.data.selectCondition);
       this.setState({ inputType: res.data.inputType });
-      this.setState({ inputData: res.data.inputData });
       this.setState({ inputOptions: res.data.inputOptions });
       this.setState({ isLoading: false });
     });
@@ -153,7 +165,6 @@ class ItemTypesReferenceSearch extends Component {
     return {value: option.key, label: option.value};
   }
 
-  // TODO - adapt this portion of code when API call has been created
   renderInput(){
     if (this.state.isLoading) return null;
     if (this.state.inputType === 'Field::DateTime') {
