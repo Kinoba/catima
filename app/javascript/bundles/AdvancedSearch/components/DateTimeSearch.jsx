@@ -30,6 +30,12 @@ class DateTimeSearch extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(typeof nextProps.disableInputByCondition !== 'undefined') {
+        this._updateDisableState(nextProps.disableInputByCondition);
+    }
+  }
+
   _linkRangeDatepickers(ref1, ref2) {
     $(this.refs[ref1].refs.hiddenInput).datetimepicker().on("dp.change", (e) => {
       $(this.refs[ref2].refs.hiddenInput).data("DateTimePicker").minDate(e.date);

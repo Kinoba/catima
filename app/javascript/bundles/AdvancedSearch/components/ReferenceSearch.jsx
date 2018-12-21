@@ -18,12 +18,14 @@ class ReferenceSearch extends Component {
       selectedFilter: null,
       itemTypeSearch: this.props.itemTypeSearch,
       selectCondition: this.props.selectCondition,
+      selectedCondition: '',
       selectedItem: [],
       searchPlaceholder: '',
       filterPlaceholder: ''
     };
 
     this.selectFilter = this._selectFilter.bind(this);
+    this.selectCondition = this._selectCondition.bind(this);
     this.updateSelectedItem = this._updateSelectedItem.bind(this);
 =======
       searchPlaceholder: '',
@@ -49,6 +51,10 @@ class ReferenceSearch extends Component {
       retry: 1,
       retryDelay: 1000
     };
+
+    if(typeof this.props.selectCondition !== 'undefined' && this.props.selectCondition.length !== 0) {
+        this.setState({selectedCondition: this.props.selectCondition[0].key});
+    }
 
     axios.get(`/api/v2/${this.props.catalog}/${this.props.locale}/${this.props.itemType}`, config)
     .then(res => {
@@ -102,6 +108,10 @@ class ReferenceSearch extends Component {
   }
 
   _updateSelectCondition(newVal) {
+    if(this.state.selectedCondition === '' && newVal.length !== this.state.selectCondition.length) {
+      this.setState({selectedCondition: newVal[0].key});
+    }
+
     this.setState({ selectCondition: newVal });
   }
 
@@ -114,6 +124,16 @@ class ReferenceSearch extends Component {
     }
     else {
       return false;
+    }
+  }
+
+  _selectCondition(event){
+    if(typeof event === 'undefined' || event.action !== "pop-value" || !this.props.req) {
+      if(typeof event !== 'undefined') {
+        this.setState({ selectedCondition: event.target.value });
+      } else {
+        this.setState({ selectedCondition: '' });
+      }
     }
   }
 
@@ -218,6 +238,7 @@ class ReferenceSearch extends Component {
                 items={this.state.items}
                 fields={this.state.fields}
                 selectedFilter={this.state.selectedFilter}
+                selectedCondition={this.state.selectedCondition}
                 itemType={this.props.itemType}
 =======
     if (this.props.itemTypeSearch)
@@ -281,7 +302,7 @@ class ReferenceSearch extends Component {
 
   renderSelectConditionElement(){
     return (
-      <select className="form-control filter-condition" name={this.props.selectConditionName} disabled={this._isConditionDisabled()}>
+      <select className="form-control filter-condition" name={this.props.selectConditionName} value={this.state.selectedCondition} onChange={this.selectCondition} disabled={this._isConditionDisabled()}>
           { this.state.selectCondition.map((item) => {
               return <option key={item.key} value={item.key}>{item.value}</option>
             })

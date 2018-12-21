@@ -34,12 +34,11 @@ class ItemTypesReferenceSearch extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-
-  if (nextProps.selectedFilter !== this.state.selectedFilter) {
-    this._getDataFromServer(nextProps.selectedFilter);
-    this.setState({ selectedFilter: nextProps.selectedFilter });
+    if (nextProps.selectedFilter !== this.state.selectedFilter) {
+      this._getDataFromServer(nextProps.selectedFilter);
+      this.setState({ selectedFilter: nextProps.selectedFilter });
+    }
   }
-}
 
   componentDidMount(){
     this._getDataFromServer();
@@ -171,6 +170,7 @@ class ItemTypesReferenceSearch extends Component {
       return <DateTimeSearch
                 id={this.referenceSearchId}
                 selectCondition={[]}
+                disableInputByCondition={this.props.selectedCondition}
                 catalog={this.props.catalog}
                 itemType={this.props.itemType}
                 inputName={this.props.inputName}
