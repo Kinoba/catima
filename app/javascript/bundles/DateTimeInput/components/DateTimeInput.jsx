@@ -60,19 +60,17 @@ class DateTimeInput extends React.Component {
         this.styleMarginRight = ' margin-right';
       }
 
-      dateInputElements.forEach((element, index) => {
-        if(index===0) {
-          $(element).datetimepicker({
-            format: this.getCurrentFormat(),
-            locale: this.props.locale
-          });
+      $(this.refs.hiddenInput).datetimepicker({
+        format: this.getCurrentFormat(),
+        locale: this.props.locale
+      });
 
-          $(element).datetimepicker().on('dp.change', (event) => this._onDatepickerChangerDate(event));
-        } else {
-          element.addEventListener('focus', () => {
-            dateInputElements[0].focus();
-          });
-        }
+      $(this.refs.hiddenInput).datetimepicker().on('dp.change', (event) => this._onDatepickerChangerDate(event));
+
+      dateInputElements.forEach((element, index) => {
+        element.addEventListener('focus', () => {
+          $(this.refs.hiddenInput).focus();
+        });
       });
     }
   }
@@ -188,7 +186,10 @@ class DateTimeInput extends React.Component {
     let fmt = this.getFieldOptions().format;
     return (
       <div>
-        <div className="dateTimeInput rails-bootstrap-forms-datetime-select" ref={this.props.inputRef}>
+        <div className="dateTimeInput rails-bootstrap-forms-datetime-select">
+          <div className="row hidden-datepicker">
+            <input type="text" ref="hiddenInput"/>
+          </div>
           {fmt.includes('D') ? (
             <input  style={errorStl} type="number" min="0" max="31" className="input-2 form-control" value={this.state.D} onChange={this.handleChangeDay} disabled={this.state.disabled} />
           ) : null

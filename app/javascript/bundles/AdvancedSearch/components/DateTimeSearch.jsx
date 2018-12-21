@@ -23,32 +23,19 @@ class DateTimeSearch extends Component {
   }
 
   componentDidMount(){
-
+    this._linkRangeDatepickers(this.dateTimeSearchRef, this.dateTimeSearchRef2);
     if(typeof this.props.selectCondition !== 'undefined' && this.props.selectCondition.length !== 0) {
         this.setState({selectedCondition: this.props.selectCondition[0].key});
         this._updateDisableState(this.props.selectCondition[0].key);
     }
-
-    this._generateDatePicker(this.dateTimeSearchRef, this.props.format);
-    this._generateDatePicker(this.dateTimeSearchRef2, this.props.format);
-    this._linkRangeDatepickers(this.dateTimeSearchRef, this.dateTimeSearchRef2);
-  }
-
-  _generateDatePicker(ref, format) {
-    $(this.refs[ref]).datetimepicker({
-      useCurrent: false,
-      format: this.props.format,
-      locale: this.props.locale
-    });
   }
 
   _linkRangeDatepickers(ref1, ref2) {
-    //TODO - Fix linked datetime pickers
-    $(this.refs[ref1]).datetimepicker().on("dp.change", (e) => {
-      $(this.refs[ref2]).data("DateTimePicker").minDate(e.date);
+    $(this.refs[ref1].refs.hiddenInput).datetimepicker().on("dp.change", (e) => {
+      $(this.refs[ref2].refs.hiddenInput).data("DateTimePicker").minDate(e.date);
     });
-    $(this.refs[ref2]).datetimepicker().on("dp.change", (e) => {
-      $(this.refs[ref1]).data("DateTimePicker").maxDate(e.date);
+    $(this.refs[ref2].refs.hiddenInput).datetimepicker().on("dp.change", (e) => {
+      $(this.refs[ref1].refs.hiddenInput).data("DateTimePicker").maxDate(e.date);
     });
   }
 
@@ -88,7 +75,7 @@ class DateTimeSearch extends Component {
     return (
       <div className="row">
         <div className="col-md-7 d-inline-block">
-          <DateTimeInput input="input1" inputRef={this.dateTimeSearchRef} datepicker={true} locale={this.props.locale}/>
+          <DateTimeInput input="input1" ref={this.dateTimeSearchRef} datepicker={true} locale={this.props.locale}/>
           <a href={'#' + this.dateTimeCollapseId} data-toggle="collapse" aria-expanded="false" aria-controls={this.dateTimeCollapseId}><i className="fa fa-chevron-down"></i></a>
         </div>
         <div className="col-md-5 condition-input-container">
@@ -102,7 +89,7 @@ class DateTimeSearch extends Component {
     return (
       <div className="row">
         <div className="col-md-12 d-inline-block">
-          <DateTimeInput input="input1" inputRef={this.dateTimeSearchRef} datepicker={true} locale={this.props.locale}/>
+          <DateTimeInput input="input1" ref={this.dateTimeSearchRef} inputRef={this.dateTimeSearchRef} datepicker={true} locale={this.props.locale}/>
           <a href={'#' + this.dateTimeCollapseId} data-toggle="collapse" aria-expanded="false" aria-controls={this.dateTimeCollapseId}><i className="fa fa-chevron-down"></i></a>
         </div>
       </div>
@@ -127,7 +114,7 @@ class DateTimeSearch extends Component {
               <div className="col-md-12"><label>End date:</label></div>
             </div>
             <div className="row">
-              <div className="col-md-12"><DateTimeInput input="input2" disabled={this.state.disabled} inputRef={this.dateTimeSearchRef2} datepicker={true} locale={this.props.locale}/></div>
+              <div className="col-md-12"><DateTimeInput input="input2" disabled={this.state.disabled} ref={this.dateTimeSearchRef2} datepicker={true} locale={this.props.locale}/></div>
             </div>
           </div>
       </div>
