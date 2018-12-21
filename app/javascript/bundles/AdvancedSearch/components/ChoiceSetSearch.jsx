@@ -27,15 +27,8 @@ class ChoiceSetSearch extends Component {
   }
 
   _save(){
-    if(this.state.selectedItem !== null && this.state.selectedItem.length !== 0) {
-
-      var idArray = [];
-      this.state.selectedItem.forEach((item) => {
-        idArray.push(item.value);
-      });
-
-      this.setState({ hiddenInputValue: idArray });
-
+    if(this.state.selectedItem !== null) {
+      this.setState({ hiddenInputValue: this.state.selectedItem });
       document.getElementsByName(this.props.inputName)[0].value = this.state.hiddenInputValue;
     }
   }
@@ -91,7 +84,7 @@ class ChoiceSetSearch extends Component {
   renderChoiceSetElement(){
     return (
       <div>
-        <ReactSelect id={this.choiceSetId} name={this.props.inputName} isMulti={this.props.isMulti} options={this._getItemOptions()} className="basic-multi-select" onChange={this.selectItem} classNamePrefix="select" placeholder={this.props.searchPlaceholder}/>
+        <ReactSelect id={this.choiceSetId} name={this.props.inputName} options={this._getItemOptions()} className="basic-multi-select" onChange={this.selectItem} classNamePrefix="select" placeholder={this.props.searchPlaceholder}/>
       </div>
     );
   }
