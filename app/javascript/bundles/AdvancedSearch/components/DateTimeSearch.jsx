@@ -81,39 +81,59 @@ class DateTimeSearch extends Component {
         return <option key={item.key} value={item.key}>{item.value}</option>
       })}
       </select>
-  );
-}
+    );
+  }
 
-render() {
-  return (
-    <div className="datetime-search-container">
-      <div>
-          <div className="row">
-            <div className="col-md-12"><label>Start date:</label></div>
-          </div>
-
-        <div className="row">
-            <div className="col-md-7 d-inline-block">
-              <DateTimeInput input="input1" inputRef={this.dateTimeSearchRef} datepicker={true} locale={this.props.locale}/>
-              <a href={'#' + this.dateTimeCollapseId} data-toggle="collapse" aria-expanded="false" aria-controls={this.dateTimeCollapseId}><i className="fa fa-chevron-down"></i></a>
-            </div>
-            <div className="col-md-5 condition-input-container">
-              <div className="col-md-12">{ this.props.selectCondition.length > 0 && this.renderSelectConditionElement() }</div>
-            </div>
+  renderDateTimeConditionElement(){
+    return (
+      <div className="row">
+        <div className="col-md-7 d-inline-block">
+          <DateTimeInput input="input1" inputRef={this.dateTimeSearchRef} datepicker={true} locale={this.props.locale}/>
+          <a href={'#' + this.dateTimeCollapseId} data-toggle="collapse" aria-expanded="false" aria-controls={this.dateTimeCollapseId}><i className="fa fa-chevron-down"></i></a>
+        </div>
+        <div className="col-md-5 condition-input-container">
+          <div className="col-md-12">{ this.renderSelectConditionElement() }</div>
         </div>
       </div>
+    );
+  }
 
-        <div className="collapse" id={this.dateTimeCollapseId}>
-          <div className="row">
-            <div className="col-md-12"><label>End date:</label></div>
-          </div>
-          <div className="row">
-            <div className="col-md-12"><DateTimeInput input="input2" disabled={this.state.disabled} inputRef={this.dateTimeSearchRef2} datepicker={true} locale={this.props.locale}/></div>
-          </div>
+  renderDateTimeElement(){
+    return (
+      <div className="row">
+        <div className="col-md-12 d-inline-block">
+          <DateTimeInput input="input1" inputRef={this.dateTimeSearchRef} datepicker={true} locale={this.props.locale}/>
+          <a href={'#' + this.dateTimeCollapseId} data-toggle="collapse" aria-expanded="false" aria-controls={this.dateTimeCollapseId}><i className="fa fa-chevron-down"></i></a>
         </div>
-    </div>
-  );
-}
+      </div>
+    );
+  }
+
+
+  render() {
+    return (
+      <div className="datetime-search-container">
+        <div>
+            <div className="row">
+              <div className="col-md-12"><label>Start date:</label></div>
+            </div>
+
+            { this.props.selectCondition.length > 0 && this.renderDateTimeConditionElement() }
+            { !(this.props.selectCondition.length > 0) && this.renderDateTimeElement() }
+        </div>
+
+          <div className="collapse" id={this.dateTimeCollapseId}>
+            <div className="row">
+              <div className="col-md-12"><label>End date:</label></div>
+            </div>
+            <div className="row">
+              <div className="col-md-12"><DateTimeInput input="input2" disabled={this.state.disabled} inputRef={this.dateTimeSearchRef2} datepicker={true} locale={this.props.locale}/></div>
+            </div>
+          </div>
+      </div>
+    );
+  }
+
 }
 
 export default DateTimeSearch;

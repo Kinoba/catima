@@ -33,9 +33,11 @@ class DateTimeInput extends React.Component {
     this.handleChangeHours = this._handleChangeHours.bind(this);
     this.handleChangeMinutes = this._handleChangeMinutes.bind(this);
     this.handleChangeSeconds = this._handleChangeSeconds.bind(this);
+    this.styleMarginRight = '';
 
-    //TODO - uncomment this when input property is dynamically generated in DateTimeSearch.jsx
-    //this.isRequired = (document.querySelector(this.props.input).getAttribute('data-field-required') == 'true')
+    if(document.querySelector(this.props.input) !== null) {
+      this.isRequired = (document.querySelector(this.props.input).getAttribute('data-field-required') == 'true');
+    }
   }
 
   componentDidMount() {
@@ -53,6 +55,10 @@ class DateTimeInput extends React.Component {
     if(typeof this.props.datepicker !== 'undefined' && this.props.datepicker) {
       const node = ReactDOM.findDOMNode(this);
       const dateInputElements = node.querySelectorAll('.form-control');
+
+      if(dateInputElements.length > 3) {
+        this.styleMarginRight = ' margin-right';
+      }
 
       dateInputElements.forEach((element, index) => {
         if(index===0) {
@@ -205,7 +211,7 @@ class DateTimeInput extends React.Component {
             </select>) : null
           }
           {fmt.includes('Y') ? (
-            <input  style={errorStl} className="input-4 margin-right form-control" value={this.state.Y} onChange={this.handleChangeYear} disabled={this.state.disabled} />
+            <input  style={errorStl} className={'input-4 form-control' + this.styleMarginRight} value={this.state.Y} onChange={this.handleChangeYear} disabled={this.state.disabled} />
           ) : null
           }
           {fmt.includes('h') ? (
