@@ -14,7 +14,7 @@
           startDateInputName: "advanced_search[criteria][#{field.uuid}][start][exact]",
           endDateInputName: "advanced_search[criteria][#{field.uuid}][end][exact]",
           format: field.format,
-          selectConditionName: "select_condition_#{field.uuid}_name",
+          selectConditionName: "advanced_search[criteria][#{field.uuid}][condition]",
           selectCondition: field.search_conditions_as_hash
         },
         prerender: false) %>

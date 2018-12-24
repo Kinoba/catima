@@ -260,9 +260,9 @@ class Field < ApplicationRecord
 
   def search_conditions_as_hash
     [
-      { :value => I18n.t("advanced_searches.text_search_field.has_exact_phrase"), :key => "exact"},
-      { :value => I18n.t("advanced_searches.text_search_field.contains_words"), :key => "contains"},
-      { :value => I18n.t("advanced_searches.text_search_field.excludes_words"), :key => "excludes"}
+      { :value => I18n.t("advanced_searches.text_search_field.exact"), :key => "exact"},
+      { :value => I18n.t("advanced_searches.text_search_field.all_words"), :key => "all_words"},
+      { :value => I18n.t("advanced_searches.text_search_field.one_word"), :key => "one_word"}
     ]
   end
 

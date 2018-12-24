@@ -10,10 +10,10 @@
         field: field.slug,
         locale: I18n.locale,
         inputName: "advanced_search[criteria][#{field.uuid}][exact]",
-        referenceFilterName: "reference_filter_#{field.uuid}_name",
+        referenceFilterName: "advanced_search[criteria][#{field.uuid}][filter_field_slug]",
         srcRef: "advanced_search_criteria_#{field.uuid}_exact",
         itemTypeSearch: false,
-        selectConditionName: "select_condition_#{field.uuid}_name",
+        selectConditionName: "advanced_search[criteria][#{field.uuid}][exact]",
         selectCondition: field.search_conditions_as_hash
       },
       prerender: false) %>

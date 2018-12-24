@@ -5,7 +5,7 @@ init = ->
   $('#advanced_search_item_type').on "change", (e) ->
     window.location.replace($(this).find("option:selected").data("url"))
 
-  # Changes the id and the name of the search input field when changing the selected filter
+  # Changes the id and the name of the search input field when changing the selected filter (exact, all_words, contains)
   $(".filter-condition").on "change", (e) ->
     selectedFilter = $(this).val()
     templateField = $(this).parents('.row').find('.template')

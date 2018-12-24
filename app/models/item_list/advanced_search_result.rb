@@ -44,19 +44,22 @@ class ItemList::AdvancedSearchResult < ItemList
     # AND relations are grouped together as well as OR relations because we don't know
     # the order of the field condition.
     # e.g.: (a OR b) AND c is not the same as (a AND b) OR c
-    relations = items["and"].first
+    and_relations = items["and"].first
     items["and"].drop(1).each do |relation|
-      relations = relations.merge(relation)
+      and_relations = and_relations.merge(relation)
     end
 
-    relations = items["or"].first if relations.nil?
-    items["or"].each do |relation|
-      relations = relations.or(relation)
+    or_relations = items["or"].first
+    items["or"].drop(1).each do |relation|
+      or_relations = or_relations.or(relation)
     end
 
     p "FULL QUERY"
-    # p relations.to_sql
-    relations
+    # p and_relations.to_sql
+    # p or_relations.to_sql
+    return and_relations.or(or_relations) unless or_relations.blank?
+
+    and_relations
   end
 
   def field_criteria(field)
