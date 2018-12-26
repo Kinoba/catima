@@ -79,8 +79,13 @@ class DateTimeInput extends React.Component {
   }
 
   _onDatepickerChangerDate(data) {
-    this.setState({selectedDate: data.date});
-    this.updateData({ Y: data.date.year(), M: (data.date.month() + 1), D: data.date.date(), h: data.date.hour(), m: data.date.minute(), s: data.date.second()});
+    if(data.date !== false) {
+      this.setState({selectedDate: data.date});
+      this.updateData({ Y: data.date.year(), M: (data.date.month() + 1), D: data.date.date(), h: data.date.hour(), m: data.date.minute(), s: data.date.second()});
+    } else {
+      this.setState({selectedDate: ''});
+      this.updateData({ Y: '', M: '', D: '', h: '', m: '', s: ''});
+    }
   }
 
   _selectDate(event){

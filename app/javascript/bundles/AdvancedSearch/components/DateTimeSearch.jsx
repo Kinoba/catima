@@ -23,7 +23,6 @@ class DateTimeSearch extends Component {
   }
 
   componentDidMount(){
-    this._linkRangeDatepickers(this.dateTimeSearchRef, this.dateTimeSearchRef2);
     if(typeof this.props.selectCondition !== 'undefined' && this.props.selectCondition.length !== 0) {
         this.setState({selectedCondition: this.props.selectCondition[0].key});
         this._updateDisableState(this.props.selectCondition[0].key);
@@ -36,21 +35,27 @@ class DateTimeSearch extends Component {
     }
   }
 
-  _linkRangeDatepickers(ref1, ref2) {
-    $(this.refs[ref1].refs.hiddenInput).datetimepicker().on("dp.change", (e) => {
-      $(this.refs[ref2].refs.hiddenInput).data("DateTimePicker").minDate(e.date);
-    });
-    $(this.refs[ref2].refs.hiddenInput).datetimepicker().on("dp.change", (e) => {
-      $(this.refs[ref1].refs.hiddenInput).data("DateTimePicker").maxDate(e.date);
-    });
+  _linkRangeDatepickers(ref1, ref2, disabled) {
+    if(!disabled) {
+      $(this.refs[ref1].refs.hiddenInput).datetimepicker().on("dp.change", (e) => {
+        $(this.refs[ref2].refs.hiddenInput).data("DateTimePicker").minDate(e.date);
+      });
+      $(this.refs[ref2].refs.hiddenInput).datetimepicker().on("dp.change", (e) => {
+        $(this.refs[ref1].refs.hiddenInput).data("DateTimePicker").maxDate(e.date);
+      });
+    } else {
+      $(this.refs[ref2].refs.hiddenInput).data("DateTimePicker").clear();
+    }
   }
 
   _updateDisableState(value) {
     if(typeof value !== 'undefined') {
       if(value === 'exact' || value === 'after' || value === 'before') {
         this.setState({ disabled: true });
+        this._linkRangeDatepickers(this.dateTimeSearchRef, this.dateTimeSearchRef2, true);
       } else {
         this.setState({ disabled: false });
+        this._linkRangeDatepickers(this.dateTimeSearchRef, this.dateTimeSearchRef2, false);
       }
     }
   }
