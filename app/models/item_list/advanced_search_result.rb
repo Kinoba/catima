@@ -28,7 +28,8 @@ class ItemList::AdvancedSearchResult < ItemList
     original_scope = item_type.public_sorted_items
     items = {
       "and" => [],
-      "or" => []
+      "or" => [],
+      "exclude" => []
     }
     strategies.each do |strategy|
       # p "unpaginaged_items : #{scope.inspect}"
@@ -53,6 +54,13 @@ class ItemList::AdvancedSearchResult < ItemList
     items["or"].drop(1).each do |relation|
       or_relations = or_relations.or(relation)
     end
+
+    exclude_relations = items["exclude"].first
+    items["exclude"].drop(1).each do |relation|
+      exclude_relations = exclude_relations.merge(relation)
+    end
+
+    and_relations = and_relations.merge(exclude_relations) if exclude_relations.present?
 
     p "FULL QUERY"
     # p and_relations.to_sql
