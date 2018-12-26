@@ -48,25 +48,6 @@ class ReferenceSearchContainer extends Component {
   _addReferenceSearchComponent(itemId) {
     const referencesList = this.state.referencesList;
 
-      /*referencesList.push(<div key={id} className="row reference-search-row"><ReferenceSearch
-        referenceSearchItemId={id}
-        catalog={this.props.catalog}
-        parentItemType={this.props.parentItemType}
-        itemType={this.props.itemType}
-        field={this.props.field}
-        locale={this.props.locale}
-        inputName={this._buildInputName(id)}
-        referenceFilterName={this._buildReferenceFilterName(id)}
-        srcRef={this._buildSrcRef(id)}
-        itemTypeSearch={this.props.itemTypeSearch}
-        selectConditionName={this._buildSelectConditionName(id)}
-        selectCondition={this.props.selectCondition}
-        fieldConditionName={this._buildFieldConditionName(id)}
-        fieldConditionData={this.props.fieldConditionData}
-        addReferenceSearchComponent={this.addReferenceSearchComponent}
-        deleteReferenceSearchComponent={this.deleteReferenceSearchComponent}
-      /></div>);*/
-
       var id = itemId + 1;
       var item = {
         referenceSearchItemId: id,
@@ -146,8 +127,7 @@ class ReferenceSearchContainer extends Component {
 
   renderReferenceElement(item, index, length) {
     if(Object.keys(item).length > 0) {
-      return (<div className="reference-search-row row"><ReferenceSearch
-        key={item.referenceSearchItemId}
+      return (<div key={item.referenceSearchItemId} className="reference-search-row row"><ReferenceSearch
         referenceSearchItemId={item.referenceSearchItemId}
         referenceListLength={length}
         catalog={item.catalog}
