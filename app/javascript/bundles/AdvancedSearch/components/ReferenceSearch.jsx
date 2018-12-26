@@ -208,31 +208,11 @@ class ReferenceSearch extends Component {
   }
 
   _addReferenceSearchComponent() {
-    let config = {
-      retry: 1,
-      retryDelay: 1000
-    };
-
-    // @TODO: @Ouriel, en théorie pas besoin de faire d'appel lorsqu'on clique sur "+" ?
-    // Il faut cloner le composant actuel et incrémenter tous les inputs name.
-    // EX.: au début on a l'hidden input advanced_search[criteria][_b57b2d2f_ba08_40fa_bab4_2b040a6c6e98][0][exact]
-    // je clique sur ajouter, je me retrouve avec
-    // advanced_search[criteria][_b57b2d2f_ba08_40fa_bab4_2b040a6c6e98][0][exact]
-    // advanced_search[criteria][_b57b2d2f_ba08_40fa_bab4_2b040a6c6e98][1][exact]
-    axios.get(`/api/v2/${this.props.catalog}/${this.props.locale}/${this.props.parentItemType}/${this.props.field}`, config)
-    .then(res => {});
+    this.props.addReferenceSearchComponent(this.props.referenceSearchItemId);
   }
 
   _deleteReferenceSearchComponent() {
-    let config = {
-      retry: 1,
-      retryDelay: 1000
-    };
-
-    // @TODO: @Ouriel, pas besoin de faire d'appel lorsqu'on clique sur "-". Il suffit de supprimer en js la ligne
-    // dont on ne veut plus
-    axios.get(`/api/v2/${this.props.catalog}/${this.props.locale}/${this.props.itemType}/delete-reference-search-component`, config)
-    .then(res => {});
+    this.props.deleteReferenceSearchComponent(this.props.referenceSearchItemId);
   }
 
   renderSearch(){
@@ -306,6 +286,16 @@ class ReferenceSearch extends Component {
 =======
     return <ReactSelect className="single-reference-filter" isSearchable={false} isClearable={true} isDisabled={this._isFilterDisabled()} value={this.state.selectedFilter} onChange={this.selectFilter} options={this._getFilterOptions()} placeholder={this.props.filterPlaceholder}/>
 >>>>>>> Add conditional rendering for reference advanced search component
+  }
+
+  renderFieldConditionElement(){
+    return (
+      <select className="form-control filter-condition" name={this.props.fieldConditionName} value={this.state.selectedFieldCondition} onChange={this.selectFieldCondition}>
+      { this.props.fieldConditionData.map((item) => {
+        return <option key={item.key} value={item.key}>{item.value}</option>
+      })}
+      </select>
+    );
   }
 
   renderSelectConditionElement(){

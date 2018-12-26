@@ -1,22 +1,27 @@
+<div>
 <div class="row">
-  <div class="col-md-2">
-    <%= render_and_or_exclude_select(f, field) %>
-  </div>
-  <div class="col-md-10">
-    <%= react_component('ReferenceSearch',
-      props: {
-        catalog: field.catalog.slug,
-        parentItemType: field.field_set.slug,
-        itemType: field.related_item_type.slug,
-        field: field.slug,
-        locale: I18n.locale,
-        inputName: "advanced_search[criteria][#{field.uuid}][0][exact]",
-        referenceFilterName: "advanced_search[criteria][#{field.uuid}][0][filter_field_slug]",
-        srcRef: "advanced_search_criteria_#{field.uuid}_0_exact",
-        itemTypeSearch: false,
-        selectConditionName: "advanced_search[criteria][#{field.uuid}][0][exact]",
-        selectCondition: field.search_conditions_as_hash
-      },
-      prerender: false) %>
-  </div>
+    <div>Label</div> <!-- TODO: retirer ça -->
+    <div class="col-md-12">
+      <%= react_component('ReferenceSearchContainer',
+        props: {
+          catalog: field.catalog.slug,
+          parentItemType: field.field_set.slug,
+          itemType: field.related_item_type.slug,
+          field: field.slug,
+          locale: I18n.locale,
+          inputName: "advanced_search[criteria][#{field.uuid}][0][exact]",
+          referenceFilterName: "advanced_search[criteria][#{field.uuid}][0][filter_field_slug]",
+          srcRef: "advanced_search_criteria_#{field.uuid}_0_exact",
+          itemTypeSearch: false,
+          selectConditionName: "advanced_search[criteria][#{field.uuid}][0][exact]",
+          selectCondition: field.search_conditions_as_hash,
+          fieldConditionName: "advanced_search[criteria][#{field.uuid}][field_condition]",
+          fieldConditionData: [
+            {value: "and", key: "and"},
+            {value: "or", key: "or"},
+            {value: "exclude", key: "exclude"},
+          ],
+        },
+        prerender: false) %>
+    </div>
 </div>

@@ -120,24 +120,29 @@ button[data-active=true]:focus {
   }
 }
 
+.reference-search-row {
+  margin-bottom: 10px;
+}
+
 .reference-search-container {
-  a {
-     &:hover {
-       cursor: pointer;
-     }
-  }
 
-  .reference-input-container {
-    padding: 0;
-  }
-
-  .condition-input-container {
-    padding-right: 0;
-
-    .col-md-12 {
-      padding-right: 0;
+    a {
+       &:hover {
+         cursor: pointer;
+       }
     }
-  }
+
+    .reference-input-container {
+      padding: 0;
+    }
+
+    .condition-input-container {
+      padding-right: 0;
+
+      .col-md-12 {
+        padding-right: 0;
+      }
+    }
 }
 
 .datetime-search-container {
