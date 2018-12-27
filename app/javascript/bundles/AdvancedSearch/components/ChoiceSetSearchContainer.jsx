@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import ReferenceSearch from './ReferenceSearch';
+import ChoiceSetSearch from './ChoiceSetSearch';
 
-class ReferenceSearchContainer extends Component {
+class ChoiceSetSearchContainer extends Component {
   constructor(props){
     super(props);
 
     this.state = {
       componentsList: [],
       inputName: this.props.inputName.split("[0]"),
-      referenceFilterName: this.props.referenceFilterName.split("[0]"),
+      srcId: this.props.srcId.split("_0_"),
       srcRef: this.props.srcRef.split("_0_"),
       selectConditionName: this.props.selectConditionName.split("[0]"),
       fieldConditionName: this.props.fieldConditionName.split("[0]")
@@ -24,21 +24,22 @@ class ReferenceSearchContainer extends Component {
       var item = {
         itemId: id,
         catalog: this.props.catalog,
-        parentItemType: this.props.parentItemType,
         itemType: this.props.itemType,
-        field: this.props.field,
+        label: this.props.label,
+        items: this.props.items,
         locale: this.props.locale,
-        inputName: this._buildInputName(id),
-        referenceFilterName: this._buildReferenceFilterName(id),
+        searchPlaceholder: this.props.searchPlaceholder,
+        srcId: this._buildSrcId(id),
         srcRef: this._buildSrcRef(id),
-        itemTypeSearch: this.props.itemTypeSearch,
+        inputName: this._buildInputName(id),
         selectConditionName: this._buildSelectConditionName(id),
         selectCondition: this.props.selectCondition,
+        multiple: this.props.multiple,
         fieldConditionName: this._buildFieldConditionName(id),
         fieldConditionData: this.props.fieldConditionData,
         addComponent: this.addComponent,
         deleteComponent: this.deleteComponent,
-      };
+    };
 
     componentsList.push(item);
 
@@ -52,20 +53,21 @@ class ReferenceSearchContainer extends Component {
       var item = {
         itemId: id,
         catalog: this.props.catalog,
-        parentItemType: this.props.parentItemType,
         itemType: this.props.itemType,
-        field: this.props.field,
+        label: this.props.label,
+        items: this.props.items,
         locale: this.props.locale,
-        inputName: this._buildInputName(id),
-        referenceFilterName: this._buildReferenceFilterName(id),
+        searchPlaceholder: this.props.searchPlaceholder,
+        srcId: this._buildSrcId(id),
         srcRef: this._buildSrcRef(id),
-        itemTypeSearch: this.props.itemTypeSearch,
+        inputName: this._buildInputName(id),
         selectConditionName: this._buildSelectConditionName(id),
         selectCondition: this.props.selectCondition,
+        multiple: this.props.multiple,
         fieldConditionName: this._buildFieldConditionName(id),
         fieldConditionData: this.props.fieldConditionData,
         addComponent: this.addComponent,
-        deleteComponent: this.deleteComponent,
+        deleteComponent: this.deleteComponent
       };
 
     componentsList.push(item);
@@ -93,19 +95,19 @@ class ReferenceSearchContainer extends Component {
     }
   }
 
-  _buildReferenceFilterName(id) {
-    if(this.state.referenceFilterName.length === 2) {
-      return this.state.referenceFilterName[0] + '[' + id + ']' + this.state.referenceFilterName[1];
-    } else {
-      return this.props.referenceFilterName;
-    }
-  }
-
   _buildSrcRef(id) {
     if(this.state.srcRef.length === 2) {
       return this.state.srcRef[0] + '_' + id + '_' + this.state.srcRef[1];
     } else {
       return this.props.srcRef;
+    }
+  }
+
+  _buildSrcId(id) {
+    if(this.state.srcId.length === 2) {
+      return this.state.srcId[0] + '_' + id + '_' + this.state.srcId[1];
+    } else {
+      return this.props.srcId;
     }
   }
 
@@ -127,22 +129,23 @@ class ReferenceSearchContainer extends Component {
 
   renderComponent(item, index, length) {
     if(Object.keys(item).length > 0) {
-      return (<div key={item.itemId} className="component-search-row row"><ReferenceSearch
+      return (<div key={item.itemId} className="component-search-row row"><ChoiceSetSearch
         itemId={item.itemId}
         componentListLength={length}
         catalog={item.catalog}
-        parentItemType={item.parentItemType}
         itemType={item.itemType}
-        field={item.field}
+        label={item.label}
+        items={item.items}
         locale={item.locale}
         inputName={item.inputName}
-        referenceFilterName={item.referenceFilterName}
+        searchPlaceholder={item.searchPlaceholder}
+        srcId={item.srcId}
         srcRef={item.srcRef}
-        itemTypeSearch={item.itemTypeSearch}
         selectConditionName={item.selectConditionName}
         selectCondition={item.selectCondition}
         fieldConditionName={item.fieldConditionName}
         fieldConditionData={item.fieldConditionData}
+        multiple={item.multiple}
         addComponent={item.addComponent}
         deleteComponent={item.deleteComponent}
       /></div>);
@@ -163,4 +166,4 @@ class ReferenceSearchContainer extends Component {
   }
 }
 
-export default ReferenceSearchContainer;
+export default ChoiceSetSearchContainer;

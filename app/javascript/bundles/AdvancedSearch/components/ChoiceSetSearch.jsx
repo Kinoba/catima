@@ -9,6 +9,7 @@ class ChoiceSetSearch extends Component {
 
     this.state = {
       selectedCondition: '',
+      selectedFieldCondition: '',
       selectedItem: [],
       disabled: false,
       hiddenInputValue: []
@@ -18,6 +19,9 @@ class ChoiceSetSearch extends Component {
     this.choiceSetRef = `${this.props.srcRef}-datetime`;
     this.selectItem = this._selectItem.bind(this);
     this.selectCondition = this._selectCondition.bind(this);
+    this.selectFieldCondition = this._selectFieldCondition.bind(this);
+    this.addComponent = this._addComponent.bind(this);
+    this.deleteComponent = this._deleteComponent.bind(this);
   }
 
   componentDidMount(){
@@ -53,6 +57,16 @@ class ChoiceSetSearch extends Component {
     }
   }
 
+  _selectFieldCondition(event){
+    if(typeof event === 'undefined' || event.action !== "pop-value" || !this.props.req) {
+      if(typeof event !== 'undefined') {
+        this.setState({ selectedFieldCondition: event.target.value });
+      } else {
+        this.setState({ selectedFieldCondition: '' });
+      }
+    }
+  }
+
   _getItemOptions(){
     var optionsList = [];
     optionsList = this.props.items.map(item =>
@@ -71,10 +85,28 @@ class ChoiceSetSearch extends Component {
     return {value: item.id, label: this._itemName(item)};
   }
 
+  _addComponent() {
+    this.props.addComponent(this.props.itemId);
+  }
+
+  _deleteComponent() {
+    this.props.deleteComponent(this.props.itemId);
+  }
+
   renderSelectConditionElement(){
     return (
       <select className="form-control filter-condition" name={this.props.selectConditionName} value={this.state.selectedCondition} onChange={this.selectCondition}>
       { this.props.selectCondition.map((item) => {
+        return <option key={item.key} value={item.key}>{item.value}</option>
+      })}
+      </select>
+    );
+  }
+
+  renderFieldConditionElement(){
+    return (
+      <select className="form-control filter-condition" name={this.props.fieldConditionName} value={this.state.selectedFieldCondition} onChange={this.selectFieldCondition}>
+      { this.props.fieldConditionData.map((item) => {
         return <option key={item.key} value={item.key}>{item.value}</option>
       })}
       </select>
@@ -92,11 +124,30 @@ class ChoiceSetSearch extends Component {
 
   render() {
     return (
-      <div className="choiceset-search-container row">
-        <div className="col-md-7">
-            { this.renderChoiceSetElement() }
+      <div className="choiceset-search-container">
+        <div className="col-md-2">
+            { this.renderFieldConditionElement() }
         </div>
         <div className="col-md-5">
+            { this.renderChoiceSetElement() }
+        </div>
+        { (this.props.itemId !== (this.props.componentListLength - 1)) &&
+        <div className="col-md-1">
+          <div className="row">
+            <div className="col-md-12">
+              <a type="button" onClick={this.deleteComponent}><i className="fa fa-trash"></i></a>
+            </div>
+          </div>
+        </div>
+        }
+        { (this.props.itemId === (this.props.componentListLength - 1)) &&
+        <div className="col-md-1">
+          <div className="row">
+            <div className="col-md-12"><a type="button" onClick={this.addComponent}><i className="fa fa-plus"></i></a></div>
+          </div>
+        </div>
+        }
+        <div className="col-md-4">
           { this.renderSelectConditionElement() }
         </div>
       </div>

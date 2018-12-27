@@ -1,9 +1,7 @@
 <div class="row">
-  <div class="col-md-2">
-    <%= render_and_or_exclude_select(f, field) %>
-  </div>
-  <div class="col-md-10">
-      <%= react_component('ChoiceSetSearch',
+    <div class="col-md-12"><%= p t(".any") %></div>
+    <div class="col-md-12">
+      <%= react_component('ChoiceSetSearchContainer',
         props: {
           catalog: field.catalog.slug,
           itemType: 'book',
@@ -11,13 +9,19 @@
           items: field.choices,
           locale: I18n.locale,
           searchPlaceholder: 'Search...',
-          srcId: "advanced_search_criteria_#{field.uuid}_id",
-          srcRef: "advanced_search_criteria_#{field.uuid}_exact",
-          inputName: "advanced_search[criteria][#{field.uuid}][exact]",
-          selectConditionName: "select_condition_#{field.uuid}_name",
+          srcId: "advanced_search_criteria_#{field.uuid}_0_id",
+          srcRef: "advanced_search_criteria_#{field.uuid}_0_exact",
+          inputName: "advanced_search[criteria][#{field.uuid}][0][exact]",
+          selectConditionName: "advanced_search[criteria][#{field.uuid}][0][select_condition]",
           selectCondition: field.search_conditions_as_hash,
-          multiple: true
+          multiple: true,
+          fieldConditionName: "advanced_search[criteria][#{field.uuid}][0][field_condition]",
+          fieldConditionData: [
+            {value: "and", key: "and"},
+            {value: "or", key: "or"},
+            {value: "exclude", key: "exclude"},
+          ],
         },
         prerender: false) %>
-  </div>
+      </div>
 </div>

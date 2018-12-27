@@ -120,18 +120,17 @@ button[data-active=true]:focus {
   }
 }
 
-.reference-search-row {
+.component-search-row {
   margin-bottom: 10px;
 }
 
+a {
+   &:hover {
+     cursor: pointer;
+   }
+}
+
 .reference-search-container {
-
-    a {
-       &:hover {
-         cursor: pointer;
-       }
-    }
-
     .reference-input-container {
       padding: 0;
     }
