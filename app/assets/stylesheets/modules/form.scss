@@ -120,34 +120,47 @@ button[data-active=true]:focus {
   }
 }
 
-.component-search-row {
-  margin-bottom: 10px;
-}
+.search-container {
+  .component-search-row {
+    margin-bottom: 10px;
+  }
 
-a {
-   &:hover {
-     cursor: pointer;
-   }
-}
+  .icon-container {
+    position: relative;
+    height: 38px;
 
-.reference-search-container {
-    .reference-input-container {
-      padding: 0;
+    a {
+      display: table;
+      margin: 0 auto;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+
+       &:hover {
+         cursor: pointer;
+       }
     }
+  }
 
+  .reference-search-container {
+      .reference-input-container {
+        padding: 0;
+      }
+
+      .condition-input-container {
+        padding-right: 0;
+
+        .col-md-12 {
+          padding-right: 0;
+        }
+      }
+  }
+
+  .datetime-search-container {
     .condition-input-container {
-      padding-right: 0;
-
       .col-md-12 {
         padding-right: 0;
       }
-    }
-}
-
-.datetime-search-container {
-  .condition-input-container {
-    .col-md-12 {
-      padding-right: 0;
     }
   }
 }

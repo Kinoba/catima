@@ -132,19 +132,13 @@ class ChoiceSetSearch extends Component {
             { this.renderChoiceSetElement() }
         </div>
         { (this.props.itemId !== (this.props.componentListLength - 1)) &&
-        <div className="col-md-1">
-          <div className="row">
-            <div className="col-md-12">
-              <a type="button" onClick={this.deleteComponent}><i className="fa fa-trash"></i></a>
-            </div>
-          </div>
+        <div className="col-md-1 icon-container">
+          <a type="button" onClick={this.deleteComponent}><i className="fa fa-trash"></i></a>
         </div>
         }
         { (this.props.itemId === (this.props.componentListLength - 1)) &&
-        <div className="col-md-1">
-          <div className="row">
-            <div className="col-md-12"><a type="button" onClick={this.addComponent}><i className="fa fa-plus"></i></a></div>
-          </div>
+        <div className="col-md-1 icon-container">
+          <a type="button" onClick={this.addComponent}><i className="fa fa-plus"></i></a>
         </div>
         }
         <div className="col-md-4">
