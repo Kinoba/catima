@@ -207,12 +207,12 @@ class ReferenceSearch extends Component {
     return optionsList;
   }
 
-  _addReferenceSearchComponent() {
-    this.props.addReferenceSearchComponent(this.props.referenceSearchItemId);
+  _addComponent() {
+    this.props.addComponent(this.props.itemId);
   }
 
-  _deleteReferenceSearchComponent() {
-    this.props.deleteReferenceSearchComponent(this.props.referenceSearchItemId);
+  _deleteComponent() {
+    this.props.deleteComponent(this.props.itemId);
   }
 
   renderSearch(){

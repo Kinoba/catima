@@ -6,7 +6,7 @@ class ReferenceSearchContainer extends Component {
     super(props);
 
     this.state = {
-      referencesList: [],
+      componentsList: [],
       inputName: this.props.inputName.split("[0]"),
       referenceFilterName: this.props.referenceFilterName.split("[0]"),
       srcRef: this.props.srcRef.split("_0_"),
@@ -14,15 +14,15 @@ class ReferenceSearchContainer extends Component {
       fieldConditionName: this.props.fieldConditionName.split("[0]")
     };
 
-    this.addReferenceSearchComponent = this._addReferenceSearchComponent.bind(this);
-    this.deleteReferenceSearchComponent = this._deleteReferenceSearchComponent.bind(this);
+    this.addComponent = this._addComponent.bind(this);
+    this.deleteComponent = this._deleteComponent.bind(this);
   }
 
   componentDidMount(){
-      const referencesList = this.state.referencesList;
+      const componentsList = this.state.componentsList;
       var id = 0;
       var item = {
-        referenceSearchItemId: id,
+        itemId: id,
         catalog: this.props.catalog,
         parentItemType: this.props.parentItemType,
         itemType: this.props.itemType,
@@ -36,21 +36,21 @@ class ReferenceSearchContainer extends Component {
         selectCondition: this.props.selectCondition,
         fieldConditionName: this._buildFieldConditionName(id),
         fieldConditionData: this.props.fieldConditionData,
-        addReferenceSearchComponent: this.addReferenceSearchComponent,
-        deleteReferenceSearchComponent: this.deleteReferenceSearchComponent,
+        addComponent: this.addComponent,
+        deleteComponent: this.deleteComponent,
       };
 
-    referencesList.push(item);
+    componentsList.push(item);
 
-    this.setState({referencesList: referencesList});
+    this.setState({componentsList: componentsList});
   }
 
-  _addReferenceSearchComponent(itemId) {
-    const referencesList = this.state.referencesList;
+  _addComponent(itemId) {
+    const componentsList = this.state.componentsList;
 
       var id = itemId + 1;
       var item = {
-        referenceSearchItemId: id,
+        itemId: id,
         catalog: this.props.catalog,
         parentItemType: this.props.parentItemType,
         itemType: this.props.itemType,
@@ -64,25 +64,25 @@ class ReferenceSearchContainer extends Component {
         selectCondition: this.props.selectCondition,
         fieldConditionName: this._buildFieldConditionName(id),
         fieldConditionData: this.props.fieldConditionData,
-        addReferenceSearchComponent: this.addReferenceSearchComponent,
-        deleteReferenceSearchComponent: this.deleteReferenceSearchComponent,
+        addComponent: this.addComponent,
+        deleteComponent: this.deleteComponent,
       };
 
-    referencesList.push(item);
+    componentsList.push(item);
 
-    this.setState({referencesList: referencesList});
+    this.setState({componentsList: componentsList});
   }
 
-  _deleteReferenceSearchComponent(itemId) {
-    var referencesList = this.state.referencesList;
+  _deleteComponent(itemId) {
+    var componentsList = this.state.componentsList;
 
-    referencesList.forEach((ref, index) => {
-      if(Object.keys(ref).length !== 0 && ref.referenceSearchItemId === itemId) {
-        referencesList[index] = {};
+    componentsList.forEach((ref, index) => {
+      if(Object.keys(ref).length !== 0 && ref.itemId === itemId) {
+        componentsList[index] = {};
       }
     });
 
-    this.setState({referencesList: referencesList});
+    this.setState({componentsList: componentsList});
   }
 
   _buildInputName(id) {
@@ -125,11 +125,11 @@ class ReferenceSearchContainer extends Component {
     }
   }
 
-  renderReferenceElement(item, index, length) {
+  renderComponent(item, index, length) {
     if(Object.keys(item).length > 0) {
-      return (<div key={item.referenceSearchItemId} className="reference-search-row row"><ReferenceSearch
-        referenceSearchItemId={item.referenceSearchItemId}
-        referenceListLength={length}
+      return (<div key={item.itemId} className="reference-search-row row"><ReferenceSearch
+        itemId={item.itemId}
+        componentListLength={length}
         catalog={item.catalog}
         parentItemType={item.parentItemType}
         itemType={item.itemType}
@@ -143,21 +143,21 @@ class ReferenceSearchContainer extends Component {
         selectCondition={item.selectCondition}
         fieldConditionName={item.fieldConditionName}
         fieldConditionData={item.fieldConditionData}
-        addReferenceSearchComponent={item.addReferenceSearchComponent}
-        deleteReferenceSearchComponent={item.deleteReferenceSearchComponent}
+        addComponent={item.addComponent}
+        deleteComponent={item.deleteComponent}
       /></div>);
     }
   }
 
-  renderReferencesList() {
-    const listLength = this.state.referencesList.length;
-    return this.state.referencesList.map((item, index, length) => this.renderReferenceElement(item, index, listLength));
+  renderComponentList() {
+    const listLength = this.state.componentsList.length;
+    return this.state.componentsList.map((item, index, length) => this.renderComponent(item, index, listLength));
   }
 
   render() {
     return (
       <div id="referenceSearchContainer">
-        {this.renderReferencesList()}
+        {this.renderComponentList()}
       </div>
     );
   }
