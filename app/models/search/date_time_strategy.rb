@@ -9,9 +9,12 @@ class Search::DateTimeStrategy < Search::BaseStrategy
     field_condition = criteria[:condition]
     negate = criteria[:field_condition] == "exclude"
     p "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+    p criteria[:start]
     p criteria[:start][:exact]
     start_date_time = Time.zone.at(criteria[:start][:exact].to_i / 1000) if start_date?(criteria)
     end_date_time = Time.zone.at(criteria[:end][:exact].to_i / 1000) if end_date?(criteria)
+
+    return scope unless start_date_time.present? || end_date_time.present?
 
     if start_date?(criteria)
       scope = exact_search(scope, start_date_time, negate) if field_condition == "exact"
@@ -41,18 +44,20 @@ class Search::DateTimeStrategy < Search::BaseStrategy
   end
 
   def start_date?(criteria)
-    criteria[:start].present?
+    criteria[:start].present? && criteria[:start][criteria[:start].keys.first].present?
   end
 
   def end_date?(criteria)
-    criteria[:end].present?
+    criteria[:end].present? && criteria[:end][criteria[:end].keys.first].present?
   end
 
   def exact_search(scope, exact_date_time, negate)
     return scope if exact_date_time.blank?
+    p exact_date_time
+    p "NOOOOOOOOOOOOOOOOOOOOOOOOO?OOOO"
 
     sql_operator = "#{'NOT' if negate} LIKE"
-    scope.where("#{convert_to_timestamp(concat_json_date)} #{sql_operator} to_timestamp(?, 'YYYY-MM-DD hh24:mi:ss')", date_time)
+    scope.where("#{convert_to_timestamp(concat_json_date)} #{sql_operator} to_timestamp(?, 'YYYY-MM-DD hh24:mi:ss')", exact_date_time)
     # scope.where("items.data->'#{field.uuid}'->>'Y' #{sql_operator} ?", exact_date_time.strftime("%Y"))
     #      .where("items.data->'#{field.uuid}'->>'M' #{sql_operator} ?", exact_date_time.strftime("%-m"))
     #      .where("items.data->'#{field.uuid}'->>'D' #{sql_operator} ?", exact_date_time.strftime("%-d"))

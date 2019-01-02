@@ -1,6 +1,15 @@
 class Search::ChoiceSetStrategy < Search::BaseStrategy
   include Search::MultivaluedSearch
-  permit_criteria :field_condition, :any => []
+
+  # For multiple choices, we permit all possible choices in the choice set
+  def permitted_keys
+    keys = []
+    field.choices.each do |choice|
+      keys << choice.id
+    end
+
+    keys
+  end
 
   def keywords_for_index(item)
     choices = field.selected_choices(item)

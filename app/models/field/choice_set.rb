@@ -124,7 +124,11 @@ class Field::ChoiceSet < ::Field
     choices_as_options = []
 
     choices.each do |choice|
-      choices_as_options << { :value => choice.short_name, :key => choice.id }
+      option = { :value => choice.short_name, :key => choice.id }
+
+      option[:category_data] = choice.category.fields if choice.category.present?
+
+      choices_as_options << option
     end
 
     choices_as_options
