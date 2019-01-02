@@ -40,16 +40,8 @@ class ChoiceSetSearch extends Component {
   _selectItem(item, event){
     if(typeof event === 'undefined' || event.action !== "pop-value" || !this.props.req) {
       if(typeof item !== 'undefined') {
-        if(typeof item.data !== undefined) {
-          this.props.updateComponentName(item.id, this.props.itemId);
-          this.setState({ selectedItem: item }, () => this._save());
-        } else {
-          this.props.updateComponentName(item.id, this.props.itemId);
-          this.setState({ selectedItem: item }, () => this._save());
-        }
-
+        this.setState({ selectedItem: item }, () => this._save());
       } else {
-        this.props.updateComponentName(null, this.props.itemId);
         this.setState({ selectedItem: [] }, () => this._save());
       }
     }
