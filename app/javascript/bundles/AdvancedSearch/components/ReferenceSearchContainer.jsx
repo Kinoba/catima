@@ -7,11 +7,11 @@ class ReferenceSearchContainer extends Component {
 
     this.state = {
       componentsList: [],
-      inputName: this.props.inputName.split("[0]"),
-      referenceFilterName: this.props.referenceFilterName.split("[0]"),
-      srcRef: this.props.srcRef.split("_0_"),
-      selectConditionName: this.props.selectConditionName.split("[0]"),
-      fieldConditionName: this.props.fieldConditionName.split("[0]")
+      inputName: this.props.inputName.split("[default]"),
+      referenceFilterName: this.props.referenceFilterName.split("[default]"),
+      srcRef: this.props.srcRef.split("_default_"),
+      selectConditionName: this.props.selectConditionName.split("[default]"),
+      fieldConditionName: this.props.fieldConditionName.split("[default]")
     };
 
     this.addComponent = this._addComponent.bind(this);
