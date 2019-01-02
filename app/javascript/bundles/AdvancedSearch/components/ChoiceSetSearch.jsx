@@ -40,8 +40,14 @@ class ChoiceSetSearch extends Component {
   _selectItem(item, event){
     if(typeof event === 'undefined' || event.action !== "pop-value" || !this.props.req) {
       if(typeof item !== 'undefined') {
-        this.props.updateComponentName(item.value, this.props.itemId);
-        this.setState({ selectedItem: item }, () => this._save());
+        if(typeof item.data !== undefined) {
+          this.props.updateComponentName(item.id, this.props.itemId);
+          this.setState({ selectedItem: item }, () => this._save());
+        } else {
+          this.props.updateComponentName(item.id, this.props.itemId);
+          this.setState({ selectedItem: item }, () => this._save());
+        }
+
       } else {
         this.props.updateComponentName(null, this.props.itemId);
         this.setState({ selectedItem: [] }, () => this._save());
@@ -78,12 +84,8 @@ class ChoiceSetSearch extends Component {
     return optionsList;
   }
 
-  _itemName(item){
-    return item.short_name_translations['short_name_' + this.props.locale];
-  }
-
   _getJSONItem(item) {
-    return {value: item.id, label: this._itemName(item)};
+    return {value: item.key, label: item.value, data: item.category_data};
   }
 
   _addComponent() {
@@ -122,6 +124,15 @@ class ChoiceSetSearch extends Component {
     );
   }
 
+  renderChoiceSetItemCategory(){
+    return (
+      <select className="form-control filter-condition" name={this.props.fieldConditionName} value={this.state.selectedFieldCondition} onChange={this.selectFieldCondition}>
+      { this.state.selectedItem.data.map((item) => {
+        return <option key={item.id} value={item.slug}>{item.name_translations['name_' + this.props.locale]}</option>
+      })}
+      </select>
+    );
+  }
 
   render() {
     return (
@@ -129,9 +140,21 @@ class ChoiceSetSearch extends Component {
         <div className="col-md-2">
             { this.renderFieldConditionElement() }
         </div>
+        { ((this.state.selectedItem.length === 0) || ((typeof this.state.selectedItem.data) === 'undefined')) &&
         <div className="col-md-5">
             { this.renderChoiceSetElement() }
         </div>
+        }
+        { (this.state.selectedItem.length !== 0) && (typeof this.state.selectedItem.data) !== 'undefined' &&
+        <div>
+          <div className="col-md-3">
+              { this.renderChoiceSetElement() }
+          </div>
+          <div className="col-md-2">
+            { this.renderChoiceSetItemCategory() }
+          </div>
+        </div>
+        }
         { (this.props.itemId === this.props.componentList[0].itemId && this.props.componentList.length === 1) &&
         <div className="col-md-1 icon-container">
           <a type="button" onClick={this.addComponent}><i className="fa fa-plus"></i></a>
