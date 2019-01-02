@@ -125,6 +125,12 @@ button[data-active=true]:focus {
     margin-bottom: 10px;
   }
 
+  a {
+     &:hover {
+       cursor: pointer;
+     }
+  }
+
   .icon-container {
     position: relative;
     height: 38px;
@@ -135,10 +141,6 @@ button[data-active=true]:focus {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-
-       &:hover {
-         cursor: pointer;
-       }
     }
   }
 

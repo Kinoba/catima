@@ -80,7 +80,7 @@ class ChoiceSetSearchContainer extends Component {
 
     componentsList.forEach((ref, index) => {
       if(Object.keys(ref).length !== 0 && ref.itemId === itemId) {
-        componentsList[index] = {};
+        componentsList.splice(componentsList[index], 1);
       }
     });
 
@@ -127,11 +127,11 @@ class ChoiceSetSearchContainer extends Component {
     }
   }
 
-  renderComponent(item, index, length) {
+  renderComponent(item, index, list) {
     if(Object.keys(item).length > 0) {
       return (<div key={item.itemId} className="component-search-row row"><ChoiceSetSearch
         itemId={item.itemId}
-        componentListLength={length}
+        componentList={list}
         catalog={item.catalog}
         itemType={item.itemType}
         label={item.label}
@@ -153,8 +153,8 @@ class ChoiceSetSearchContainer extends Component {
   }
 
   renderComponentList() {
-    const listLength = this.state.componentsList.length;
-    return this.state.componentsList.map((item, index, length) => this.renderComponent(item, index, listLength));
+    const list = this.state.componentsList;
+    return this.state.componentsList.map((item, index, list) => this.renderComponent(item, index, list));
   }
 
   render() {
