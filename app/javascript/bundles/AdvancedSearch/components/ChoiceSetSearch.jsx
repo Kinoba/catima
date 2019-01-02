@@ -77,8 +77,7 @@ class ChoiceSetSearch extends Component {
   }
 
   _itemName(item){
-    //TODO - check this for all props
-    return item.short_name_translations.short_name_en;
+    return item.short_name_translations['short_name_' + this.props.locale];
   }
 
   _getJSONItem(item) {

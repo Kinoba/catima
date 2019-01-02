@@ -6,8 +6,10 @@
       <%= react_component('DateTimeSearch',
         props: {
           catalog: field.catalog.slug,
-          itemType: 'book', #TODO - changer cette variable en dynamique
+          itemType: field.item_type,
           label: t(".after"),
+          startLabel: "Start date:",
+          endLabel: t("End date:"),
           locale: I18n.locale,
           srcId: "advanced_search_criteria_#{field.uuid}_id",
           srcRef: "advanced_search_criteria_#{field.uuid}_exact",

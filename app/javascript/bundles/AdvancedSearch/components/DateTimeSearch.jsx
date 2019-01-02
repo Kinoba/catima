@@ -113,7 +113,7 @@ class DateTimeSearch extends Component {
       <div className="datetime-search-container">
         <div>
             <div className="row">
-              <div className="col-md-12"><label>Start date:</label></div>
+              <div className="col-md-12"><label>{ this.props.startLabel }</label></div>
             </div>
 
             { this.props.selectCondition.length > 0 && this.renderDateTimeConditionElement() }
@@ -122,7 +122,7 @@ class DateTimeSearch extends Component {
 
           <div className="collapse" id={this.dateTimeCollapseId}>
             <div className="row">
-              <div className="col-md-12"><label>End date:</label></div>
+              <div className="col-md-12"><label>{ this.props.endLabel }</label></div>
             </div>
             <div className="row">
               <div className="col-md-12"><DateTimeInput input="input2" inputName={this.props.endDateInputName} disabled={this.state.disabled} ref={this.dateTimeSearchRef2} datepicker={true} locale={this.props.locale}/></div>
