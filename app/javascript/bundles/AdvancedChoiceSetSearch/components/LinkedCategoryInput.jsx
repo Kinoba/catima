@@ -1,42 +1,36 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-<<<<<<< HEAD
-<<<<<<< HEAD
+import ReactSelect from 'react-select';
 import axios from 'axios';
-=======
->>>>>>> Add React components for Reference advanced search
-=======
-import axios from 'axios';
->>>>>>> Improve reference advanced search component
+import $ from 'jquery';
+import 'moment';
+import 'eonasdan-bootstrap-datetimepicker';
+import DateTimeSearch from '../../AdvancedDateTimeSearch/components/DateTimeSearch';
+import striptags from 'striptags';
 
-class ItemTypesReferenceSearch extends Component {
+class LinkedCategoryInput extends Component {
   constructor(props){
     super(props);
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> Improve reference advanced search component
 
     this.state = {
       isLoading: true,
       inputType: 'Field::Text',
       inputData: null,
       inputOptions: null,
-      selectedFilter: {},
+      selectedCategory: {},
       selectedItem: [],
       selectCondition: [],
       hiddenInputValue: []
     };
 
-    this.referenceSearchId = `${this.props.srcId}-search`;
-    this.referenceSearchRef = `${this.props.srcRef}-search`;
     this.selectItem = this._selectItem.bind(this);
+
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.selectedFilter !== this.state.selectedFilter) {
-      this._getDataFromServer(nextProps.selectedFilter);
-      this.setState({ selectedFilter: nextProps.selectedFilter });
+    if (nextProps.selectedCategory !== this.state.selectedCategory) {
+      this._getDataFromServer(nextProps.selectedCategory);
+      this.setState({ selectedCategory: nextProps.selectedCategory });
     }
   }
 
@@ -68,24 +62,23 @@ class ItemTypesReferenceSearch extends Component {
     }
   }
 
-  _getDataFromServer(selectedFilter) {
+  _getDataFromServer(selectedCategory) {
     let config = {
       retry: 1,
       retryDelay: 1000
     };
 
-    if (typeof selectedFilter !== 'undefined') {
-      this.props.selectedFilter.value = selectedFilter.value;
-      this.props.selectedFilter.label = selectedFilter.label;
+    /*if (typeof selectedCategory !== 'undefined') {
+      this.props.selectedCategory.value = selectedCategory.value;
+      this.props.selectedCategory.label = selectedCategory.label;
     } else {
       if (typeof this.props.field !== 'undefined') {
-        this.props.selectedFilter.value = this.props.field;
+        this.props.selectedCategory.value = this.props.field;
       }
-    }
+    }*/
 
-    axios.get(`/api/v2/${this.props.catalog}/${this.props.locale}/${this.props.itemType}/${this.props.selectedFilter.value}`, config)
+    axios.get(`/api/v2/${this.props.catalog}/${this.props.locale}/categories/${this.props.selectedChoiceSet}/${this.props.selectedCategory}`, config)
     .then(res => {
-
       if(res.data.inputData === null) this.setState({ inputData: [] });
       else this.setState({ inputData: res.data.inputData });
 
@@ -166,7 +159,6 @@ class ItemTypesReferenceSearch extends Component {
     if (this.state.isLoading) return null;
     if (this.state.inputType === 'Field::DateTime') {
       return <DateTimeSearch
-                id={this.referenceSearchId}
                 selectCondition={[]}
                 disableInputByCondition={this.props.selectedCondition}
                 catalog={this.props.catalog}
@@ -178,14 +170,14 @@ class ItemTypesReferenceSearch extends Component {
                 onChange={this.selectItem}
               />
     } else if (this.state.inputType === 'Field::Email') {
-      return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} type="email" className="form-control"/>
+      return <input name={this.props.inputName} onChange={this.selectItem} type="email" className="form-control"/>
     } else if (this.state.inputType === 'Field::Int' || this.state.inputType === 'Field::Decimal') {
-      return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} type="number" className="form-control"/>
+      return <input name={this.props.inputName} onChange={this.selectItem} type="number" className="form-control"/>
     } else if (this.state.inputType === 'Field::URL') {
-      return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} type="url" className="form-control"/>
+      return <input name={this.props.inputName} onChange={this.selectItem} type="url" className="form-control"/>
     } else if ((this.state.inputType === 'Field::ChoiceSet' && !this._getChoiceSetMultipleOption()) || this.state.inputType === 'Field::Boolean') {
       return (
-        <select id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} className="form-control">
+        <select name={this.props.inputName} onChange={this.selectItem} className="form-control">
           { this.state.inputData.map((item) => {
             return <option key={item.key}>{item.value}</option>
             })
@@ -194,36 +186,22 @@ class ItemTypesReferenceSearch extends Component {
       );
     } else if (this.state.inputType === 'Field::ChoiceSet' && this._getChoiceSetMultipleOption()) {
       return (
-        <ReactSelect id={this.referenceSearchId} name={this.props.inputName} isMulti options={this._getMultipleChoiceSetOptions()} className="basic-multi-select" onChange={this.selectItem} classNamePrefix="select" placeholder={this.props.searchPlaceholder}/>
+        <ReactSelect name={this.props.inputName} isMulti options={this._getMultipleChoiceSetOptions()} className="basic-multi-select" onChange={this.selectItem} classNamePrefix="select" placeholder={this.props.searchPlaceholder}/>
       );
     } else {
-      return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} type="text" className="form-control"/>
+      return <input name={this.props.inputName} onChange={this.selectItem} type="text" className="form-control"/>
     }
-<<<<<<< HEAD
-=======
->>>>>>> Add React components for Reference advanced search
-=======
->>>>>>> Improve reference advanced search component
   }
 
   render() {
     return (
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> Improve reference advanced search component
       <div className="single-reference-container">
         { this.state.isLoading && <div className="loader"></div> }
         { this.renderInput() }
       </div>
-<<<<<<< HEAD
-=======
-        <div>ItemTypesReferenceSearch</div>
->>>>>>> Add React components for Reference advanced search
-=======
->>>>>>> Improve reference advanced search component
     );
   }
+
 }
 
-export default ItemTypesReferenceSearch;
+export default LinkedCategoryInput;

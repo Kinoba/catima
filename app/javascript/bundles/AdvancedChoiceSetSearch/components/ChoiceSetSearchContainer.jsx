@@ -11,7 +11,9 @@ class ChoiceSetSearchContainer extends Component {
       srcId: this.props.srcId.split("_0_"),
       srcRef: this.props.srcRef.split("_0_"),
       selectConditionName: this.props.selectConditionName.split("[0]"),
-      fieldConditionName: this.props.fieldConditionName.split("[0]")
+      fieldConditionName: this.props.fieldConditionName.split("[0]"),
+      categoryInputName: this.props.categoryInputName.split("[0]"),
+      linkedCategoryInputName: this.props.linkedCategoryInputName.split("[0]")
     };
 
     this.addComponent = this._addComponent.bind(this);
@@ -27,7 +29,8 @@ class ChoiceSetSearchContainer extends Component {
       itemType: this.props.itemType,
       label: this.props.label,
       items: this.props.items,
-      categoryInputName: this.props.categoryInputName,
+      categoryInputName: this._buildCategoryInputName(id),
+      linkedCategoryInputName: this._buildLinkedCategoryInputName(id),
       locale: this.props.locale,
       searchPlaceholder: this.props.searchPlaceholder,
       srcId: this._buildSrcId(id),
@@ -57,7 +60,8 @@ class ChoiceSetSearchContainer extends Component {
       itemType: this.props.itemType,
       label: this.props.label,
       items: this.props.items,
-      categoryInputName: this.props.categoryInputName,
+      categoryInputName: this._buildCategoryInputName(id),
+      linkedCategoryInputName: this._buildLinkedCategoryInputName(id),
       locale: this.props.locale,
       searchPlaceholder: this.props.searchPlaceholder,
       srcId: this._buildSrcId(id),
@@ -129,6 +133,22 @@ class ChoiceSetSearchContainer extends Component {
       }
   }
 
+  _buildCategoryInputName(id) {
+      if(this.state.categoryInputName.length === 2) {
+        return this.state.categoryInputName[0] + '[' + id + ']' + this.state.categoryInputName[1];
+      } else {
+        return this.props.categoryInputName;
+      }
+  }
+
+  _buildLinkedCategoryInputName(id) {
+      if(this.state.linkedCategoryInputName.length === 2) {
+        return this.state.linkedCategoryInputName[0] + '[' + id + ']' + this.state.linkedCategoryInputName[1];
+      } else {
+        return this.props.linkedCategoryInputName;
+      }
+  }
+
   renderComponent(item, index, list) {
     if(Object.keys(item).length > 0) {
       return (<div key={item.itemId} className="component-search-row row"><ChoiceSetSearch
@@ -139,6 +159,7 @@ class ChoiceSetSearchContainer extends Component {
       label={item.label}
       items={item.items}
       categoryInputName={item.categoryInputName}
+      linkedCategoryInputName={item.linkedCategoryInputName}
       locale={item.locale}
       inputName={item.inputName}
       searchPlaceholder={item.searchPlaceholder}

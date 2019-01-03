@@ -4,10 +4,11 @@
       <%= react_component('ChoiceSetSearchContainer',
         props: {
           catalog: field.catalog.slug,
-          itemType: field.item_type,
+          itemType: field.item_type.slug,
           label: t(".any"),
           items: field.search_data_as_hash,
           categoryInputName: "advanced_search[criteria][#{field.uuid}][0][category]",
+          linkedCategoryInputName: "advanced_search[criteria][#{field.uuid}][0][linked_category]",
           locale: I18n.locale,
           searchPlaceholder: 'Search...',
           srcId: "advanced_search_criteria_#{field.uuid}_0_id",

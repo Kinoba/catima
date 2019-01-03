@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import ReactSelect from 'react-select';
 import striptags from 'striptags';
+import LinkedCategoryInput from './LinkedCategoryInput';
 
 class ChoiceSetSearch extends Component {
   constructor(props){
@@ -24,6 +25,7 @@ class ChoiceSetSearch extends Component {
     this.selectCategory = this._selectCategory.bind(this);
     this.addComponent = this._addComponent.bind(this);
     this.deleteComponent = this._deleteComponent.bind(this);
+    this.updateSelectCondition = this._updateSelectCondition.bind(this);
   }
 
   componentDidMount(){
@@ -123,6 +125,14 @@ class ChoiceSetSearch extends Component {
     this.props.deleteComponent(this.props.itemId);
   }
 
+  _updateSelectCondition(newVal) {
+    if(this.state.selectedCondition === '' && newVal.length !== this.state.selectCondition.length) {
+      this.setState({selectedCondition: newVal[0].key});
+    }
+
+    this.setState({ selectCondition: newVal });
+  }
+
   renderSelectConditionElement(){
     return (
       <select className="form-control filter-condition" name={this.props.selectConditionName} value={this.state.selectedCondition} onChange={this.selectCondition}>
@@ -160,7 +170,15 @@ class ChoiceSetSearch extends Component {
   renderLinkedCategoryElement(){
     return (
       <div>
-        <ReactSelect id={this.choiceSetId} name={this.props.inputName} options={this._getItemOptions()} className="basic-multi-select" onChange={this.selectItem} classNamePrefix="select" placeholder={this.props.searchPlaceholder}/>
+        <LinkedCategoryInput
+          catalog={this.props.catalog}
+          locale={this.props.locale}
+          itemType={this.props.itemType}
+          inputName={this.props.linkedCategoryInputName}
+          selectedChoiceSet={this.state.selectedItem.value}
+          selectedCategory={this.state.selectedCategory}
+          updateSelectCondition={this.updateSelectCondition}
+        />
       </div>
     );
   }
@@ -211,7 +229,7 @@ class ChoiceSetSearch extends Component {
         </div>
         { (this.state.selectedCategory !== '' && this.state.selectedItem.data.length !== 0) &&
         <div className="row component-search-row">
-          <div className="align-self-center col-md-6">{ this.renderLinkedCategoryElement() }</div>
+          <div className="col-md-offset-2 col-md-6">{ this.renderLinkedCategoryElement() }</div>
         </div>
         }
       </div>
