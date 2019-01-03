@@ -8,15 +8,6 @@
           itemType: field.related_item_type.slug,
           field: field.slug,
           locale: I18n.locale,
-<<<<<<< Updated upstream
-          inputName: "advanced_search[criteria][#{field.uuid}][0][default][exact]",
-          referenceFilterName: "advanced_search[criteria][#{field.uuid}][0][default][filter_field_slug]",
-          srcRef: "advanced_search_criteria_#{field.uuid}_0_default_exact",
-          itemTypeSearch: false,
-          selectConditionName: "advanced_search[criteria][#{field.uuid}][0][default][condition]",
-          selectCondition: field.search_conditions_as_hash,
-          fieldConditionName: "advanced_search[criteria][#{field.uuid}][0][default][field_condition]",
-=======
           inputName: "advanced_search[criteria][#{field.uuid}][0][exact]",
           referenceFilterName: "advanced_search[criteria][#{field.uuid}][0][filter_field_slug]",
           srcRef: "advanced_search_criteria_#{field.uuid}_0_exact",
@@ -24,7 +15,6 @@
           selectConditionName: "advanced_search[criteria][#{field.uuid}][0][condition]",
           selectCondition: field.search_conditions_as_hash,
           fieldConditionName: "advanced_search[criteria][#{field.uuid}][0][field_condition]",
->>>>>>> Stashed changes
           fieldConditionData: [
             {value: "and", key: "and"},
             {value: "or", key: "or"},
