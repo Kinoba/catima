@@ -19,6 +19,7 @@ Rails.application.routes.draw do
           get '/users' => 'users#index', as: 'users'
           get ':item_type' => 'items#index', as: 'items'
           get ':item_type_slug/:field_slug' => 'fields#index', as: 'fields'
+          get '/categories/:category_id/:field_slug' => 'fields#index', as: 'category_fields'
         end
       end
     end

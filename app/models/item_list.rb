@@ -43,12 +43,5 @@ class ItemList
       .includes(:item_type => :fields)
       .page(page)
       .per(per)
-
-      p "&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
-    p unpaginaged_items
-      .includes(:item_type)
-      .includes(:item_type => :fields)
-      .page(page)
-      .per(per)
   end
 end

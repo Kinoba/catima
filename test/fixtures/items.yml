@@ -47,8 +47,8 @@ one_author_empty_fields:
 
 one_author_stephen_king:
   catalog: one
-  creator: one_admin
-  updater: one_admin
+  creator: one_user
+  updater: one_user
   item_type: one_author
   data: {
       "one_author_name_uuid": "Stephen King",
@@ -81,6 +81,7 @@ one_author_very_old:
     "one_author_age_uuid": 2456,
     "one_author_name_uuid": "Very Old",
     "one_author_deceased_uuid": "1",
+    "one_author_email_uuid": "so@old.com",
     "one_author_rank_uuid": "2.12",
     "one_author_born_uuid": {"Y": 1947, "M": 11, "D": 11}
   }

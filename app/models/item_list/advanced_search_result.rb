@@ -26,7 +26,7 @@ class ItemList::AdvancedSearchResult < ItemList
 
   def unpaginaged_items
     original_scope = item_type.public_sorted_items
-    items = {
+    items_strategies = {
       "and" => [],
       "or" => [],
       "exclude" => []
@@ -38,25 +38,25 @@ class ItemList::AdvancedSearchResult < ItemList
       p strategy
       p criteria
       if %w[or exclude and].include?(criteria[:field_condition])
-        items[criteria[:field_condition]] << strategy.search(original_scope, criteria)
+        items_strategies[criteria[:field_condition]] << strategy.search(original_scope, criteria)
       end
     end
 
     # AND relations are grouped together as well as OR relations because we don't know
     # the order of the field condition.
     # e.g.: (a OR b) AND c is not the same as (a AND b) OR c
-    and_relations = items["and"].first
-    items["and"].drop(1).each do |relation|
+    and_relations = items_strategies["and"].first
+    items_strategies["and"].drop(1).each do |relation|
       and_relations = and_relations.merge(relation)
     end
 
-    or_relations = items["or"].first
-    items["or"].drop(1).each do |relation|
+    or_relations = items_strategies["or"].first
+    items_strategies["or"].drop(1).each do |relation|
       or_relations = or_relations.or(relation)
     end
 
-    exclude_relations = items["exclude"].first
-    items["exclude"].drop(1).each do |relation|
+    exclude_relations = items_strategies["exclude"].first
+    items_strategies["exclude"].drop(1).each do |relation|
       exclude_relations = exclude_relations.merge(relation)
     end
 
@@ -65,7 +65,7 @@ class ItemList::AdvancedSearchResult < ItemList
     p "FULL QUERY"
     # p and_relations.to_sql
     # p or_relations.to_sql
-    return and_relations.or(or_relations) unless or_relations.blank?
+    return and_relations.or(or_relations) if or_relations.present?
 
     and_relations
   end

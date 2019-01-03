@@ -16,15 +16,13 @@ class API::V2::FieldsController < ActionController::Base
 
   def index
     it = item_type
-    raise InvalidItemType, 'no item type provided' if it.nil?
-
-    field = find_field(it)
-    raise InvalidField, 'no field provided' if it.nil?
+    category = find_category
+    field = find_field(it, category)
 
     render(json:
       {
-        slug: it.slug,
-        name: it.name,
+        slug: it&.slug,
+        name: it&.name,
         search_placeholder: t("catalog_admin.items.reference_editor.reference_editor_search", locale: params[:locale]),
         filter_placeholder: t("catalog_admin.items.reference_editor.reference_editor_filter", locale: params[:locale]),
         # fields: it.fields.map do |fld|
@@ -57,10 +55,24 @@ class API::V2::FieldsController < ActionController::Base
     item_type
   end
 
-  def find_field(item_type)
+  def find_category
+    return nil if params[:category_id].blank?
+
+    category = catalog.categories.where(:id => params[:category_id]).first
+    raise InvalidItemType, "category not found: #{params[:category_id]}" if category.nil?
+
+    category
+  end
+
+  def find_field(item_type, category)
     return nil if params[:field_slug].blank?
 
-    field = item_type.fields.find_by(:slug => params[:field_slug])
+    if category.blank?
+      field = item_type.fields.find_by(:slug => params[:field_slug])
+    else
+      field = category.fields.find_by(:slug => params[:field_slug])
+    end
+
     raise InvalidField, "field not found: #{params[:field_slug]}" if field.nil?
 
     field
