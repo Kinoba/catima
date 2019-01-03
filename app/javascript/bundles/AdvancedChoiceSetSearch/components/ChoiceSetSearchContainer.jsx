@@ -27,6 +27,7 @@ class ChoiceSetSearchContainer extends Component {
       itemType: this.props.itemType,
       label: this.props.label,
       items: this.props.items,
+      categoryInputName: this.props.categoryInputName,
       locale: this.props.locale,
       searchPlaceholder: this.props.searchPlaceholder,
       srcId: this._buildSrcId(id),
@@ -56,6 +57,7 @@ class ChoiceSetSearchContainer extends Component {
       itemType: this.props.itemType,
       label: this.props.label,
       items: this.props.items,
+      categoryInputName: this.props.categoryInputName,
       locale: this.props.locale,
       searchPlaceholder: this.props.searchPlaceholder,
       srcId: this._buildSrcId(id),
@@ -136,6 +138,7 @@ class ChoiceSetSearchContainer extends Component {
       itemType={item.itemType}
       label={item.label}
       items={item.items}
+      categoryInputName={item.categoryInputName}
       locale={item.locale}
       inputName={item.inputName}
       searchPlaceholder={item.searchPlaceholder}

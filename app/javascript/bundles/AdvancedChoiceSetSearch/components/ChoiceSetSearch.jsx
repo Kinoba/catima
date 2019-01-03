@@ -10,6 +10,7 @@ class ChoiceSetSearch extends Component {
     this.state = {
       selectedCondition: '',
       selectedFieldCondition: '',
+      selectedCategory: '',
       selectedItem: [],
       disabled: false,
       hiddenInputValue: []
@@ -20,6 +21,7 @@ class ChoiceSetSearch extends Component {
     this.selectItem = this._selectItem.bind(this);
     this.selectCondition = this._selectCondition.bind(this);
     this.selectFieldCondition = this._selectFieldCondition.bind(this);
+    this.selectCategory = this._selectCategory.bind(this);
     this.addComponent = this._addComponent.bind(this);
     this.deleteComponent = this._deleteComponent.bind(this);
   }
@@ -40,6 +42,9 @@ class ChoiceSetSearch extends Component {
   _selectItem(item, event){
     if(typeof event === 'undefined' || event.action !== "pop-value" || !this.props.req) {
       if(typeof item !== 'undefined') {
+        if(item.data.length === 0) {
+          this.setState({ selectedCategory: '' });
+        }
         this.setState({ selectedItem: item }, () => this._save());
       } else {
         this.setState({ selectedItem: [] }, () => this._save());
@@ -57,6 +62,20 @@ class ChoiceSetSearch extends Component {
     }
   }
 
+  _selectCategory(item, event){
+    if(item !== null) {
+      if(typeof event === 'undefined' || event.action !== "pop-value" || !this.props.req) {
+        if(typeof event !== 'undefined') {
+          this.setState({ selectedCategory: item.value });
+        } else {
+          this.setState({ selectedCategory: '' });
+        }
+      }
+    } else {
+      this.setState({ selectedCategory: '' });
+    }
+  }
+
   _selectFieldCondition(event){
     if(typeof event === 'undefined' || event.action !== "pop-value" || !this.props.req) {
       if(typeof event !== 'undefined') {
@@ -65,6 +84,19 @@ class ChoiceSetSearch extends Component {
         this.setState({ selectedFieldCondition: '' });
       }
     }
+  }
+
+  _getCategoryOptions(){
+    var optionsList = [];
+    optionsList = this.state.selectedItem.data.map(item =>
+      this._getJSONCategory(item)
+    );
+
+    return optionsList;
+  }
+
+  _getJSONCategory(item) {
+    return {value: item.slug, label: item.name_translations['name_' + this.props.locale], key: item.id};
   }
 
   _getItemOptions(){
@@ -77,6 +109,9 @@ class ChoiceSetSearch extends Component {
   }
 
   _getJSONItem(item) {
+    if(typeof item.category_data === 'undefined') {
+      item.category_data = [];
+    }
     return {value: item.key, label: item.value, data: item.category_data};
   }
 
@@ -118,56 +153,67 @@ class ChoiceSetSearch extends Component {
 
   renderChoiceSetItemCategory(){
     return (
-      <select className="form-control filter-condition" name={this.props.fieldConditionName} value={this.state.selectedFieldCondition} onChange={this.selectFieldCondition}>
-      { this.state.selectedItem.data.map((item) => {
-        return <option key={item.id} value={item.slug}>{item.name_translations['name_' + this.props.locale]}</option>
-      })}
-      </select>
+        <ReactSelect name={this.props.categoryInputName} options={this._getCategoryOptions()} className="basic-multi-select" onChange={this.selectCategory} classNamePrefix="select" placeholder={this.props.searchPlaceholder} isClearable={true}/>
+    );
+  }
+
+  renderLinkedCategoryElement(){
+    return (
+      <div>
+        <ReactSelect id={this.choiceSetId} name={this.props.inputName} options={this._getItemOptions()} className="basic-multi-select" onChange={this.selectItem} classNamePrefix="select" placeholder={this.props.searchPlaceholder}/>
+      </div>
     );
   }
 
   render() {
     return (
-      <div className="choiceset-search-container">
-        <div className="col-md-2">
-            { this.renderFieldConditionElement() }
-        </div>
-        { ((this.state.selectedItem.length === 0) || ((typeof this.state.selectedItem.data) === 'undefined')) &&
-        <div className="col-md-5">
-            { this.renderChoiceSetElement() }
-        </div>
-        }
-        { (this.state.selectedItem.length !== 0) && (typeof this.state.selectedItem.data) !== 'undefined' &&
-        <div>
-          <div className="col-md-3">
-              { this.renderChoiceSetElement() }
-          </div>
+      <div className="col-md-12 choiceset-search-container">
+        <div className="row component-search-row">
           <div className="col-md-2">
-            { this.renderChoiceSetItemCategory() }
+              { this.renderFieldConditionElement() }
+          </div>
+          <div>
+            <div className="col-md-3">
+                { this.renderChoiceSetElement() }
+            </div>
+            { (this.state.selectedItem.length !== 0 && this.state.selectedItem.data.length !== 0) &&
+              <div className="col-md-2">
+                { this.renderChoiceSetItemCategory() }
+              </div>
+            }
+            { (this.state.selectedItem.length === 0 || this.state.selectedItem.data.length === 0) &&
+              <div className="col-md-2">
+                <ReactSelect name={this.props.categoryInputName} options={[]} className="basic-multi-select" onChange={this.selectCategory} classNamePrefix="select" placeholder={this.props.searchPlaceholder} isClearable={true} isDisabled={true}/>
+              </div>
+            }
+          </div>
+          { (this.props.itemId === this.props.componentList[0].itemId && this.props.componentList.length === 1) &&
+          <div className="col-md-1 icon-container">
+            <a type="button" onClick={this.addComponent}><i className="fa fa-plus"></i></a>
+          </div>
+          }
+          { (((this.props.itemId !== this.props.componentList[0].itemId) && (this.props.itemId !== this.props.componentList[this.props.componentList.length - 1].itemId)) || (this.props.itemId === this.props.componentList[0].itemId && this.props.componentList.length > 1)) &&
+          <div className="col-md-1 icon-container">
+            <a type="button" onClick={this.deleteComponent}><i className="fa fa-trash"></i></a>
+          </div>
+          }
+          { ((this.props.itemId === this.props.componentList[this.props.componentList.length - 1].itemId) && (this.props.itemId !== this.props.componentList[0].itemId)) &&
+          <div className="col-md-1">
+            <div className="row">
+              <div className="col-md-12"><a type="button" onClick={this.addComponent}><i className="fa fa-plus"></i></a></div>
+              <div className="col-md-12"><a type="button" onClick={this.deleteComponent}><i className="fa fa-trash"></i></a></div>
+            </div>
+          </div>
+          }
+          <div className="col-md-4">
+            { this.renderSelectConditionElement() }
           </div>
         </div>
-        }
-        { (this.props.itemId === this.props.componentList[0].itemId && this.props.componentList.length === 1) &&
-        <div className="col-md-1 icon-container">
-          <a type="button" onClick={this.addComponent}><i className="fa fa-plus"></i></a>
+        { (this.state.selectedCategory !== '' && this.state.selectedItem.data.length !== 0) &&
+        <div className="row component-search-row">
+          <div className="align-self-center col-md-6">{ this.renderLinkedCategoryElement() }</div>
         </div>
         }
-        { (((this.props.itemId !== this.props.componentList[0].itemId) && (this.props.itemId !== this.props.componentList[this.props.componentList.length - 1].itemId)) || (this.props.itemId === this.props.componentList[0].itemId && this.props.componentList.length > 1)) &&
-        <div className="col-md-1 icon-container">
-          <a type="button" onClick={this.deleteComponent}><i className="fa fa-trash"></i></a>
-        </div>
-        }
-        { ((this.props.itemId === this.props.componentList[this.props.componentList.length - 1].itemId) && (this.props.itemId !== this.props.componentList[0].itemId)) &&
-        <div className="col-md-1">
-          <div className="row">
-            <div className="col-md-12"><a type="button" onClick={this.addComponent}><i className="fa fa-plus"></i></a></div>
-            <div className="col-md-12"><a type="button" onClick={this.deleteComponent}><i className="fa fa-trash"></i></a></div>
-          </div>
-        </div>
-        }
-        <div className="col-md-4">
-          { this.renderSelectConditionElement() }
-        </div>
       </div>
     );
   }

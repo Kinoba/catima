@@ -4,9 +4,10 @@
       <%= react_component('ChoiceSetSearchContainer',
         props: {
           catalog: field.catalog.slug,
-          itemType: 'book',
+          itemType: field.item_type,
           label: t(".any"),
           items: field.search_data_as_hash,
+          categoryInputName: "advanced_search[criteria][#{field.uuid}][0][category]",
           locale: I18n.locale,
           searchPlaceholder: 'Search...',
           srcId: "advanced_search_criteria_#{field.uuid}_0_id",
