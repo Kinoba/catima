@@ -16,6 +16,8 @@
           startDateInputName: "advanced_search[criteria][#{field.uuid}][start][exact]",
           endDateInputName: "advanced_search[criteria][#{field.uuid}][end][exact]",
           format: field.format,
+          inputStart: json_hidden_field_id(f, field),
+          inputEnd: json_hidden_field_id(f, field),
           selectConditionName: "advanced_search[criteria][#{field.uuid}][condition]",
           selectCondition: field.search_conditions_as_hash
         },

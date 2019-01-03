@@ -1,10 +1,6 @@
 import 'es6-shim';
 import PropTypes from 'prop-types';
 import React from 'react';
-import ReactDOM from 'react-dom';
-import $ from 'jquery';
-import moment from 'moment';
-import 'eonasdan-bootstrap-datetimepicker';
 
 class DateTimeInput extends React.Component {
 
@@ -18,10 +14,7 @@ class DateTimeInput extends React.Component {
 
   constructor(props){
     super(props);
-    this.state = {
-      disabled: false,
-      selectedDate: ''
-    };
+    this.state = {};
     const date = this.getData();
     const granularity = this.getFieldOptions().format;
     for (let i in granularity){
@@ -34,68 +27,12 @@ class DateTimeInput extends React.Component {
     this.handleChangeHours = this._handleChangeHours.bind(this);
     this.handleChangeMinutes = this._handleChangeMinutes.bind(this);
     this.handleChangeSeconds = this._handleChangeSeconds.bind(this);
-    this.styleMarginRight = '';
 
-    if(document.querySelector(this.props.input) !== null) {
-      this.isRequired = (document.querySelector(this.props.input).getAttribute('data-field-required') == 'true');
-    }
-
-    this.selectDate = this._selectDate.bind(this);
+    this.isRequired = (document.querySelector(this.props.input).getAttribute('data-field-required') == 'true')
   }
 
   componentDidMount() {
-    this._initDatePicker();
     if (jQuery.isEmptyObject(this.getData())) return this.initData(DateTimeInput.defaultValues, this.getFieldOptions().format);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.disabled !== this.state.disabled) {
-      this.setState({ disabled: nextProps.disabled });
-    }
-  }
-
-  _initDatePicker() {
-    if(typeof this.props.datepicker !== 'undefined' && this.props.datepicker) {
-      const node = ReactDOM.findDOMNode(this);
-      const dateInputElements = node.querySelectorAll('.form-control');
-
-      if(dateInputElements.length > 3) {
-        this.styleMarginRight = ' margin-right';
-      }
-
-      $(this.refs.hiddenInput).datetimepicker({
-        format: this.getCurrentFormat(),
-        locale: this.props.locale
-      });
-
-      $(this.refs.hiddenInput).datetimepicker().on('dp.change', (event) => this._onDatepickerChangerDate(event));
-
-      dateInputElements.forEach((element, index) => {
-        element.addEventListener('focus', () => {
-          $(this.refs.hiddenInput).focus();
-        });
-      });
-    }
-  }
-
-  _onDatepickerChangerDate(data) {
-    if(data.date !== false) {
-      this.setState({selectedDate: data.date});
-      this.updateData({ Y: data.date.year(), M: (data.date.month() + 1), D: data.date.date(), h: data.date.hour(), m: data.date.minute(), s: data.date.second()});
-    } else {
-      this.setState({selectedDate: ''});
-      this.updateData({ Y: '', M: '', D: '', h: '', m: '', s: ''});
-    }
-  }
-
-  _selectDate(event){
-    if(typeof event === 'undefined' || event.action !== "pop-value" || !this.props.req) {
-      if(typeof event !== 'undefined') {
-        this.setState({ selectedDate: event.target.value });
-      } else {
-        this.setState({ selectedDate: '' });
-      }
-    }
   }
 
   _handleChangeDay(e){
@@ -177,7 +114,7 @@ class DateTimeInput extends React.Component {
   getAllowedFormats() {
     const granularity = this.getFieldOptions().format;
     return DateTimeInput.types.filter(obj => {
-      if (granularity.includes(obj) || granularity == obj) return obj;
+        if (granularity.includes(obj) || granularity == obj) return obj;
     });
   }
 
@@ -206,51 +143,48 @@ class DateTimeInput extends React.Component {
     return (
       <div>
         <div className="dateTimeInput rails-bootstrap-forms-datetime-select">
-          <div className="row hidden-datepicker">
-            <input type="text" ref="hiddenInput" value={this.state.selectedDate} name={this.props.inputName} onChange={this.selectDate}/>
-          </div>
           {fmt.includes('D') ? (
-            <input  style={errorStl} type="number" min="0" max="31" className="input-2 form-control" value={this.state.D} onChange={this.handleChangeDay} disabled={this.state.disabled} />
-          ) : null
+              <input  style={errorStl} type="number" min="0" max="31" className="input-2 form-control" value={this.state.D} onChange={this.handleChangeDay} />
+            ) : null
           }
           {fmt.includes('M') ? (
-            <select  style={errorStl} className="form-control" value={this.state.M} onChange={this.handleChangeMonth} disabled={this.state.disabled}>
-            <option value=""></option>
-            <option value="1">January</option>
-            <option value="2">February</option>
-            <option value="3">March</option>
-            <option value="4">April</option>
-            <option value="5">May</option>
-            <option value="6">June</option>
-            <option value="7">July</option>
-            <option value="8">August</option>
-            <option value="9">September</option>
-            <option value="10">October</option>
-            <option value="11">November</option>
-            <option value="12">December</option>
+            <select  style={errorStl} className="form-control" value={this.state.M} onChange={this.handleChangeMonth}>
+              <option value=""></option>
+              <option value="1">January</option>
+              <option value="2">February</option>
+              <option value="3">March</option>
+              <option value="4">April</option>
+              <option value="5">May</option>
+              <option value="6">June</option>
+              <option value="7">July</option>
+              <option value="8">August</option>
+              <option value="9">September</option>
+              <option value="10">October</option>
+              <option value="11">November</option>
+              <option value="12">December</option>
             </select>) : null
           }
           {fmt.includes('Y') ? (
-            <input  style={errorStl} className={'input-4 form-control' + this.styleMarginRight} value={this.state.Y} onChange={this.handleChangeYear} disabled={this.state.disabled} />
+              <input  style={errorStl} className="input-4 margin-right form-control" value={this.state.Y} onChange={this.handleChangeYear} />
           ) : null
           }
           {fmt.includes('h') ? (
-            <input  style={errorStl} min="0" max="23" type="number" className="input-2 form-control" value={this.state.h} onChange={this.handleChangeHours} disabled={this.state.disabled} />
-          ) : null
+              <input  style={errorStl} min="0" max="23" type="number" className="input-2 form-control" value={this.state.h} onChange={this.handleChangeHours} />
+            ) : null
           }
           {fmt.includes('m') ? (
-            <input  style={errorStl} min="0" max="59" type="number" className="input-2 form-control" value={this.state.m} onChange={this.handleChangeMinutes} disabled={this.state.disabled} />
-          ) : null
+              <input  style={errorStl} min="0" max="59" type="number" className="input-2 form-control" value={this.state.m} onChange={this.handleChangeMinutes} />
+            ) : null
           }
           {fmt.includes('s') ? (
-            <input  style={errorStl} min="0" max="59" type="number" className="input-2 form-control" value={this.state.s} onChange={this.handleChangeSeconds} disabled={this.state.disabled} />
-          ) : null
+              <input  style={errorStl} min="0" max="59" type="number" className="input-2 form-control" value={this.state.s} onChange={this.handleChangeSeconds} />
+            ) : null
           }
         </div>
         <span className="error helptext">{errorMsg}</span>
       </div>
-);
-}
+    );
+  }
 
 };
 
