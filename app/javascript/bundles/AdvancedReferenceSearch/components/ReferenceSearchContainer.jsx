@@ -75,10 +75,10 @@ class ReferenceSearchContainer extends Component {
 
   _deleteComponent(itemId) {
     var componentsList = this.state.componentsList;
-
+    
     componentsList.forEach((ref, index) => {
       if(Object.keys(ref).length !== 0 && ref.itemId === itemId) {
-        componentsList[index] = {};
+        componentsList.splice(index, 1);
       }
     });
 

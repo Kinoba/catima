@@ -86,7 +86,7 @@ class ChoiceSetSearchContainer extends Component {
 
     componentsList.forEach((ref, index) => {
       if(Object.keys(ref).length !== 0 && ref.itemId === itemId) {
-        componentsList.splice(componentsList[index], 1);
+        componentsList.splice(index, 1);
       }
     });
 
