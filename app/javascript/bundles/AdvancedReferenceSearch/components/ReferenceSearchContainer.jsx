@@ -7,11 +7,11 @@ class ReferenceSearchContainer extends Component {
 
     this.state = {
       componentsList: [],
-      inputName: this.props.inputName.split("[default]"),
-      referenceFilterName: this.props.referenceFilterName.split("[default]"),
-      srcRef: this.props.srcRef.split("_default_"),
-      selectConditionName: this.props.selectConditionName.split("[default]"),
-      fieldConditionName: this.props.fieldConditionName.split("[default]")
+      inputName: this.props.inputName.split("[0]"),
+      referenceFilterName: this.props.referenceFilterName.split("[0]"),
+      srcRef: this.props.srcRef.split("_0_"),
+      selectConditionName: this.props.selectConditionName.split("[0]"),
+      fieldConditionName: this.props.fieldConditionName.split("[0]")
     };
 
     this.addComponent = this._addComponent.bind(this);
@@ -28,13 +28,13 @@ class ReferenceSearchContainer extends Component {
       itemType: this.props.itemType,
       field: this.props.field,
       locale: this.props.locale,
-      inputName: this._buildInputName(),
-      referenceFilterName: this._buildReferenceFilterName(),
+      inputName: this._buildInputName(id),
+      referenceFilterName: this._buildReferenceFilterName(id),
       srcRef: this._buildSrcRef(id),
       itemTypeSearch: this.props.itemTypeSearch,
-      selectConditionName: this._buildSelectConditionName(),
+      selectConditionName: this._buildSelectConditionName(id),
       selectCondition: this.props.selectCondition,
-      fieldConditionName: this._buildFieldConditionName(),
+      fieldConditionName: this._buildFieldConditionName(id),
       fieldConditionData: this.props.fieldConditionData,
       addComponent: this.addComponent,
       deleteComponent: this.deleteComponent,
@@ -56,13 +56,13 @@ class ReferenceSearchContainer extends Component {
       itemType: this.props.itemType,
       field: this.props.field,
       locale: this.props.locale,
-      inputName: this._buildInputName(),
-      referenceFilterName: this._buildReferenceFilterName(),
-      srcRef: this._buildSrcRef(),
+      inputName: this._buildInputName(id),
+      referenceFilterName: this._buildReferenceFilterName(id),
+      srcRef: this._buildSrcRef(id),
       itemTypeSearch: this.props.itemTypeSearch,
-      selectConditionName: this._buildSelectConditionName(),
+      selectConditionName: this._buildSelectConditionName(id),
       selectCondition: this.props.selectCondition,
-      fieldConditionName: this._buildFieldConditionName(),
+      fieldConditionName: this._buildFieldConditionName(id),
       fieldConditionData: this.props.fieldConditionData,
       addComponent: this.addComponent,
       deleteComponent: this.deleteComponent,
@@ -78,99 +78,51 @@ class ReferenceSearchContainer extends Component {
 
     componentsList.forEach((ref, index) => {
       if(Object.keys(ref).length !== 0 && ref.itemId === itemId) {
-        componentsList.splice(componentsList[index], 1);
+        componentsList[index] = {};
       }
     });
 
     this.setState({componentsList: componentsList});
   }
 
-  _updateComponentName(id, itemId) {
-    const componentsList = this.state.componentsList;
-
-    if(typeof id !== 'undefined' && id !== null) {
-      componentsList.forEach((item) => {
-        if(item.itemId === itemId) {
-          item.srcId = this._buildSrcId(id);
-          item.srcRef = this._buildSrcRef(id);
-          item.selectConditionName = this._buildSelectConditionName(id);
-          item.inputName = this._buildInputName(id);
-          item.fieldConditionName = this._buildFieldConditionName(id);
-        }
-      });
-    } else {
-      componentsList.forEach((item) => {
-        if(item.itemId === itemId) {
-          item.srcId = this._buildSrcId();
-          item.srcRef = this._buildSrcRef();
-          item.selectConditionName = this._buildSelectConditionName();
-          item.inputName = this._buildInputName();
-          item.fieldConditionName = this._buildFieldConditionName();
-        }
-      });
-    }
-
-    this.setState({componentsList: componentsList});
-  }
-
   _buildInputName(id) {
-    if(typeof id !== 'undefined') {
       if(this.state.inputName.length === 2) {
         return this.state.inputName[0] + '[' + id + ']' + this.state.inputName[1];
       } else {
         return this.props.inputName;
       }
-    } else {
-      return this.state.inputName[0] + '[default]' + this.state.inputName[1];
-    }
   }
 
   _buildReferenceFilterName(id) {
-    if(typeof id !== 'undefined') {
       if(this.state.referenceFilterName.length === 2) {
         return this.state.referenceFilterName[0] + '[' + id + ']' + this.state.referenceFilterName[1];
       } else {
         return this.props.referenceFilterName;
       }
-    } else {
-      return this.state.referenceFilterName[0] + '[default]' + this.state.referenceFilterName[1];
-    }
   }
 
   _buildSrcRef(id) {
-    if(typeof id !== 'undefined') {
       if(this.state.srcRef.length === 2) {
         return this.state.srcRef[0] + '_' + id + '_' + this.state.srcRef[1];
       } else {
         return this.props.srcRef;
       }
-    } else {
-      return this.state.srcRef[0] + '_default_' + this.state.srcRef[1];
-    }
   }
 
   _buildSelectConditionName(id) {
-    if(typeof id !== 'undefined') {
       if(this.state.selectConditionName.length === 2) {
         return this.state.selectConditionName[0] + '[' + id + ']' + this.state.selectConditionName[1];
       } else {
         return this.props.selectConditionName;
       }
-    } else {
-      return this.state.selectConditionName[0] + '[default]' + this.state.srcRef[1];
-    }
   }
 
   _buildFieldConditionName(id) {
-    if(typeof id !== 'undefined') {
       if(this.state.fieldConditionName.length === 2) {
         return this.state.fieldConditionName[0] + '[' + id + ']' + this.state.fieldConditionName[1];
       } else {
         return this.props.fieldConditionName;
       }
-    } else {
-      return this.state.fieldConditionName[0] + '[default]' + this.state.srcRef[1];
-    }
   }
 
   renderComponent(item, index, list) {
