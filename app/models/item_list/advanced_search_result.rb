@@ -35,10 +35,21 @@ class ItemList::AdvancedSearchResult < ItemList
       # p "unpaginaged_items : #{scope.inspect}"
       criteria = field_criteria(strategy.field)
       p "°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°"
-      p strategy
+      # p strategy
       p criteria
+
+      # Simple fields
       if %w[or exclude and].include?(criteria[:field_condition])
         items_strategies[criteria[:field_condition]] << strategy.search(original_scope, criteria)
+      end
+
+      # React complex fields that can have multiple values
+      next if criteria["0"].blank?
+
+      criteria.keys.each do |key|
+        if %w[or exclude and].include?(criteria[key][:field_condition])
+          items_strategies[criteria[key][:field_condition]] << strategy.search(original_scope, criteria[key])
+        end
       end
     end
 

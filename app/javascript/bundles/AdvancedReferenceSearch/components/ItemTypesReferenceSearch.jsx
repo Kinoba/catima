@@ -177,7 +177,7 @@ class ItemTypesReferenceSearch extends Component {
                 locale={this.props.locale}
                 onChange={this.selectItem}
               />
-    } else if (this.state.inputType === 'Field::Email') {
+    } else if (this.state.inputType === 'Field::text') {
       return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} type="email" className="form-control"/>
     } else if (this.state.inputType === 'Field::Int' || this.state.inputType === 'Field::Decimal') {
       return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} type="number" className="form-control"/>

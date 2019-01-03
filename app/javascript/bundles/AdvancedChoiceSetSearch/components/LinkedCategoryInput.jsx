@@ -170,7 +170,7 @@ class LinkedCategoryInput extends Component {
                 onChange={this.selectItem}
               />
     } else if (this.state.inputType === 'Field::Email') {
-      return <input name={this.props.inputName} onChange={this.selectItem} type="email" className="form-control"/>
+      return <input name={this.props.inputName} onChange={this.selectItem} type="text" className="form-control"/>
     } else if (this.state.inputType === 'Field::Int' || this.state.inputType === 'Field::Decimal') {
       return <input name={this.props.inputName} onChange={this.selectItem} type="number" className="form-control"/>
     } else if (this.state.inputType === 'Field::URL') {

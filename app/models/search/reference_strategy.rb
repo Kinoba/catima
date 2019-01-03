@@ -8,8 +8,27 @@ class Search::ReferenceStrategy < Search::BaseStrategy
   end
 
   def search(scope, criteria)
+    p "__________________________________________________________________________________________"
+
     negate = criteria[:field_condition] == "exclude"
-    scope = search_data_matching_one_or_more(scope, criteria[:exact], negate) unless criteria[:filter_field_slug]
+
+
+    p criteria
+    p criteria[:exact]
+    # User searched by tag
+    if criteria[:filter_field_slug].blank?
+      criterias = criteria[:exact].split(',')
+
+      criteria[:exact] = []
+      criterias.each do |c|
+        criteria[:exact] << c
+      end
+
+
+      # criterias.each do |c|
+        scope = search_data_matching_all(scope, criteria[:exact], negate)
+      # end
+    end
 
     p "----------------------------------------------------------------------------------------------------------------------------------------"
     scope = search_in_ref_field(scope, criteria) if criteria[:filter_field_slug].present?

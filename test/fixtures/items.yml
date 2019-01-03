@@ -68,6 +68,9 @@ one_author_stephen_king:
       "one_author_language_uuid": <%= ActiveRecord::FixtureSet.identify(:one_spanish) %>,
       "one_author_editor_uuid": <%= ActiveRecord::FixtureSet.identify(:one_author_editor) %>,
       "one_author_collaborator_uuid": <%= ActiveRecord::FixtureSet.identify(:one_author_very_old) %>,
+      "one_author_other_collaborators_uuid": [
+        "<%= ActiveRecord::FixtureSet.identify(:one_author_very_old) %>"
+        ],
       "one_author_born_uuid": {"Y": 1947, "M": 9, "D": 21}
     }
   "search_data_en": "Steve"
@@ -83,6 +86,7 @@ one_author_very_old:
     "one_author_deceased_uuid": "1",
     "one_author_email_uuid": "so@old.com",
     "one_author_rank_uuid": "2.12",
+    "one_author_collaborator_uuid": <%= ActiveRecord::FixtureSet.identify(:one_author_very_young) %>,
     "one_author_born_uuid": {"Y": 1947, "M": 11, "D": 11}
   }
   "search_data_en": "too old"
@@ -92,7 +96,15 @@ one_author_very_young:
   creator: one_admin
   updater: one_admin
   item_type: one_author
-  data: { "one_author_age_uuid": 3, "one_author_name_uuid": "Very Young", "one_author_deceased_uuid": "0" }
+  data: {
+    "one_author_age_uuid": 3,
+    "one_author_name_uuid": "Very Young",
+    "one_author_deceased_uuid": "0",
+    "one_author_other_collaborators_uuid": [
+      "<%= ActiveRecord::FixtureSet.identify(:one_author_stephen_king) %>",
+      "<%= ActiveRecord::FixtureSet.identify(:one_author_very_old) %>"
+      ]
+    }
   "search_data_en": "too young to be old"
 
 one_book_theory_of_relativity:
