@@ -103,6 +103,7 @@ class CatalogAdmin::AdvancedSearchConfigurationsController < CatalogAdmin::BaseC
     params.require(:advanced_search_configuration).permit(
       :title,
       :description,
+      :search_type,
       :item_type,
       :field,
       :field_position,

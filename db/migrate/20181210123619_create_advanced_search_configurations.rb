@@ -7,6 +7,7 @@ class CreateAdvancedSearchConfigurations < ActiveRecord::Migration[5.2]
       t.jsonb :title_translations
       t.jsonb :description
       t.string :slug, index: true
+      t.string :search_type, default: "default"
       t.jsonb :fields, default: {}
 
       t.timestamps null: false

@@ -26,6 +26,9 @@ class ItemList::AdvancedSearchResult < ItemList
 
   def unpaginaged_items
     original_scope = item_type.public_sorted_items
+
+    return original_scope if criteria.blank?
+
     items_strategies = {
       "and" => [],
       "or" => [],
@@ -35,7 +38,7 @@ class ItemList::AdvancedSearchResult < ItemList
       # p "unpaginaged_items : #{scope.inspect}"
       criteria = field_criteria(strategy.field)
       p "°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°"
-      # p strategy
+      p strategy
       p criteria
 
       # Simple fields

@@ -25,7 +25,7 @@ module AdvancedSearchesHelper
   #
   def render_advanced_search_field(form, field, &block)
     model_name = field.partial_name
-    partial = "advanced_searches/#{model_name}_search_field"
+    partial = "advanced_searches/fields/#{model_name}_search_field"
     partial_rendered = ""
     content = form.fields_for(:criteria) do |f|
       f.fields_for(field.uuid) do |f|

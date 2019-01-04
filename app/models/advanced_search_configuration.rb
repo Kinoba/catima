@@ -10,6 +10,7 @@
 #  id                 :bigint(8)        not null, primary key
 #  item_type_id       :bigint(8)
 #  slug               :string
+#  search_type        :string
 #  title_translations :jsonb
 #  updated_at         :datetime         not null
 #
@@ -17,6 +18,11 @@
 # Note: This is the ActiveRecord model for storing advanced search configurations created by an admin
 #
 class AdvancedSearchConfiguration < ApplicationRecord
+  TYPES = {
+    "Default" => "default",
+    "Map" => "map"
+  }.freeze
+
   include HasTranslations
   include HasLocales
 
@@ -95,5 +101,15 @@ class AdvancedSearchConfiguration < ApplicationRecord
         position
       end
     end
+  end
+
+  def include_geographic_field?
+    return false if item_type.nil?
+
+    item_type.fields.each do |field|
+      return true if field.type == Field::TYPES["geometry"]
+    end
+
+    false
   end
 end

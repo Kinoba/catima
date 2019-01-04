@@ -12,7 +12,7 @@ class Search::BooleanStrategy < Search::BaseStrategy
   def exact_search(scope, exact_phrase, negate)
     return scope if exact_phrase.blank?
 
-    sql_operator = "#{negate ? '<>' : '='}"
+    sql_operator = negate ? '<>' : '='
     scope.where("#{data_field_expr} #{sql_operator} ?", exact_phrase.strip.to_s)
   end
 end

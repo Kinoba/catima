@@ -25,18 +25,6 @@ class API::V2::FieldsController < ActionController::Base
         name: it&.name,
         search_placeholder: t("catalog_admin.items.reference_editor.reference_editor_search", locale: params[:locale]),
         filter_placeholder: t("catalog_admin.items.reference_editor.reference_editor_filter", locale: params[:locale]),
-        # fields: it.fields.map do |fld|
-        #   {
-        #     slug: fld.slug,
-        #     name: fld.name,
-        #     type: fld.type,
-        #     multiple: fld.multiple,
-        #     primary: fld.primary,
-        #     display_in_list: fld.display_in_list,
-        #     human_readable: fld.human_readable?
-        #   }
-        # end,
-        # items: apply_sort(it.items).map { |itm| itm.describe([:default_display_name], [:requires_review, :uuid], true) },
         selectCondition: field.search_conditions_as_hash,
         inputType: field.type,
         inputData: field.search_data_as_hash,
