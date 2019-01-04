@@ -40,8 +40,6 @@ class DateTimeInput extends React.Component {
       this.isRequired = (document.querySelector(this.props.input).getAttribute('data-field-required') == 'true');
     }
 
-    console.log(this.state);
-
     this.selectDate = this._selectDate.bind(this);
   }
 
@@ -74,7 +72,7 @@ class DateTimeInput extends React.Component {
 
       dateInputElements.forEach((element, index) => {
         element.addEventListener('focus', () => {
-          $(this.refs['hiddenInput']).focus();
+          $(this.refs['hiddenInput']).data("DateTimePicker").show();
         });
       });
     }
@@ -247,7 +245,7 @@ class DateTimeInput extends React.Component {
             </select>) : null
           }
           {fmt.includes('Y') ? (
-            <input style={errorStl} className={'input-4 form-control' + this.styleMarginRight} value={this.state.Y} onChange={this.handleChangeYear} disabled={this.state.disabled} />
+            <input style={errorStl} type="number" className={'input-4 form-control' + this.styleMarginRight} value={this.state.Y} onChange={this.handleChangeYear} disabled={this.state.disabled} />
           ) : null
           }
           {fmt.includes('h') ? (
