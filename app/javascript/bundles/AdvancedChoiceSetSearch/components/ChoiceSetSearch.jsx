@@ -11,7 +11,7 @@ class ChoiceSetSearch extends Component {
     this.state = {
       selectedCondition: '',
       selectedFieldCondition: '',
-      selectedCategory: '',
+      selectedCategory: {},
       selectedItem: [],
       disabled: false,
       hiddenInputValue: []
@@ -45,7 +45,7 @@ class ChoiceSetSearch extends Component {
     if(typeof event === 'undefined' || event.action !== "pop-value" || !this.props.req) {
       if(typeof item !== 'undefined') {
         if(item.data.length === 0) {
-          this.setState({ selectedCategory: '' });
+          this.setState({ selectedCategory: {} });
         }
         this.setState({ selectedItem: item }, () => this._save());
       } else {
@@ -68,13 +68,13 @@ class ChoiceSetSearch extends Component {
     if(item !== null) {
       if(typeof event === 'undefined' || event.action !== "pop-value" || !this.props.req) {
         if(typeof event !== 'undefined') {
-          this.setState({ selectedCategory: item.value });
+          this.setState({ selectedCategory: item });
         } else {
-          this.setState({ selectedCategory: '' });
+          this.setState({ selectedCategory: {} });
         }
       }
     } else {
-      this.setState({ selectedCategory: '' });
+      this.setState({ selectedCategory: {} });
     }
   }
 
@@ -98,7 +98,7 @@ class ChoiceSetSearch extends Component {
   }
 
   _getJSONCategory(item) {
-    return {value: item.slug, label: item.name_translations['name_' + this.props.locale], key: item.id};
+    return {value: item.slug, label: item.name_translations['name_' + this.props.locale], key: item.id, choiceSetId: item.field_set_id};
   }
 
   _getItemOptions(){
@@ -175,7 +175,6 @@ class ChoiceSetSearch extends Component {
           locale={this.props.locale}
           itemType={this.props.itemType}
           inputName={this.props.linkedCategoryInputName}
-          selectedChoiceSet={this.state.selectedItem.value}
           selectedCategory={this.state.selectedCategory}
           updateSelectCondition={this.updateSelectCondition}
         />
@@ -227,7 +226,7 @@ class ChoiceSetSearch extends Component {
             { this.renderSelectConditionElement() }
           </div>
         </div>
-        { (this.state.selectedCategory !== '' && this.state.selectedItem.data.length !== 0) &&
+        { (Object.keys(this.state.selectedCategory).length !== 0 && this.state.selectedItem.data.length !== 0) &&
         <div className="row component-search-row">
           <div className="col-md-offset-2 col-md-6">{ this.renderLinkedCategoryElement() }</div>
         </div>
