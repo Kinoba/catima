@@ -11,6 +11,10 @@ class DateTimeSearch extends Component {
 
     this.state = {
       selectedCondition: '',
+      startDateInputName: this.props.startDateInputName,
+      endDateInputName: this.props.endDateInputName,
+      startDateInputNameArray: this.props.startDateInputName.split("[exact]"),
+      endDateInputNameArray: this.props.endDateInputName.split("[exact]"),
       disabled: false
     };
 
@@ -33,6 +37,14 @@ class DateTimeSearch extends Component {
     if(typeof nextProps.disableInputByCondition !== 'undefined') {
         this._updateDisableState(nextProps.disableInputByCondition);
     }
+  }
+
+  _buildInputNameCondition(inputName, condition) {
+      if(inputName.length === 2) {
+        return inputName[0] + '[' + condition + ']' + inputName[1];
+      } else {
+        return inputName;
+      }
   }
 
   _linkRangeDatepickers(ref1, ref2, disabled) {
@@ -63,9 +75,13 @@ class DateTimeSearch extends Component {
   _selectCondition(event){
     if(typeof event === 'undefined' || event.action !== "pop-value" || !this.props.req) {
       if(typeof event !== 'undefined') {
+        this.setState({ startDateInputName: this._buildInputNameCondition(this.state.startDateInputNameArray, event.target.value)});
+        this.setState({ endDateInputName: this._buildInputNameCondition(this.state.endDateInputNameArray, event.target.value)});
         this.setState({ selectedCondition: event.target.value });
         this._updateDisableState(event.target.value);
       } else {
+        this.setState({ startDateInputName: this._buildInputNameCondition(this.state.startDateInputNameArray, 'exact')});
+        this.setState({ endDateInputName: this._buildInputNameCondition(this.state.endDateInputNameArray, 'exact')});
         this.setState({ selectedCondition: '' });
         this._updateDisableState('');
       }
@@ -86,7 +102,7 @@ class DateTimeSearch extends Component {
     return (
       <div className="row">
         <div className="col-md-7 d-inline-block">
-          <DateTimeInput input={this.props.inputStart} inputName={this.props.startDateInputName} ref={this.dateTimeSearchRef} datepicker={true} locale={this.props.locale} format={this.props.format}/>
+          <DateTimeInput input={this.props.inputStart} inputName={this.state.startDateInputName} ref={this.dateTimeSearchRef} datepicker={true} locale={this.props.locale} format={this.props.format}/>
           <a href={'#' + this.dateTimeCollapseId} data-toggle="collapse" aria-expanded="false" aria-controls={this.dateTimeCollapseId}><i className="fa fa-chevron-down"></i></a>
         </div>
         <div className="col-md-5 condition-input-container">
@@ -100,7 +116,7 @@ class DateTimeSearch extends Component {
     return (
       <div className="row">
         <div className="col-md-12 d-inline-block">
-          <DateTimeInput input={this.props.inputStart} inputName={this.props.startDateInputName} ref={this.dateTimeSearchRef} datepicker={true} locale={this.props.locale} format={this.props.format}/>
+          <DateTimeInput input={this.props.inputStart} inputName={this.state.startDateInputName} ref={this.dateTimeSearchRef} datepicker={true} locale={this.props.locale} format={this.props.format}/>
           <a href={'#' + this.dateTimeCollapseId} data-toggle="collapse" aria-expanded="false" aria-controls={this.dateTimeCollapseId}><i className="fa fa-chevron-down"></i></a>
         </div>
       </div>
@@ -125,7 +141,7 @@ class DateTimeSearch extends Component {
               <div className="col-md-12"><label>{ this.props.endLabel }</label></div>
             </div>
             <div className="row">
-              <div className="col-md-12"><DateTimeInput input={this.props.inputEnd} inputName={this.props.endDateInputName} disabled={this.state.disabled} ref={this.dateTimeSearchRef2} datepicker={true} locale={this.props.locale} format={this.props.format}/></div>
+              <div className="col-md-12"><DateTimeInput input={this.props.inputEnd} inputName={this.state.endDateInputName} disabled={this.state.disabled} ref={this.dateTimeSearchRef2} datepicker={true} locale={this.props.locale} format={this.props.format}/></div>
             </div>
           </div>
       </div>
