@@ -18,6 +18,7 @@ class ReferenceSearch extends Component {
       selectedFilter: null,
       itemTypeSearch: this.props.itemTypeSearch,
       selectCondition: this.props.selectCondition,
+      inputName: this.props.inputName.split("[exact]"),
       selectedCondition: '',
       selectedItem: [],
       searchPlaceholder: '',
