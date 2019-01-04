@@ -40,6 +40,8 @@ class DateTimeInput extends React.Component {
       this.isRequired = (document.querySelector(this.props.input).getAttribute('data-field-required') == 'true');
     }
 
+    console.log(this.state);
+
     this.selectDate = this._selectDate.bind(this);
   }
 
@@ -103,6 +105,7 @@ class DateTimeInput extends React.Component {
     if (v < 1 || v > 31) return;
     if (isNaN(v)) v = "";
     this.updateData({D: v});
+    this.updateDatePicker({D: v});
   }
 
   _handleChangeMonth(e){
@@ -110,12 +113,14 @@ class DateTimeInput extends React.Component {
     if (v < 1 || v > 12) return;
     if (isNaN(v)) v = "";
     this.updateData({M: v});
+    this.updateDatePicker({M: v});
   }
 
   _handleChangeYear(e){
     let v = parseInt(e.target.value);
     if (isNaN(v)) v = "";
     this.updateData({Y: v});
+    this.updateDatePicker({Y: v});
   }
 
   _handleChangeHours(e){
@@ -123,6 +128,7 @@ class DateTimeInput extends React.Component {
     if (v < 0 || v > 23) return;
     if (isNaN(v)) v = "";
     this.updateData({h: v});
+    this.updateDatePicker({h: v});
   }
 
   _handleChangeMinutes(e){
@@ -130,6 +136,7 @@ class DateTimeInput extends React.Component {
     if (v < 0 || v > 59) return;
     if (isNaN(v)) v = "";
     this.updateData({m: v});
+    this.updateDatePicker({m: v});
   }
 
   _handleChangeSeconds(e){
@@ -137,6 +144,7 @@ class DateTimeInput extends React.Component {
     if (v < 0 || v > 59) return;
     if (isNaN(v)) v = "";
     this.updateData({s: v});
+    this.updateDatePicker({s: v});
   }
 
   initData(data, format) {
@@ -152,6 +160,14 @@ class DateTimeInput extends React.Component {
     const d = this.getData();
     for (let k in h) d[k] = h[k];
     this.setData(d);
+  }
+
+  updateDatePicker(d) {
+    var newDate = {Y: this.state.Y, M: this.state.M, D: this.state.D, h: this.state.h, m: this.state.m, s: this.state.s};
+    Object.keys(d).forEach((index) => {
+      newDate[index] = d[index];
+    });
+    $(this.refs['hiddenInput']).data("DateTimePicker").date(new Date(newDate.Y, newDate.M - 1, newDate.D, newDate.h, newDate.m, newDate.s));
   }
 
   getData(){
