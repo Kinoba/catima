@@ -20,17 +20,30 @@ class SelectedReferenceSearch extends Component {
   }
 
   _save(){
-    if(this.state.selectedItem !== null && this.state.selectedItem.length !== 0) {
+    if(this.props.multi) {
+      //this.state.selectedItem is an array
+      if(this.state.selectedItem !== null && this.state.selectedItem.length !== 0) {
 
-      var idArray = [];
-      this.state.selectedItem.forEach((item) => {
-        idArray.push(item.value);
-      });
+        var idArray = [];
+        this.state.selectedItem.forEach((item) => {
+          idArray.push(item.value);
+        });
 
-      this.setState({ hiddenInputValue: idArray });
+        this.setState({ hiddenInputValue: idArray });
 
-      document.getElementsByName(this.props.inputName)[0].value = this.state.hiddenInputValue;
+        document.getElementsByName(this.props.inputName)[0].value = this.state.hiddenInputValue;
+      }
+    } else {
+      //this.state.selectedItem is a JSON
+      if(this.state.selectedItem !== null && Object.keys(this.state.selectedItem).length !== 0) {
+
+        this.setState({ hiddenInputValue: this.state.selectedItem.value });
+
+        document.getElementsByName(this.props.inputName)[0].value = this.state.hiddenInputValue;
+      }
     }
+
+
   }
 
   _selectItem(item, event){
