@@ -30,6 +30,7 @@ class ReferenceSearchContainer extends Component {
       locale: this.props.locale,
       inputName: this._buildInputName(id),
       referenceFilterName: this._buildReferenceFilterName(id),
+      multiple: this.props.multiple,
       srcRef: this._buildSrcRef(id),
       itemTypeSearch: this.props.itemTypeSearch,
       selectConditionName: this._buildSelectConditionName(id),
@@ -58,6 +59,7 @@ class ReferenceSearchContainer extends Component {
       locale: this.props.locale,
       inputName: this._buildInputName(id),
       referenceFilterName: this._buildReferenceFilterName(id),
+      multiple: this.props.multiple,
       srcRef: this._buildSrcRef(id),
       itemTypeSearch: this.props.itemTypeSearch,
       selectConditionName: this._buildSelectConditionName(id),
@@ -75,7 +77,7 @@ class ReferenceSearchContainer extends Component {
 
   _deleteComponent(itemId) {
     var componentsList = this.state.componentsList;
-    
+
     componentsList.forEach((ref, index) => {
       if(Object.keys(ref).length !== 0 && ref.itemId === itemId) {
         componentsList.splice(index, 1);
@@ -137,6 +139,7 @@ class ReferenceSearchContainer extends Component {
       locale={item.locale}
       inputName={item.inputName}
       referenceFilterName={item.referenceFilterName}
+      multiple={this.props.multiple}
       srcRef={item.srcRef}
       itemTypeSearch={item.itemTypeSearch}
       selectConditionName={item.selectConditionName}
