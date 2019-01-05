@@ -14,7 +14,8 @@ class ChoiceSetSearch extends Component {
       selectedCategory: {},
       selectedItem: [],
       disabled: false,
-      hiddenInputValue: []
+      hiddenInputValue: [],
+      inputName: this.props.inputName.split("[exact]")
     };
 
     this.choiceSetId = `${this.props.srcId}`;
@@ -37,8 +38,17 @@ class ChoiceSetSearch extends Component {
   _save(){
     if(this.state.selectedItem !== null) {
       this.setState({ hiddenInputValue: this.state.selectedItem });
-      document.getElementsByName(this.props.inputName)[0].value = this.state.hiddenInputValue;
+      document.getElementsByName(this._buildInputNameCondition(this.state.selectedCondition))[0].value = this.state.hiddenInputValue;
     }
+  }
+
+  _buildInputNameCondition(condition) {
+      if(this.state.inputName.length === 2) {
+        if(condition !== '') return this.state.inputName[0] + '[' + condition + ']' + this.state.inputName[1];
+        else return this.state.inputName[0] + '[default]' + this.state.inputName[1];
+      } else {
+        return this.props.inputName;
+      }
   }
 
   _selectItem(item, event){
@@ -156,7 +166,7 @@ class ChoiceSetSearch extends Component {
   renderChoiceSetElement(){
     return (
       <div>
-        <ReactSelect id={this.choiceSetId} name={this.props.inputName} options={this._getItemOptions()} className="basic-multi-select" onChange={this.selectItem} classNamePrefix="select" placeholder={this.props.searchPlaceholder}/>
+        <ReactSelect id={this.choiceSetId} name={this._buildInputNameCondition(this.state.selectedCondition)} options={this._getItemOptions()} className="basic-multi-select" onChange={this.selectItem} classNamePrefix="select" placeholder={this.props.searchPlaceholder}/>
       </div>
     );
   }
