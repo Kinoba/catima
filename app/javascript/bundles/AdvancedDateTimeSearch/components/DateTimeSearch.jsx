@@ -73,9 +73,11 @@ class DateTimeSearch extends Component {
     if(typeof value !== 'undefined') {
       if(value === 'exact' || value === 'after' || value === 'before') {
         this.setState({ disabled: true });
+        $('#' + this.dateTimeCollapseId).slideUp();
         this._linkRangeDatepickers(this.dateTimeSearchRef, this.dateTimeSearchRef2, true);
       } else {
         this.setState({ disabled: false });
+        $('#' + this.dateTimeCollapseId).slideDown();
         this._linkRangeDatepickers(this.dateTimeSearchRef, this.dateTimeSearchRef2, false);
       }
     }
