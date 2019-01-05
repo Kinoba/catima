@@ -16,17 +16,16 @@ class Search::DateTimeStrategy < Search::BaseStrategy
 
     return scope unless start_date_time.present? || end_date_time.present?
 
+    scope = append_where_date_is_set(scope)
+
     if start_date?(criteria)
       scope = exact_search(scope, start_date_time, negate) if field_condition == "exact"
       scope = inexact_search(scope, start_date_time, field_condition, negate) if %w[before after].include?(field_condition)
     end
 
     if end_date?(criteria)
-      # TODO: between
-      # TODO: outside
+      scope = interval_search(scope, start_date_time, end_date_time, field_condition, negate) if %w[outside between].include?(field_condition)
     end
-
-    scope = append_where_date_is_set(scope)
 
     scope
   end
@@ -53,17 +52,9 @@ class Search::DateTimeStrategy < Search::BaseStrategy
 
   def exact_search(scope, exact_date_time, negate)
     return scope if exact_date_time.blank?
-    p exact_date_time
-    p "NOOOOOOOOOOOOOOOOOOOOOOOOO?OOOO"
 
-    sql_operator = "#{'NOT' if negate} LIKE"
-    scope.where("#{convert_to_timestamp(concat_json_date)} #{sql_operator} to_timestamp(?, 'YYYY-MM-DD hh24:mi:ss')", exact_date_time)
-    # scope.where("items.data->'#{field.uuid}'->>'Y' #{sql_operator} ?", exact_date_time.strftime("%Y"))
-    #      .where("items.data->'#{field.uuid}'->>'M' #{sql_operator} ?", exact_date_time.strftime("%-m"))
-    #      .where("items.data->'#{field.uuid}'->>'D' #{sql_operator} ?", exact_date_time.strftime("%-d"))
-    #      .where("items.data->'#{field.uuid}'->>'h' #{sql_operator} ?", exact_date_time.strftime("%k"))
-    #      .where("items.data->'#{field.uuid}'->>'m' #{sql_operator} ?", exact_date_time.strftime("%M"))
-    #      .where("items.data->'#{field.uuid}'->>'s' #{sql_operator} ?", exact_date_time.strftime("%S"))
+    sql_operator = "#{'<>' if negate} ="
+    scope.where("#{convert_to_timestamp(concat_json_date)} #{sql_operator} to_timestamp(?, '#{field_date_format_to_sql_format}')", exact_date_time)
   end
 
   def inexact_search(scope, date_time, field_condition, negate)
@@ -76,68 +67,94 @@ class Search::DateTimeStrategy < Search::BaseStrategy
       sql_operator = negate ? "<" : ">"
     end
 
-    scope.where("#{convert_to_timestamp(concat_json_date)} #{sql_operator} to_timestamp(?, 'YYYY-MM-DD hh24:mi:ss')", date_time)
-
-    # scope = scope.where("items.data->'#{field.uuid}'->>'Y' #{like_sql_operator} ?", date_time.strftime("%Y"))
-    #      .where("items.data->'#{field.uuid}'->>'M' #{sql_operator} ?", date_time.strftime("%-m"))
-    # scope = scope.or(
-    #        base_scope.where("items.data->'#{field.uuid}'->>'Y' #{like_sql_operator} ?", date_time.strftime("%Y"))
-    #             .where("items.data->'#{field.uuid}'->>'M' #{like_sql_operator} ?", date_time.strftime("%-m"))
-    #             .where("items.data->'#{field.uuid}'->>'D' #{sql_operator} ?", date_time.strftime("%-d"))
-    #      )
-    #      scope = scope.or(
-    #        base_scope.where("items.data->'#{field.uuid}'->>'Y' #{like_sql_operator} ?", date_time.strftime("%Y"))
-    #             .where("items.data->'#{field.uuid}'->>'M' #{like_sql_operator} ?", date_time.strftime("%-m"))
-    #             .where("items.data->'#{field.uuid}'->>'D' #{like_sql_operator} ?", date_time.strftime("%-d"))
-    #             .where("items.data->'#{field.uuid}'->>'h' #{sql_operator} ?", date_time.strftime("%k"))
-    #      )
-    #      scope = scope.or(
-    #        base_scope.where("items.data->'#{field.uuid}'->>'Y' #{like_sql_operator} ?", date_time.strftime("%Y"))
-    #             .where("items.data->'#{field.uuid}'->>'M' #{like_sql_operator} ?", date_time.strftime("%-m"))
-    #             .where("items.data->'#{field.uuid}'->>'D' #{like_sql_operator} ?", date_time.strftime("%-d"))
-    #             .where("items.data->'#{field.uuid}'->>'h' #{like_sql_operator} ?", date_time.strftime("%k"))
-    #             .where("items.data->'#{field.uuid}'->>'m' #{sql_operator} ?", date_time.strftime("%M"))
-    #      )
-    #      scope = scope.or(
-    #        base_scope.where("items.data->'#{field.uuid}'->>'Y' #{like_sql_operator} ?", date_time.strftime("%Y"))
-    #             .where("items.data->'#{field.uuid}'->>'M' #{like_sql_operator} ?", date_time.strftime("%-m"))
-    #             .where("items.data->'#{field.uuid}'->>'D' #{like_sql_operator} ?", date_time.strftime("%-d"))
-    #             .where("items.data->'#{field.uuid}'->>'h' #{like_sql_operator} ?", date_time.strftime("%k"))
-    #             .where("items.data->'#{field.uuid}'->>'m' #{like_sql_operator} ?", date_time.strftime("%M"))
-    #             .where("items.data->'#{field.uuid}'->>'s' #{sql_operator} ?", date_time.strftime("%S"))
-    #      )
+    scope.where("#{convert_to_timestamp(concat_json_date)} #{sql_operator} to_timestamp(?, '#{field_date_format_to_sql_format}')", date_time)
   end
 
   def concat_json_date
     "CONCAT(
-      LPAD(items.data->'#{field.uuid}'->>'Y', 4, '0'),
+      CASE WHEN items.data->'#{field.uuid}'->>'Y' IS NULL THEN '0000' ELSE LPAD(items.data->'#{field.uuid}'->>'Y', 4, '0') END,
       '-',
-      LPAD(items.data->'#{field.uuid}'->>'M', 1, '0'),
+      CASE WHEN items.data->'#{field.uuid}'->>'M' IS NULL THEN '00' ELSE LPAD(items.data->'#{field.uuid}'->>'M', 1, '0') END,
       '-',
-      LPAD(items.data->'#{field.uuid}'->>'D', 1, '0'),
+      CASE WHEN items.data->'#{field.uuid}'->>'D' IS NULL THEN '00' ELSE LPAD(items.data->'#{field.uuid}'->>'D', 1, '0') END,
       ' ',
-      LPAD(items.data->'#{field.uuid}'->>'h', 1, '0'),
+      CASE WHEN items.data->'#{field.uuid}'->>'h' IS NULL THEN '00' ELSE LPAD(items.data->'#{field.uuid}'->>'h', 1, '0') END,
       ':',
-      LPAD(items.data->'#{field.uuid}'->>'m', 1, '0'),
+      CASE WHEN items.data->'#{field.uuid}'->>'m' IS NULL THEN '00' ELSE LPAD(items.data->'#{field.uuid}'->>'m', 1, '0') END,
       ':',
-      LPAD(items.data->'#{field.uuid}'->>'s', 1, '0')
+      CASE WHEN items.data->'#{field.uuid}'->>'s' IS NULL THEN '00' ELSE LPAD(items.data->'#{field.uuid}'->>'s', 1, '0') END
     )"
   end
 
   def convert_to_timestamp(datetime)
-    "to_timestamp(#{datetime}, 'YYYY-MM-DD hh24:mi:ss')"
+    "to_timestamp(#{datetime}, '#{field_date_format_to_sql_format}')"
+  end
+
+  def field_date_format_to_sql_format
+    case field.format
+    when "Y"
+      "YYYY"
+    when "M"
+      "MM"
+    when "h"
+      "hh24"
+    when "YM"
+      "YYYY-MM"
+    when "MD"
+      "MM-DD"
+    when "hm"
+      "hh24:mi"
+    when "YMD"
+      "YYYY-MM-DD"
+    when "hms"
+      "hh24:mi:ss"
+    when "MDh"
+      "MM-DD hh24"
+    when "YMDh"
+      "YYYY-MM-DD hh24"
+    when "MDhm"
+      "MM-DD hh24:mi"
+    when "YMDhm"
+      "YYYY-MM-DD hh24:mi"
+    when "MDhms"
+      "MM-DD hh24:mi:ss"
+    when "YMDhms"
+      "YYYY-MM-DD hh24:mi:ss"
+    end
+  end
+
+  def interval_search(scope, start_date_time, end_date_time, field_condition, negate)
+    return scope if start_date_time.blank? || end_date_time.blank?
+
+    field_condition = "outside" if negate && field_condition == "between"
+    field_condition = "between" if negate && field_condition == "outside"
+
+    where_scope = ->(*where_query) { field_condition == "outside" ? scope.where.not(where_query) : scope.where(where_query) }
+
+    where_scope.call(
+      "#{convert_to_timestamp(concat_json_date)} BETWEEN to_timestamp(?, 'YYYY-MM-DD hh24:mi:ss')
+      AND to_timestamp(?, 'YYYY-MM-DD hh24:mi:ss')",
+      start_date_time,
+      end_date_time
+    )
   end
 
   def append_where_date_is_set(scope)
     scope.where("
-      items.data->'#{field.uuid}'->>'Y' <> ''
-      OR items.data->'#{field.uuid}'->>'M' <> ''
-      OR items.data->'#{field.uuid}'->>'D' <> ''
-      OR items.data->'#{field.uuid}'->>'h' <> ''
-      OR items.data->'#{field.uuid}'->>'m' <> ''
-      OR items.data->'#{field.uuid}'->>'s' <> ''
+      items.data->'#{field.uuid}' IS NOT NULL
     ")
   end
+  #
+  # def append_where_date_is_set(scope)
+  #   scope.where("
+  #     (items.data->'#{field.uuid}'->>'Y' <> '' AND items.data->'#{field.uuid}'->>'Y' IS NOT NULL)
+  #     OR (items.data->'#{field.uuid}'->>'M' <> '' AND items.data->'#{field.uuid}'->>'M' IS NOT NULL)
+  #     OR (items.data->'#{field.uuid}'->>'D' <> '' AND items.data->'#{field.uuid}'->>'D' IS NOT NULL)
+  #     OR (items.data->'#{field.uuid}'->>'h' <> '' AND items.data->'#{field.uuid}'->>'h' IS NOT NULL)
+  #     OR (items.data->'#{field.uuid}'->>'m' <> '' AND items.data->'#{field.uuid}'->>'m' IS NOT NULL)
+  #     OR (items.data->'#{field.uuid}'->>'s' <> '' AND items.data->'#{field.uuid}'->>'s' IS NOT NULL)
+  #   ")
+  # end
 
   # Translates the datetime_select form submission from flat into a hash with
   # numeric keys. Normally ActiveRecord does this, but since we aren't an

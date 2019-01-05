@@ -1,15 +1,7 @@
 class Search::ChoiceSetStrategy < Search::BaseStrategy
   include Search::MultivaluedSearch
 
-  # For multiple choices, we permit all possible choices in the choice set
-  def permitted_keys
-    keys = []
-    field.choices.each do |choice|
-      keys << choice.id
-    end
-
-    keys
-  end
+  permit_criteria :exact, :all_words, :one_word, :less_than, :less_than_or_equal_to, :greater_than, :greater_than_or_equal_to, :field_condition, :filter_field_slug, :category_field, :category_criteria
 
   def keywords_for_index(item)
     choices = field.selected_choices(item)
@@ -25,7 +17,17 @@ class Search::ChoiceSetStrategy < Search::BaseStrategy
 
   def search(scope, criteria)
     negate = criteria[:field_condition] == "exclude"
-    search_data_matching_one_or_more(scope, criteria[:any], negate)
+
+    p "_________________________________________________________________"
+    p criteria
+    p criteria[:category_field]
+    p criteria[:category_criteria]
+
+    search_data_matching_one_or_more(scope, criteria[:exact], negate) unless criteria[:category_field].present?
+
+    scope = search_in_category_field(scope, criteria) if criteria[:category_field].present?
+
+    scope
   end
 
   private
@@ -35,5 +37,19 @@ class Search::ChoiceSetStrategy < Search::BaseStrategy
     return if name.blank?
 
     field.choices.short_named(name, locale).first
+  end
+
+  def search_in_category_field(scope, criteria)
+    category_field = Field.find_by(slug: criteria[:category_field])
+
+    criteria[:exact] = criteria[:category_criteria]
+    
+    klass = "Search::#{category_field.type.sub(/^Field::/, '')}Strategy"
+    strategy = klass.constantize.new(category_field, locale)
+    scope = strategy.search(
+      scope.joins("LEFT JOIN items ref_items ON items.data->>'#{field.uuid}' LIKE CONCAT('%\"', ref_items.id::text, '\"%')"),
+      criteria)
+
+    scope
   end
 end

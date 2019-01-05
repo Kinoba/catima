@@ -267,6 +267,14 @@ class Field < ApplicationRecord
     ]
   end
 
+  def search_field_conditions_as_hash
+    [
+      { :value => I18n.t("and"), :key => "and"},
+      { :value => I18n.t("or"), :key => "or"},
+      { :value => I18n.t("exclude"), :key => "exclude"}
+    ]
+  end
+
   def search_data_as_hash
   end
 

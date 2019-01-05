@@ -16,11 +16,7 @@
           selectConditionName: "advanced_search[criteria][#{field.uuid}][0][condition]",
           selectCondition: field.search_conditions_as_hash,
           fieldConditionName: "advanced_search[criteria][#{field.uuid}][0][field_condition]",
-          fieldConditionData: [
-            {value: "and", key: "and"},
-            {value: "or", key: "or"},
-            {value: "exclude", key: "exclude"},
-          ],
+          fieldConditionData: field.search_field_conditions_as_hash
         },
         prerender: false) %>
     </div>

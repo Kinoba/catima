@@ -1,7 +1,7 @@
 class Search::ReferenceStrategy < Search::BaseStrategy
   include Search::MultivaluedSearch
 
-  permit_criteria :exact, :all_words, :one_word, :less_than, :less_than_or_equal_to, :greater_than, :greater_than_or_equal_to, :field_condition, :filter_field_slug
+  permit_criteria :exact, :all_words, :one_word, :less_than, :less_than_or_equal_to, :greater_than, :greater_than_or_equal_to, :field_condition, :filter_field_slug, :condition
 
   def keywords_for_index(item)
     primary_text_for_keywords(item)
@@ -12,11 +12,10 @@ class Search::ReferenceStrategy < Search::BaseStrategy
 
     negate = criteria[:field_condition] == "exclude"
 
-
     p criteria
     p criteria[:exact]
     # User searched by tag
-    if criteria[:filter_field_slug].blank?
+    if criteria[:filter_field_slug].blank? && criteria[:exact].present?
       criterias = criteria[:exact].split(',')
 
       criteria[:exact] = []
@@ -24,10 +23,7 @@ class Search::ReferenceStrategy < Search::BaseStrategy
         criteria[:exact] << c
       end
 
-
-      # criterias.each do |c|
-        scope = search_data_matching_all(scope, criteria[:exact], negate)
-      # end
+      scope = search_data_matching_all(scope, criteria[:exact], negate)
     end
 
     p "----------------------------------------------------------------------------------------------------------------------------------------"
@@ -54,6 +50,8 @@ class Search::ReferenceStrategy < Search::BaseStrategy
   end
 
   def search_in_ref_field(scope, criteria)
+    p "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+    p criteria
     p criteria[:filter_field_slug]
     ref_field = Field.find_by(slug: criteria[:filter_field_slug])
     p ref_field

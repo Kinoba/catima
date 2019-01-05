@@ -3,7 +3,7 @@
     <%= render_and_or_exclude_select(f, field) %>
   </div>
   <div class="col-md-6">
-    <%= f.number_field("exact", :label => t(".contains_number"), :step => 'any') %>
+    <%= f.number_field("exact", :label => t("advanced_searches.decimal_search_field.contains_number"), :step => 'any') %>
     <%= f.hidden_field("__filter__", :hide_label => true, :class => 'template', :disabled => true) %>
   </div>
   <div class="col-md-4">

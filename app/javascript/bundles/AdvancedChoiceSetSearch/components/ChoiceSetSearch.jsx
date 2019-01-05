@@ -17,8 +17,8 @@ class ChoiceSetSearch extends Component {
       hiddenInputValue: []
     };
 
-    this.choiceSetId = `${this.props.srcId}-datetime`;
-    this.choiceSetRef = `${this.props.srcRef}-datetime`;
+    this.choiceSetId = `${this.props.srcId}`;
+    this.choiceSetRef = `${this.props.srcRef}`;
     this.selectItem = this._selectItem.bind(this);
     this.selectCondition = this._selectCondition.bind(this);
     this.selectFieldCondition = this._selectFieldCondition.bind(this);

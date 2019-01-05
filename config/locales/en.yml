@@ -53,6 +53,8 @@ en:
     choice_set_search_field:
       any: "is any of"
     date_time_search_field:
+      start_date: Start date
+      end_date: End date
       exact: exact date
       after: "after"
       before: "before"

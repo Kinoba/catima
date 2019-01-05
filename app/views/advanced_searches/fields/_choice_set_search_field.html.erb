@@ -7,8 +7,8 @@
           itemType: field.item_type.slug,
           label: t(".any"),
           items: field.search_data_as_hash,
-          categoryInputName: "advanced_search[criteria][#{field.uuid}][0][category]",
-          linkedCategoryInputName: "advanced_search[criteria][#{field.uuid}][0][linked_category]",
+          categoryInputName: "advanced_search[criteria][#{field.uuid}][0][category_field]",
+          linkedCategoryInputName: "advanced_search[criteria][#{field.uuid}][0][category_criteria]",
           locale: I18n.locale,
           searchPlaceholder: 'Search...',
           srcId: "advanced_search_criteria_#{field.uuid}_0_id",
@@ -18,11 +18,7 @@
           selectCondition: field.search_conditions_as_hash,
           multiple: true,
           fieldConditionName: "advanced_search[criteria][#{field.uuid}][0][field_condition]",
-          fieldConditionData: [
-            {value: "and", key: "and"},
-            {value: "or", key: "or"},
-            {value: "exclude", key: "exclude"},
-          ],
+          fieldConditionData: field.search_field_conditions_as_hash
         },
         prerender: false) %>
       </div>

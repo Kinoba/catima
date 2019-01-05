@@ -206,6 +206,7 @@ search_vehicle_honda_accord:
   data: {
     "search_vehicle_make_uuid": "Honda",
     "search_vehicle_model_uuid": "Accord",
+    "search_vehicle_style_uuid": "<%= ActiveRecord::FixtureSet.identify(:search_sedan) %>",
     "search_vehicle_doors_uuid": 5
     }
 
@@ -217,6 +218,7 @@ search_vehicle_toyota_prius:
   data: {
     "search_vehicle_make_uuid": "Toyota",
     "search_vehicle_model_uuid": "Prius",
+    "search_vehicle_style_uuid": "<%= ActiveRecord::FixtureSet.identify(:search_sedan) %>",
     "search_vehicle_doors_uuid": 3
     }
 
@@ -228,6 +230,7 @@ search_vehicle_toyota_highlander:
   data: {
     "search_vehicle_make_uuid": "Toyota",
     "search_vehicle_model_uuid": "Highlander",
+    "search_vehicle_style_uuid": "<%= ActiveRecord::FixtureSet.identify(:search_suv) %>",
     "search_vehicle_doors_uuid": 5
     }
 
@@ -239,6 +242,7 @@ search_vehicle_toyota_camry:
   data: {
     "search_vehicle_make_uuid": "Toyota",
     "search_vehicle_model_uuid": "Camry",
+    "search_vehicle_style_uuid": "<%= ActiveRecord::FixtureSet.identify(:search_sedan) %>",
     "search_vehicle_doors_uuid": 5
     }
 
@@ -250,6 +254,7 @@ search_vehicle_toyota_camry_hybrid:
   data: {
     "search_vehicle_make_uuid": "Toyota",
     "search_vehicle_model_uuid": "Camry Hybrid",
+    "search_vehicle_style_uuid": "<%= ActiveRecord::FixtureSet.identify(:search_sedan) %>",
     "search_vehicle_doors_uuid": 3
     }
 
