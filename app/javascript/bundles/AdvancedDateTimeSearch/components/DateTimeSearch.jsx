@@ -37,11 +37,20 @@ class DateTimeSearch extends Component {
     if(typeof nextProps.disableInputByCondition !== 'undefined') {
         this._updateDisableState(nextProps.disableInputByCondition);
     }
+
+    if (nextProps.startDateInputName !== this.state.startDateInputName) {
+      this.setState({ startDateInputName: nextProps.startDateInputName });
+    }
+
+    if (nextProps.endDateInputName !== this.state.endDateInputName) {
+      this.setState({ endDateInputName: nextProps.endDateInputName });
+    }
   }
 
   _buildInputNameCondition(inputName, condition) {
       if(inputName.length === 2) {
-        return inputName[0] + '[' + condition + ']' + inputName[1];
+        if (condition !== '') return inputName[0] + '[' + condition + ']' + inputName[1];
+        else return inputName[0] + '[default]' + inputName[1];
       } else {
         return inputName;
       }

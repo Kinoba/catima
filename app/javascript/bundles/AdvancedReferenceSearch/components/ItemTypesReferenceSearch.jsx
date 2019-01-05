@@ -19,12 +19,16 @@ class ItemTypesReferenceSearch extends Component {
 
     this.state = {
       isLoading: true,
+      inputName: this.props.inputName,
+      inputNameArray: [],
+      startDateInputName: '',
+      endDateInputName: '',
       inputType: 'Field::Text',
       inputData: null,
       inputOptions: null,
       selectedFilter: {},
       selectedItem: [],
-      selectCondition: [],
+      selectCondition: this.props.selectCondition,
       hiddenInputValue: []
     };
 
@@ -38,10 +42,23 @@ class ItemTypesReferenceSearch extends Component {
       this._getDataFromServer(nextProps.selectedFilter);
       this.setState({ selectedFilter: nextProps.selectedFilter });
     }
+
+    if (nextProps.inputName !== this.state.inputName) {
+      this._buildDateTimeInputNames(nextProps.inputName);
+      this.setState({ inputName: nextProps.inputName });
+    }
   }
 
   componentDidMount(){
     this._getDataFromServer();
+  }
+
+  _buildDateTimeInputNames(inputName) {
+    if(this.state.inputType === 'Field::DateTime') {
+      var endName = inputName.split(this.state.inputNameArray[0]);
+      this.setState({startDateInputName: this.state.inputNameArray[0] + '[start]' + endName[1]});
+      this.setState({endDateInputName: this.state.inputNameArray[0] + '[end]' + endName[1]});
+    }
   }
 
   _save(){
@@ -54,7 +71,7 @@ class ItemTypesReferenceSearch extends Component {
 
       this.setState({ hiddenInputValue: idArray });
 
-      document.getElementsByName(this.props.inputName)[0].value = this.state.hiddenInputValue;
+      document.getElementsByName(this.state.inputName)[0].value = this.state.hiddenInputValue;
     }
   }
 
@@ -90,6 +107,8 @@ class ItemTypesReferenceSearch extends Component {
       else this.setState({ inputData: res.data.inputData });
 
       this._updateSelectCondition(res.data.selectCondition);
+      this.setState({ inputNameArray: this.state.inputName.split('[' + res.data.selectCondition[0].key + ']')});
+      this._buildDateTimeInputNames(this.state.inputName);
       this.setState({ inputType: res.data.inputType });
       this.setState({ inputOptions: res.data.inputOptions });
       this.setState({ isLoading: false });
@@ -169,23 +188,26 @@ class ItemTypesReferenceSearch extends Component {
                 id={this.referenceSearchId}
                 selectCondition={[]}
                 disableInputByCondition={this.props.selectedCondition}
+                startDateInputName={this.state.startDateInputName}
+                endDateInputName={this.state.endDateInputName}
                 catalog={this.props.catalog}
                 itemType={this.props.itemType}
-                inputName={this.props.inputName}
+                inputStart='input1'
+                inputEnd='input2'
                 isRange={true}
                 format={this._getDateTimeFormatOption()}
                 locale={this.props.locale}
                 onChange={this.selectItem}
               />
     } else if (this.state.inputType === 'Field::text') {
-      return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} type="email" className="form-control"/>
+      return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.state.inputName} onChange={this.selectItem} type="email" className="form-control"/>
     } else if (this.state.inputType === 'Field::Int' || this.state.inputType === 'Field::Decimal') {
-      return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} type="number" className="form-control"/>
+      return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.state.inputName} onChange={this.selectItem} type="number" className="form-control"/>
     } else if (this.state.inputType === 'Field::URL') {
-      return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} type="url" className="form-control"/>
+      return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.state.inputName} onChange={this.selectItem} type="url" className="form-control"/>
     } else if ((this.state.inputType === 'Field::ChoiceSet' && !this._getChoiceSetMultipleOption()) || this.state.inputType === 'Field::Boolean') {
       return (
-        <select id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} className="form-control">
+        <select id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.state.inputName} onChange={this.selectItem} className="form-control">
           { this.state.inputData.map((item) => {
             return <option key={item.key}>{item.value}</option>
             })
@@ -194,10 +216,10 @@ class ItemTypesReferenceSearch extends Component {
       );
     } else if (this.state.inputType === 'Field::ChoiceSet' && this._getChoiceSetMultipleOption()) {
       return (
-        <ReactSelect id={this.referenceSearchId} name={this.props.inputName} isMulti options={this._getMultipleChoiceSetOptions()} className="basic-multi-select" onChange={this.selectItem} classNamePrefix="select" placeholder={this.props.searchPlaceholder}/>
+        <ReactSelect id={this.referenceSearchId} name={this.state.inputName} isMulti options={this._getMultipleChoiceSetOptions()} className="basic-multi-select" onChange={this.selectItem} classNamePrefix="select" placeholder={this.props.searchPlaceholder}/>
       );
     } else {
-      return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.props.inputName} onChange={this.selectItem} type="text" className="form-control"/>
+      return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.state.inputName} onChange={this.selectItem} type="text" className="form-control"/>
     }
 <<<<<<< HEAD
 =======

@@ -228,6 +228,7 @@ class ReferenceSearch extends Component {
                 fields={this.state.fields}
                 selectedFilter={this.state.selectedFilter}
                 selectedCondition={this.state.selectedCondition}
+                selectCondition={this.state.selectCondition}
                 itemType={this.props.itemType}
 =======
     if (this.props.itemTypeSearch)
