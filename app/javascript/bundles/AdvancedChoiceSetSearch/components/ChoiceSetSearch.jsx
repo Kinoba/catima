@@ -143,6 +143,14 @@ class ChoiceSetSearch extends Component {
     this.setState({ selectCondition: newVal });
   }
 
+  _getChoiceSetClassname() {
+    if(this.state.selectedItem.length === 0 || this.state.selectedItem.data.length === 0) {
+      return 'col-md-5';
+    } else {
+      return 'col-md-3';
+    }
+  }
+
   renderSelectConditionElement(){
     return (
       <select className="form-control filter-condition" name={this.props.selectConditionName} value={this.state.selectedCondition} onChange={this.selectCondition} disabled={this.state.selectedItem.length===0}>
@@ -200,17 +208,12 @@ class ChoiceSetSearch extends Component {
               { this.renderFieldConditionElement() }
           </div>
           <div>
-            <div className="col-md-3">
+            <div className={this._getChoiceSetClassname()}>
                 { this.renderChoiceSetElement() }
             </div>
             { (this.state.selectedItem.length !== 0 && this.state.selectedItem.data.length !== 0) &&
               <div className="col-md-2">
                 { this.renderChoiceSetItemCategory() }
-              </div>
-            }
-            { (this.state.selectedItem.length === 0 || this.state.selectedItem.data.length === 0) &&
-              <div className="col-md-2">
-                <ReactSelect name={this.props.categoryInputName} options={[]} className="basic-multi-select" onChange={this.selectCategory} classNamePrefix="select" placeholder={this.props.searchPlaceholder} isClearable={true} isDisabled={true}/>
               </div>
             }
           </div>
