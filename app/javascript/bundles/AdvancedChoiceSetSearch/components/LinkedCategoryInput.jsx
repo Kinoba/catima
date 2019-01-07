@@ -14,12 +14,17 @@ class LinkedCategoryInput extends Component {
 
     this.state = {
       isLoading: true,
+      inputName: this.props.inputName,
+      inputNameArray: [],
+      startDateInputName: '',
+      endDateInputName: '',
+      dateFormat: '',
       inputType: 'Field::Text',
       inputData: null,
       inputOptions: null,
-      selectedCategory: {},
+      selectedFilter: {},
       selectedItem: [],
-      selectCondition: [],
+      selectCondition: this.props.selectCondition,
       hiddenInputValue: []
     };
 
@@ -32,10 +37,23 @@ class LinkedCategoryInput extends Component {
       this._getDataFromServer(nextProps.selectedCategory);
       this.setState({ selectedCategory: nextProps.selectedCategory });
     }
+
+    if (nextProps.inputName !== this.state.inputName) {
+      this._buildDateTimeInputNames(nextProps.inputName);
+      this.setState({ inputName: nextProps.inputName });
+    }
   }
 
   componentDidMount(){
     this._getDataFromServer();
+  }
+
+  _buildDateTimeInputNames(inputName) {
+    if(this.state.inputType === 'Field::DateTime') {
+      var endName = inputName.split(this.state.inputNameArray[0]);
+      this.setState({startDateInputName: this.state.inputNameArray[0] + '[start]' + endName[1]});
+      this.setState({endDateInputName: this.state.inputNameArray[0] + '[end]' + endName[1]});
+    }
   }
 
   _save(){
@@ -68,14 +86,10 @@ class LinkedCategoryInput extends Component {
       retryDelay: 1000
     };
 
-    /*if (typeof selectedCategory !== 'undefined') {
+    if (typeof selectedCategory !== 'undefined') {
       this.props.selectedCategory.value = selectedCategory.value;
       this.props.selectedCategory.label = selectedCategory.label;
-    } else {
-      if (typeof this.props.field !== 'undefined') {
-        this.props.selectedCategory.value = this.props.field;
-      }
-    }*/
+    }
 
     axios.get(`/api/v2/${this.props.catalog}/${this.props.locale}/categories/${this.props.selectedCategory.choiceSetId}/${this.props.selectedCategory.value}`, config)
     .then(res => {
@@ -83,8 +97,11 @@ class LinkedCategoryInput extends Component {
       else this.setState({ inputData: res.data.inputData });
 
       this._updateSelectCondition(res.data.selectCondition);
-      this.setState({ inputType: res.data.inputType });
+      this.setState({ inputNameArray: this.state.inputName.split('[' + res.data.selectCondition[0].key + ']')});
+      this._buildDateTimeInputNames(this.state.inputName);
       this.setState({ inputOptions: res.data.inputOptions });
+      this._updateDateTimeFormatOption(res.data.inputOptions);
+      this.setState({ inputType: res.data.inputType });
       this.setState({ isLoading: false });
     });
 
@@ -119,10 +136,14 @@ class LinkedCategoryInput extends Component {
     this.setState({ selectCondition: array });
   }
 
-  _getDateTimeFormatOption() {
-    var formatOption = this._searchInArray(this.state.inputOptions, 'format');
-    if (formatOption === false) return false;
-    else return formatOption.format;
+  _updateDateTimeFormatOption(format) {
+    var formatOption = this._searchInArray(format, 'format');
+    if (formatOption === false) {
+      this.setState({dateFormat: ''});
+    }
+    else {
+      this.setState({dateFormat: formatOption.format});
+    }
   }
 
   _getChoiceSetMultipleOption() {
@@ -159,13 +180,17 @@ class LinkedCategoryInput extends Component {
     if (this.state.isLoading) return null;
     if (this.state.inputType === 'Field::DateTime') {
       return <DateTimeSearch
+                id={this.referenceSearchId}
                 selectCondition={[]}
                 disableInputByCondition={this.props.selectedCondition}
+                startDateInputName={this.state.startDateInputName}
+                endDateInputName={this.state.endDateInputName}
                 catalog={this.props.catalog}
                 itemType={this.props.itemType}
-                inputName={this.props.inputName}
+                inputStart='input1'
+                inputEnd='input2'
                 isRange={true}
-                format={this._getDateTimeFormatOption()}
+                format={this.state.dateFormat}
                 locale={this.props.locale}
                 onChange={this.selectItem}
               />

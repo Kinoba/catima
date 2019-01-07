@@ -10,6 +10,7 @@ class ChoiceSetSearch extends Component {
 
     this.state = {
       selectedCondition: '',
+      selectCondition: this.props.selectCondition,
       selectedFieldCondition: '',
       selectedCategory: {},
       selectedItem: [],
@@ -139,14 +140,13 @@ class ChoiceSetSearch extends Component {
     if(this.state.selectedCondition === '' && newVal.length !== this.state.selectCondition.length) {
       this.setState({selectedCondition: newVal[0].key});
     }
-
     this.setState({ selectCondition: newVal });
   }
 
   renderSelectConditionElement(){
     return (
       <select className="form-control filter-condition" name={this.props.selectConditionName} value={this.state.selectedCondition} onChange={this.selectCondition} disabled={this.state.selectedItem.length===0}>
-      { this.props.selectCondition.map((item) => {
+      { this.state.selectCondition.map((item) => {
         return <option key={item.key} value={item.key}>{item.value}</option>
       })}
       </select>
