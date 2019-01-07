@@ -23,9 +23,11 @@ class Search::ChoiceSetStrategy < Search::BaseStrategy
     p criteria[:category_field]
     p criteria[:category_criteria]
 
-    search_data_matching_one_or_more(scope, criteria[:exact], negate) unless criteria[:category_field].present?
-
-    scope = search_in_category_field(scope, criteria) if criteria[:category_field].present?
+    scope = if criteria[:category_field].present?
+              search_in_category_field(scope, criteria)
+            else
+              search_data_matching_one_or_more(scope, criteria[:exact], negate)
+            end
 
     scope
   end
@@ -43,7 +45,7 @@ class Search::ChoiceSetStrategy < Search::BaseStrategy
     category_field = Field.find_by(slug: criteria[:category_field])
 
     criteria[:exact] = criteria[:category_criteria]
-    
+
     klass = "Search::#{category_field.type.sub(/^Field::/, '')}Strategy"
     strategy = klass.constantize.new(category_field, locale)
     scope = strategy.search(

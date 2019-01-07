@@ -1,7 +1,7 @@
 class Search::ReferenceStrategy < Search::BaseStrategy
   include Search::MultivaluedSearch
 
-  permit_criteria :exact, :all_words, :one_word, :less_than, :less_than_or_equal_to, :greater_than, :greater_than_or_equal_to, :field_condition, :filter_field_slug, :condition
+  permit_criteria :exact, :all_words, :one_word, :less_than, :less_than_or_equal_to, :greater_than, :greater_than_or_equal_to, :field_condition, :filter_field_slug, :condition, :default
 
   def keywords_for_index(item)
     primary_text_for_keywords(item)
@@ -14,16 +14,17 @@ class Search::ReferenceStrategy < Search::BaseStrategy
 
     p criteria
     p criteria[:exact]
+    p criteria[:default]
     # User searched by tag
-    if criteria[:filter_field_slug].blank? && criteria[:exact].present?
-      criterias = criteria[:exact].split(',')
+    if criteria[:default].present?
+      criterias = criteria[:default].split(',')
 
-      criteria[:exact] = []
+      criteria[:default] = []
       criterias.each do |c|
-        criteria[:exact] << c
+        criteria[:default] << c
       end
 
-      scope = search_data_matching_all(scope, criteria[:exact], negate)
+      scope = search_data_matching_all(scope, criteria[:default], negate)
     end
 
     p "----------------------------------------------------------------------------------------------------------------------------------------"
@@ -58,7 +59,9 @@ class Search::ReferenceStrategy < Search::BaseStrategy
     klass = "Search::#{ref_field.type.sub(/^Field::/, '')}Strategy"
     strategy = klass.constantize.new(ref_field, locale)
     scope = strategy.search(
-      scope.joins("LEFT JOIN items ref_items ON items.data->>'#{field.uuid}' LIKE CONCAT('%\"', ref_items.id::text, '\"%')"),
+      scope.select('"parent_items".*')
+        .from("items parent_items")
+        .joins("LEFT JOIN items ON parent_items.data->>'#{field.uuid}' = items.id::text"),
       criteria)
     p strategy.inspect
     scope

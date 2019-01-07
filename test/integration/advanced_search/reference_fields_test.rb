@@ -20,6 +20,8 @@ class AdvancedSearch::ReferenceFieldTest < ActionDispatch::IntegrationTest
     click_on("Search")
 
     assert(page.has_selector?('h4', text: 'Stephen King'))
+    refute(page.has_selector?('h4', text: 'Very Old'))
+    refute(page.has_selector?('h4', text: 'Very Young'))
   end
 
   test "search for authors by multiple single tag reference field" do
@@ -129,5 +131,30 @@ class AdvancedSearch::ReferenceFieldTest < ActionDispatch::IntegrationTest
 
     refute(page.has_selector?('h4', text: 'Stephen King'))
     refute(page.has_selector?('h4', text: 'Very Young'))
+  end
+
+  test "search for authors by field of reference" do
+    visit("/one/en")
+    click_on("Advanced")
+
+    select("Author", :from => "advanced_search[item_type]")
+
+    within(".single-reference-filter", match: :first) do
+      find(".css-vj8t7z").click # Click on the filter input
+
+      within(".css-11unzgr") do # Within the filter list
+        find('div', text: "Email", match: :first).click
+      end
+    end
+
+    fill_in(
+      "advanced_search[criteria][one_author_collaborator_uuid][0][exact]",
+      :with => "so@old.com"
+    )
+
+    click_on("Search")
+
+    assert(page.has_selector?('h4', text: 'Stephen King'))
+    refute(page.has_selector?('h4', text: 'Very Old'))
   end
 end

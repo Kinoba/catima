@@ -76,6 +76,9 @@ class ItemList::AdvancedSearchResult < ItemList
 
     and_relations = and_relations.merge(exclude_relations) if exclude_relations.present?
 
+    p "and_relations presence --> #{and_relations.present?}"
+    p "exclude_relations presence --> #{exclude_relations.present?}"
+    p "or_relations presence --> #{or_relations.present?}"
     p "FULL QUERY"
     # p and_relations.to_sql
     # p or_relations.to_sql
