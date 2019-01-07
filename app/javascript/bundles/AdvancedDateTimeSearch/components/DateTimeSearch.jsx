@@ -129,25 +129,13 @@ class DateTimeSearch extends Component {
     );
   }
 
-  renderDateTimeConditionElement(){
-    return (
-      <div className="row">
-        <div className="col-md-8 d-inline-block">
-          <DateTimeInput input={this.props.inputStart} inputName={this.state.startDateInputName} ref={this.dateTimeSearchRef} datepicker={true} locale={this.props.locale} format={this.props.format}/>
-          <a href={'#' + this.dateTimeCollapseId} data-toggle="collapse" aria-expanded="false" aria-controls={this.dateTimeCollapseId}><i className="fa fa-chevron-down"></i></a>
-        </div>
-        <div className="col-md-4 condition-input-container">
-          { this.renderSelectConditionElement() }
-        </div>
-      </div>
-    );
-  }
-
   renderDateTimeElement(){
     return (
       <div className="d-inline-block">
         <DateTimeInput input={this.props.inputStart} inputName={this.state.startDateInputName} ref={this.dateTimeSearchRef} datepicker={true} locale={this.props.locale} format={this.props.format}/>
-        <a href={'#' + this.dateTimeCollapseId} data-toggle="collapse" aria-expanded="false" aria-controls={this.dateTimeCollapseId}><i className="fa fa-chevron-down"></i></a>
+        { !this.state.disabled &&
+          <i className="fa fa-chevron-down"></i>
+        }
       </div>
     );
   }
