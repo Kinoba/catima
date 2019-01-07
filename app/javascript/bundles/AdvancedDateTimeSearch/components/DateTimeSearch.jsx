@@ -11,6 +11,7 @@ class DateTimeSearch extends Component {
 
     this.state = {
       selectedCondition: '',
+      selectedFieldCondition: '',
       startDateInputName: this.props.startDateInputName,
       endDateInputName: this.props.endDateInputName,
       startDateInputNameArray: this.props.startDateInputName.split("[exact]"),
@@ -24,6 +25,7 @@ class DateTimeSearch extends Component {
     this.dateTimeCollapseId = `${this.props.srcId}-collapse`;
 
     this.selectCondition = this._selectCondition.bind(this);
+    this.selectFieldCondition = this._selectFieldCondition.bind(this);
   }
 
   componentDidMount(){
@@ -54,6 +56,14 @@ class DateTimeSearch extends Component {
       } else {
         return inputName;
       }
+  }
+
+  _getDateTimeClassname() {
+    if(this.props.selectCondition.length > 0) {
+      return 'col-md-7';
+    } else {
+      return 'col-md-12';
+    }
   }
 
   _linkRangeDatepickers(ref1, ref2, disabled) {
@@ -99,6 +109,16 @@ class DateTimeSearch extends Component {
     }
   }
 
+  _selectFieldCondition(event){
+    if(typeof event === 'undefined' || event.action !== "pop-value" || !this.props.req) {
+      if(typeof event !== 'undefined') {
+        this.setState({ selectedFieldCondition: event.target.value });
+      } else {
+        this.setState({ selectedFieldCondition: '' });
+      }
+    }
+  }
+
   renderSelectConditionElement(){
     return (
       <select className="form-control filter-condition" name={this.props.selectConditionName} value={this.state.selectedCondition} onChange={this.selectCondition}>
@@ -112,12 +132,12 @@ class DateTimeSearch extends Component {
   renderDateTimeConditionElement(){
     return (
       <div className="row">
-        <div className="col-md-7 d-inline-block">
+        <div className="col-md-8 d-inline-block">
           <DateTimeInput input={this.props.inputStart} inputName={this.state.startDateInputName} ref={this.dateTimeSearchRef} datepicker={true} locale={this.props.locale} format={this.props.format}/>
           <a href={'#' + this.dateTimeCollapseId} data-toggle="collapse" aria-expanded="false" aria-controls={this.dateTimeCollapseId}><i className="fa fa-chevron-down"></i></a>
         </div>
-        <div className="col-md-5 condition-input-container">
-          <div className="col-md-12">{ this.renderSelectConditionElement() }</div>
+        <div className="col-md-4 condition-input-container">
+          { this.renderSelectConditionElement() }
         </div>
       </div>
     );
@@ -125,36 +145,53 @@ class DateTimeSearch extends Component {
 
   renderDateTimeElement(){
     return (
-      <div className="row">
-        <div className="col-md-12 d-inline-block">
-          <DateTimeInput input={this.props.inputStart} inputName={this.state.startDateInputName} ref={this.dateTimeSearchRef} datepicker={true} locale={this.props.locale} format={this.props.format}/>
-          <a href={'#' + this.dateTimeCollapseId} data-toggle="collapse" aria-expanded="false" aria-controls={this.dateTimeCollapseId}><i className="fa fa-chevron-down"></i></a>
-        </div>
+      <div className="d-inline-block">
+        <DateTimeInput input={this.props.inputStart} inputName={this.state.startDateInputName} ref={this.dateTimeSearchRef} datepicker={true} locale={this.props.locale} format={this.props.format}/>
+        <a href={'#' + this.dateTimeCollapseId} data-toggle="collapse" aria-expanded="false" aria-controls={this.dateTimeCollapseId}><i className="fa fa-chevron-down"></i></a>
       </div>
+    );
+  }
+
+  renderFieldConditionElement(){
+    return (
+      <select className="form-control filter-condition" name={this.props.fieldConditionName} value={this.state.selectedFieldCondition} onChange={this.selectFieldCondition}>
+      { this.props.fieldConditionData.map((item) => {
+        return <option key={item.key} value={item.key}>{item.value}</option>
+      })}
+      </select>
     );
   }
 
 
   render() {
     return (
-      <div className="datetime-search-container">
-        <div>
-            <div className="row">
-              <div className="col-md-12"><label>{ this.props.startLabel }</label></div>
-            </div>
-
-            { this.props.selectCondition.length > 0 && this.renderDateTimeConditionElement() }
-            { !(this.props.selectCondition.length > 0) && this.renderDateTimeElement() }
+      <div className="datetime-search-container row">
+        { this.props.selectCondition.length > 0 &&
+        <div className="col-md-2">
+            { this.renderFieldConditionElement() }
         </div>
-
+        }
+        <div className={this._getDateTimeClassname()}>
+          { this.props.startLabel !== '' && (typeof this.props.startLabel !== 'undefined') &&
+          <label>{ this.props.startLabel }</label>
+          }
+          { this.renderDateTimeElement() }
           <div className="collapse" id={this.dateTimeCollapseId}>
+            { this.props.endLabel !== '' && (typeof this.props.endLabel !== 'undefined') &&
             <div className="row">
               <div className="col-md-12"><label>{ this.props.endLabel }</label></div>
             </div>
+            }
             <div className="row">
               <div className="col-md-12"><DateTimeInput input={this.props.inputEnd} inputName={this.state.endDateInputName} disabled={this.state.disabled} ref={this.dateTimeSearchRef2} datepicker={true} locale={this.props.locale} format={this.props.format}/></div>
             </div>
           </div>
+        </div>
+        { this.props.selectCondition.length > 0 &&
+        <div className="col-md-3">
+          { this.renderSelectConditionElement() }
+        </div>
+        }
       </div>
     );
   }
