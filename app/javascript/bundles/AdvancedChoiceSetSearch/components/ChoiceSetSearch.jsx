@@ -145,7 +145,7 @@ class ChoiceSetSearch extends Component {
 
   _getChoiceSetClassname() {
     if(this.state.selectedItem.length === 0 || this.state.selectedItem.data.length === 0) {
-      return 'col-md-5';
+      return 'col-md-6';
     } else {
       return 'col-md-3';
     }
@@ -212,7 +212,7 @@ class ChoiceSetSearch extends Component {
                 { this.renderChoiceSetElement() }
             </div>
             { (this.state.selectedItem.length !== 0 && this.state.selectedItem.data.length !== 0) &&
-              <div className="col-md-2">
+              <div className="col-md-3">
                 { this.renderChoiceSetItemCategory() }
               </div>
             }
@@ -235,7 +235,7 @@ class ChoiceSetSearch extends Component {
             </div>
           </div>
           }
-          <div className="col-md-4">
+          <div className="col-md-3">
             { this.renderSelectConditionElement() }
           </div>
         </div>
