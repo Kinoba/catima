@@ -29,6 +29,8 @@ class Search::ChoiceSetStrategy < Search::BaseStrategy
               search_data_matching_one_or_more(scope, criteria[:exact], negate)
             end
 
+    scope = search_data_matching_one_or_more(scope, criteria[:any], false) if criteria[:any].present?
+
     scope
   end
 
@@ -44,7 +46,7 @@ class Search::ChoiceSetStrategy < Search::BaseStrategy
   def search_in_category_field(scope, criteria)
     p "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
     p criteria
-    
+
     category_field = Field.find_by(slug: criteria[:category_field])
 
     criteria[:exact] = criteria[:category_criteria]

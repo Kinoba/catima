@@ -11,6 +11,7 @@ class Search::DateTimeStrategy < Search::BaseStrategy
     p "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
     p criteria[:start]
     p criteria[:start][:exact]
+    p Time.zone.at(criteria[:start][:exact].to_i / 1000)
     start_date_time = Time.zone.at(criteria[:start][:exact].to_i / 1000) if start_date?(criteria)
     end_date_time = Time.zone.at(criteria[:end][:exact].to_i / 1000) if end_date?(criteria)
 
@@ -25,6 +26,8 @@ class Search::DateTimeStrategy < Search::BaseStrategy
 
     if end_date?(criteria)
       scope = interval_search(scope, start_date_time, end_date_time, field_condition, negate) if %w[outside between].include?(field_condition)
+
+      p scope.to_sql
     end
 
     scope

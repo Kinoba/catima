@@ -10,12 +10,10 @@ class Search::TextStrategyTest < ActiveSupport::TestCase
 
   test "search finds item within range" do
     criteria = {
-      "before(1i)" => "2015",
-      "before(2i)" => "12",
-      "before(3i)" => "31",
-      "after(1i)" => "1900",
-      "after(2i)" => "1",
-      "after(3i)" => "1"
+      :condition => "between",
+      :field_condition => "and",
+      :start => { :exact => "-2208988800000" },
+      :end => { :exact => "1451520000000" }
     }.with_indifferent_access
 
     scope = catalogs(:one).items
@@ -29,12 +27,10 @@ class Search::TextStrategyTest < ActiveSupport::TestCase
 
   test "search excludes item outside of range" do
     criteria = {
-      "before(1i)" => "2015",
-      "before(2i)" => "12",
-      "before(3i)" => "31",
-      "after(1i)" => "2000",
-      "after(2i)" => "1",
-      "after(3i)" => "1"
+      :condition => "between",
+      :field_condition => "and",
+      :start => { :exact => "1451520000000" },
+      :end => { :exact => "946684800000" }
     }.with_indifferent_access
 
     scope = catalogs(:one).items
