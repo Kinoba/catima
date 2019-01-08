@@ -147,7 +147,7 @@ class ItemTypesReferenceSearch extends Component {
 
   _getDateTimeFormatOption() {
     var formatOption = this._searchInArray(this.state.inputOptions, 'format');
-    if (formatOption === false) return false;
+    if (formatOption === false) return 'YMDhms';
     else return formatOption.format;
   }
 

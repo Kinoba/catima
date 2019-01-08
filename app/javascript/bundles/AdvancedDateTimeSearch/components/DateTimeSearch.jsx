@@ -16,7 +16,7 @@ class DateTimeSearch extends Component {
       endDateInputName: this.props.endDateInputName,
       startDateInputNameArray: this.props.startDateInputName.split("[exact]"),
       endDateInputNameArray: this.props.endDateInputName.split("[exact]"),
-      disabled: false
+      disabled: true
     };
 
     this.dateTimeSearchId = `${this.props.srcId}-datetime`;
@@ -29,8 +29,11 @@ class DateTimeSearch extends Component {
   }
 
   componentDidMount(){
+
     if(typeof this.props.selectCondition !== 'undefined' && this.props.selectCondition.length !== 0) {
         this.setState({selectedCondition: this.props.selectCondition[0].key});
+        this.setState({startDateInputNameArray: this.props.startDateInputName.split("["+ this.props.selectCondition[0].key +"]")})
+        this.setState({endDateInputNameArray: this.props.endDateInputName.split("["+ this.props.selectCondition[0].key +"]")})
         this._updateDisableState(this.props.selectCondition[0].key);
     }
   }
@@ -81,14 +84,14 @@ class DateTimeSearch extends Component {
 
   _updateDisableState(value) {
     if(typeof value !== 'undefined') {
-      if(value === 'exact' || value === 'after' || value === 'before') {
-        this.setState({ disabled: true });
-        $('#' + this.dateTimeCollapseId).slideUp();
-        this._linkRangeDatepickers(this.dateTimeSearchRef, this.dateTimeSearchRef2, true);
-      } else {
+      if(value === 'between' || value === 'outside') {
         this.setState({ disabled: false });
         $('#' + this.dateTimeCollapseId).slideDown();
         this._linkRangeDatepickers(this.dateTimeSearchRef, this.dateTimeSearchRef2, false);
+      } else {
+        this.setState({ disabled: true });
+        $('#' + this.dateTimeCollapseId).slideUp();
+        this._linkRangeDatepickers(this.dateTimeSearchRef, this.dateTimeSearchRef2, true);
       }
     }
   }
