@@ -486,12 +486,14 @@ en:
         no_advanced_search_configurations_for_catalog_warning: No search configuration set for this catalog
         nothing: No fields set
       new:
-        title: Nouvelle configuration de recherche
-        next: Suivant
+        title: New search configuration
+        next: Next
       edit:
-        title: Modification de la configuration de recherche
-        add_field: Ajouter
-        submit: Modifier
+        title: Edit search configuration
+        add_field: Add
+        submit: Submit
+      common_form_fields:
+        search_display_type: Search display type
     fields:
       choice_set_modals:
         create_new_choice_set: Create new choice set

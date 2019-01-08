@@ -488,6 +488,8 @@ fr:
         title: Modification de la configuration de recherche
         add_field: Ajouter
         submit: Modifier
+      common_form_fields:
+        search_display_type: Type d'affichage de la recherche
     fields:
       choice_set_modals:
         create_new_choice_set: Créer nouvel ensemble de choix

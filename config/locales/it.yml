@@ -386,7 +386,8 @@ it:
         title: Modifica della configurazione di ricerca
         add_field: Aggiungi alla lista
         submit: Modificare
-
+      common_form_fields:
+        search_display_type: Tipo di ricerca visualizzata
     fields:
       geometry_option_inputs:
         bounds: Estensione spaziale predefinita

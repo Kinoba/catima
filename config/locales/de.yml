@@ -453,7 +453,8 @@ de:
         title: Ändern der Suchkonfiguration
         add_field: Zur Liste hinzufügen
         submit: Modifizieren
-
+      common_form_fields:
+        search_display_type: Art der Suchanzeige
     fields:
       choice_set_modals:
         create_new_choice_set: Create new choice set
