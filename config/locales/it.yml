@@ -65,7 +65,7 @@ it:
       contains_words: "contiene le parole"
       excludes_words: "non contiene le parole"
       has_exact_phrase: "ha frase esatta"
-    int_search_field:
+    number_search_field:
       contains_number: "ha il numero esatto"
       less_than: è inferiore a
       less_than_or_equal_to: è inferiore o uguale a

@@ -23,7 +23,7 @@ class AdvancedSearch::ReferenceFieldTest < ActionDispatch::IntegrationTest
     refute(page.has_selector?('h4', text: 'Highlander'))
   end
 
-  test "search for cars by multiple single tag choice field" do
+  test "search for authors by multiple single tag choice field" do
     visit("/one/en")
     click_on("Advanced")
 

@@ -48,6 +48,7 @@ one_french:
   choice_set: one_languages
   long_name_translations: { "long_name_en": "French" }
   short_name_translations: { "short_name_en": "French" }
+  category: language
 
 two_english:
   catalog: two

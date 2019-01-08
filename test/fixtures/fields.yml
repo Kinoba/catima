@@ -195,6 +195,14 @@ one_author_other_languages:
   required: false
   multiple: true
 
+one_author_language_origin:
+  type: "Field::Text"
+  name_translations: { "name_en": "Language origin" }
+  name_plural_translations: { "name_plural_en": "Language origins" }
+  slug: language-origin
+  field_set: language (Category)
+  uuid: language_category_uuid
+
 one_author_born:
   type: "Field::DateTime"
   name_translations: { "name_en": "Born" }

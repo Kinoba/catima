@@ -90,6 +90,7 @@ one_author_very_old:
     "one_author_deceased_uuid": "1",
     "one_author_email_uuid": "so@old.com",
     "one_author_rank_uuid": "2.12",
+    "language_category_uuid": "Latin",
     "one_author_other_languages_uuid": [
       "<%= ActiveRecord::FixtureSet.identify(:one_french) %>",
       "<%= ActiveRecord::FixtureSet.identify(:one_english) %>"

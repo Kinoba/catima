@@ -61,6 +61,24 @@ class AdvancedSearch::SimpleFieldsTest < ActionDispatch::IntegrationTest
     refute(page.has_content?("Stephen King"))
   end
 
+  test "search for authors by decimal field" do
+    visit("/one/en")
+    click_on("Advanced")
+
+    select("Author", :from => "advanced_search[item_type]")
+
+    select("greater than", :from => "advanced_search[criteria][one_author_rank_uuid][condition]")
+    fill_in(
+      "advanced_search[criteria][one_author_rank_uuid][greater_than]",
+      :with => "2.1"
+    )
+
+    click_on("Search")
+
+    assert(page.has_content?("Very Old"))
+    refute(page.has_content?("Stephen King"))
+  end
+
   test "search for authors by editor field" do
     visit("/one/en")
     click_on("Advanced")

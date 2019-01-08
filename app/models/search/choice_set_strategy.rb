@@ -42,6 +42,9 @@ class Search::ChoiceSetStrategy < Search::BaseStrategy
   end
 
   def search_in_category_field(scope, criteria)
+    p "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+    p criteria
+    
     category_field = Field.find_by(slug: criteria[:category_field])
 
     criteria[:exact] = criteria[:category_criteria]
@@ -49,7 +52,7 @@ class Search::ChoiceSetStrategy < Search::BaseStrategy
     klass = "Search::#{category_field.type.sub(/^Field::/, '')}Strategy"
     strategy = klass.constantize.new(category_field, locale)
     scope = strategy.search(
-      scope.joins("LEFT JOIN items ref_items ON items.data->>'#{field.uuid}' LIKE CONCAT('%\"', ref_items.id::text, '\"%')"),
+      scope.joins("LEFT JOIN items ref_items ON items.data->>'#{field.uuid}' = ref_items.id::text"),
       criteria)
 
     scope
