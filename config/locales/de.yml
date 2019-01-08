@@ -48,6 +48,7 @@ de:
       title: "Erweiterte Suche"
       start_over: "Neue Suche"
       submit: "Suchen"
+      default_search: Standardsuche
       advanced_search_configurations: Vorkonfigurierte Suchvorgänge
       item_type_selection: Suche nach einer Satzart
       item_type_search: Erweiterte Suche nach der Art des Datensatzes %{item_type}

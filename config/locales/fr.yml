@@ -65,6 +65,7 @@ fr:
       title: "Recherche avancée"
       start_over: "Nouvelle recherche"
       submit: "Chercher"
+      default_search: Recherche par défaut
       advanced_search_configurations: Recherches préconfigurées
       item_type_selection: Recherche sur un type de fiche
       item_type_search: Recherche avancée sur le type de fiche %{item_type}

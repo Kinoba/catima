@@ -1,8 +1,19 @@
 <% provide(:title, t(".title")) %>
 
-<h2><%= t("advanced_searches.new.advanced_search_configurations") %></h2>
 <% if @advance_search_confs.any? %>
   <ul class="nav nav-tabs">
+    <li class="dropdown <%= "active" if current_page?(new_advanced_search_path) %>">
+        <a href="#" data-toggle="dropdown" class="dropdown-toggle"><%= t(".default_search") %> <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <% @item_types.each do |item_type| %>
+            <%= content_tag(
+              :li,
+              :class => ("active" if item_type.slug == params[:item_type])) do %>
+              <a href="<%= url_for(:item_type => item_type.slug) %>"><%= item_type.name %></a>
+            <% end %>
+          <% end %>
+        </ul>
+    </li>
     <% @advance_search_confs.each do |search_config| %>
       <%= content_tag(
             :li,

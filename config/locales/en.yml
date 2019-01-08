@@ -66,6 +66,7 @@ en:
       title: "Advanced search"
       start_over: "Start over"
       submit: "Search"
+      default_search: Default search
       advanced_search_configurations: Preconfigured searches
       item_type_selection: Search for an item type
       item_type_search: Advanced search for the item type %{item_type}

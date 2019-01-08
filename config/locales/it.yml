@@ -48,6 +48,7 @@ it:
       title: "Ricerca avanzata"
       start_over: "Nuova ricerca"
       submit: "Ricerca"
+      default_search: Ricerca predefinita
       advanced_search_configurations: Ricerche preconfigurate
       item_type_selection: Ricerca su un tipo di record
       item_type_search: Ricerca avanzata sul tipo di record %{item_type}
