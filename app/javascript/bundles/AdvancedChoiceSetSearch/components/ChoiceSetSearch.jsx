@@ -194,6 +194,7 @@ class ChoiceSetSearch extends Component {
           itemType={this.props.itemType}
           inputName={this.props.linkedCategoryInputName}
           selectedCategory={this.state.selectedCategory}
+          selectedCondition={this.state.selectedCondition}
           updateSelectCondition={this.updateSelectCondition}
         />
       </div>

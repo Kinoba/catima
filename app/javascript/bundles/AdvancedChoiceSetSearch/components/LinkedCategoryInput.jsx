@@ -24,12 +24,12 @@ class LinkedCategoryInput extends Component {
       inputOptions: null,
       selectedFilter: {},
       selectedItem: [],
-      selectCondition: this.props.selectCondition,
+      selectCondition: [],
+      selectedCondition: this.props.selectedCondition,
       hiddenInputValue: []
     };
 
     this.selectItem = this._selectItem.bind(this);
-
   }
 
   componentWillReceiveProps(nextProps) {
@@ -38,22 +38,40 @@ class LinkedCategoryInput extends Component {
       this.setState({ selectedCategory: nextProps.selectedCategory });
     }
 
-    if (nextProps.inputName !== this.state.inputName) {
-      this._buildDateTimeInputNames(nextProps.inputName);
+    if (nextProps.inputName !== this.state.inputName && nextProps.selectedCondition === this.state.selectedCondition) {
+      this._buildDateTimeInputNames(this.state.inputType, nextProps.inputName, this.state.selectedCondition);
       this.setState({ inputName: nextProps.inputName });
+    } else if (nextProps.inputName === this.state.inputName && nextProps.selectedCondition !== this.state.selectedCondition) {
+      this._buildDateTimeInputNames(this.state.inputType, this.state.inputName, nextProps.selectedCondition);
+      this.setState({ selectedCondition: nextProps.selectedCondition });
+    } else {
+        this._buildDateTimeInputNames(this.state.inputType, nextProps.inputName, nextProps.selectedCondition);
+        this.setState({ inputName: nextProps.inputName });
+        this.setState({ selectedCondition: nextProps.selectedCondition });
     }
   }
 
   componentDidMount(){
     this._getDataFromServer();
+    this._buildDateTimeInputNames(this.state.inputType, this.props.inputName, this.props.selectedCondition);
   }
 
-  _buildDateTimeInputNames(inputName) {
-    if(this.state.inputType === 'Field::DateTime') {
+  _buildDateTimeInputNames(type, inputName, condition) {
+    if(type === 'Field::DateTime') {
       var endName = inputName.split(this.state.inputNameArray[0]);
-      this.setState({startDateInputName: this.state.inputNameArray[0] + '[start]' + endName[1]});
-      this.setState({endDateInputName: this.state.inputNameArray[0] + '[end]' + endName[1]});
+      this.setState({startDateInputName: this.state.inputNameArray[0] + '[start]' + endName[1] + '[' + condition + ']' });
+      this.setState({endDateInputName: this.state.inputNameArray[0] + '[end]' + endName[1] + '[' + condition + ']'});
     }
+  }
+
+  _buildInputNameCondition(condition) {
+      var nameArray = this.props.inputName.split("[category_criteria]");
+      if(nameArray.length === 2) {
+        if(condition !== '') return nameArray[0] + "[category_criteria]" + '[' + condition + ']' + nameArray[1];
+        else return nameArray[0] + "[category_criteria]" + '[default]' + nameArray[1];
+      } else {
+        return this.props.inputName;
+      }
   }
 
   _save(){
@@ -98,7 +116,7 @@ class LinkedCategoryInput extends Component {
 
       this._updateSelectCondition(res.data.selectCondition);
       this.setState({ inputNameArray: this.state.inputName.split('[' + res.data.selectCondition[0].key + ']')});
-      this._buildDateTimeInputNames(this.state.inputName);
+      this._buildDateTimeInputNames(res.data.inputType, this.state.inputName, this.state.selectedCondition);
       this.setState({ inputOptions: res.data.inputOptions });
       this._updateDateTimeFormatOption(res.data.inputOptions);
       this.setState({ inputType: res.data.inputType });
@@ -195,14 +213,14 @@ class LinkedCategoryInput extends Component {
                 onChange={this.selectItem}
               />
     } else if (this.state.inputType === 'Field::Email') {
-      return <input name={this.props.inputName} onChange={this.selectItem} type="text" className="form-control"/>
+      return <input name={this._buildInputNameCondition(this.state.selectedCondition)} onChange={this.selectItem} type="text" className="form-control"/>
     } else if (this.state.inputType === 'Field::Int' || this.state.inputType === 'Field::Decimal') {
-      return <input name={this.props.inputName} onChange={this.selectItem} type="number" className="form-control"/>
+      return <input name={this._buildInputNameCondition(this.state.selectedCondition)} onChange={this.selectItem} type="number" className="form-control"/>
     } else if (this.state.inputType === 'Field::URL') {
-      return <input name={this.props.inputName} onChange={this.selectItem} type="url" className="form-control"/>
+      return <input name={this._buildInputNameCondition(this.state.selectedCondition)} onChange={this.selectItem} type="url" className="form-control"/>
     } else if ((this.state.inputType === 'Field::ChoiceSet' && !this._getChoiceSetMultipleOption()) || this.state.inputType === 'Field::Boolean') {
       return (
-        <select name={this.props.inputName} onChange={this.selectItem} className="form-control">
+        <select name={this._buildInputNameCondition(this.state.selectedCondition)} onChange={this.selectItem} className="form-control">
           { this.state.inputData.map((item) => {
             return <option key={item.key}>{item.value}</option>
             })
@@ -211,10 +229,10 @@ class LinkedCategoryInput extends Component {
       );
     } else if (this.state.inputType === 'Field::ChoiceSet' && this._getChoiceSetMultipleOption()) {
       return (
-        <ReactSelect name={this.props.inputName} isMulti options={this._getMultipleChoiceSetOptions()} className="basic-multi-select" onChange={this.selectItem} classNamePrefix="select" placeholder={this.props.searchPlaceholder}/>
+        <ReactSelect name={this._buildInputNameCondition(this.state.selectedCondition)} isMulti options={this._getMultipleChoiceSetOptions()} className="basic-multi-select" onChange={this.selectItem} classNamePrefix="select" placeholder={this.props.searchPlaceholder}/>
       );
     } else {
-      return <input name={this.props.inputName} onChange={this.selectItem} type="text" className="form-control"/>
+      return <input name={this._buildInputNameCondition(this.state.selectedCondition)} onChange={this.selectItem} type="text" className="form-control"/>
     }
   }
 
