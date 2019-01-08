@@ -7,7 +7,10 @@ class AdvancedSearch::ReferenceFieldTest < ActionDispatch::IntegrationTest
     visit("/one/en")
     click_on("Advanced")
 
-    select("Author", :from => "advanced_search[item_type]")
+    find("#default_search_type").click
+    within("#default_search_type") do
+      click_on("Author")
+    end
 
     within("#advanced_search_criteria_one_author_collaborator_uuid_0_exact-editor") do
       find(".css-vj8t7z").click # Click on the filter input
@@ -28,7 +31,10 @@ class AdvancedSearch::ReferenceFieldTest < ActionDispatch::IntegrationTest
     visit("/one/en")
     click_on("Advanced")
 
-    select("Author", :from => "advanced_search[item_type]")
+    find("#default_search_type").click
+    within("#default_search_type") do
+      click_on("Author")
+    end
 
     within(".reference-search-container", match: :first) do
       within("#advanced_search_criteria_one_author_collaborator_uuid_0_exact-editor") do
@@ -63,7 +69,10 @@ class AdvancedSearch::ReferenceFieldTest < ActionDispatch::IntegrationTest
     visit("/one/en")
     click_on("Advanced")
 
-    select("Author", :from => "advanced_search[item_type]")
+    find("#default_search_type").click
+    within("#default_search_type") do
+      click_on("Author")
+    end
 
     within("#advanced_search_criteria_one_author_other_collaborators_uuid_0_exact-editor") do
       find(".css-vj8t7z").click # Click on the filter input
@@ -92,7 +101,10 @@ class AdvancedSearch::ReferenceFieldTest < ActionDispatch::IntegrationTest
     visit("/one/en")
     click_on("Advanced")
 
-    select("Author", :from => "advanced_search[item_type]")
+    find("#default_search_type").click
+    within("#default_search_type") do
+      click_on("Author")
+    end
 
     # First multiple input reference
     within("#advanced_search_criteria_one_author_other_collaborators_uuid_0_exact-editor") do
@@ -137,7 +149,10 @@ class AdvancedSearch::ReferenceFieldTest < ActionDispatch::IntegrationTest
     visit("/one/en")
     click_on("Advanced")
 
-    select("Author", :from => "advanced_search[item_type]")
+    find("#default_search_type").click
+    within("#default_search_type") do
+      click_on("Author")
+    end
 
     within(".single-reference-filter", match: :first) do
       find(".css-vj8t7z").click # Click on the filter input

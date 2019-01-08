@@ -7,7 +7,11 @@ class AdvancedSearch::SimpleFieldsTest < ActionDispatch::IntegrationTest
     visit("/search/en")
     click_on("Advanced")
 
-    select("Vehicle", :from => "advanced_search[item_type]")
+    find("#default_search_type").click
+    within("#default_search_type") do
+      click_on("Vehicle")
+    end
+
     fill_in(
       "advanced_search[criteria][search_vehicle_make_uuid][exact]",
       :with => "toyota"
@@ -31,7 +35,10 @@ class AdvancedSearch::SimpleFieldsTest < ActionDispatch::IntegrationTest
     visit("/search/en")
     click_on("Advanced")
 
-    select("Vehicle", :from => "advanced_search[item_type]")
+    find("#default_search_type").click
+    within("#default_search_type") do
+      click_on("Vehicle")
+    end
 
     select("less than or equal", :from => "advanced_search[criteria][search_vehicle_doors_uuid][condition]")
     fill_in(
@@ -51,7 +58,10 @@ class AdvancedSearch::SimpleFieldsTest < ActionDispatch::IntegrationTest
     visit("/one/en")
     click_on("Advanced")
 
-    select("Author", :from => "advanced_search[item_type]")
+    find("#default_search_type").click
+    within("#default_search_type") do
+      click_on("Author")
+    end
 
     select("Yes", :from => "advanced_search[criteria][one_author_deceased_uuid][exact]")
 
@@ -65,7 +75,10 @@ class AdvancedSearch::SimpleFieldsTest < ActionDispatch::IntegrationTest
     visit("/one/en")
     click_on("Advanced")
 
-    select("Author", :from => "advanced_search[item_type]")
+    find("#default_search_type").click
+    within("#default_search_type") do
+      click_on("Author")
+    end
 
     select("greater than", :from => "advanced_search[criteria][one_author_rank_uuid][condition]")
     fill_in(
@@ -83,7 +96,10 @@ class AdvancedSearch::SimpleFieldsTest < ActionDispatch::IntegrationTest
     visit("/one/en")
     click_on("Advanced")
 
-    select("Author", :from => "advanced_search[item_type]")
+    find("#default_search_type").click
+    within("#default_search_type") do
+      click_on("Author")
+    end
 
     select("at least one word", :from => "advanced_search[criteria][one_author_editor_uuid][condition]")
 
@@ -101,7 +117,10 @@ class AdvancedSearch::SimpleFieldsTest < ActionDispatch::IntegrationTest
     visit("/one/en")
     click_on("Advanced")
 
-    select("Author", :from => "advanced_search[item_type]")
+    find("#default_search_type").click
+    within("#default_search_type") do
+      click_on("Author")
+    end
 
     select("exclude", :from => "advanced_search[criteria][one_author_email_uuid][field_condition]")
     select("at least one word", :from => "advanced_search[criteria][one_author_email_uuid][condition]")
@@ -119,7 +138,10 @@ class AdvancedSearch::SimpleFieldsTest < ActionDispatch::IntegrationTest
     visit("/one/en")
     click_on("Advanced")
 
-    select("Author", :from => "advanced_search[item_type]")
+    find("#default_search_type").click
+    within("#default_search_type") do
+      click_on("Author")
+    end
 
     fill_in(
       "advanced_search[criteria][one_author_site_uuid][exact]",

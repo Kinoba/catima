@@ -7,7 +7,10 @@ class AdvancedSearch::ReferenceFieldTest < ActionDispatch::IntegrationTest
     visit("/search/en")
     click_on("Advanced")
 
-    select("Vehicle", :from => "advanced_search[item_type]")
+    find("#default_search_type").click
+    within("#default_search_type") do
+      click_on("Vehicle")
+    end
 
     within("#advanced_search_criteria_search_vehicle_style_uuid_0_id") do
       find(".css-vj8t7z").click # Click on the filter input
@@ -27,7 +30,10 @@ class AdvancedSearch::ReferenceFieldTest < ActionDispatch::IntegrationTest
     visit("/one/en")
     click_on("Advanced")
 
-    select("Author", :from => "advanced_search[item_type]")
+    find("#default_search_type").click
+    within("#default_search_type") do
+      click_on("Author")
+    end
 
     within all(".choiceset-search-container")[1] do
       within("#advanced_search_criteria_one_author_other_languages_uuid_0_id") do
