@@ -126,6 +126,7 @@ one_author_apprentice:
     "one_author_age_uuid": 22,
     "one_author_name_uuid": "Young apprentice",
     "one_author_deceased_uuid": "0",
+    "language_category_uuid": "Sino-Tibetan",
     "one_author_other_collaborators_uuid": [
       "<%= ActiveRecord::FixtureSet.identify(:one_author_stephen_king) %>",
       "<%= ActiveRecord::FixtureSet.identify(:one_author_very_old) %>"

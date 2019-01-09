@@ -56,6 +56,8 @@ class Search::ReferenceStrategy < Search::BaseStrategy
     p criteria[:filter_field_slug]
     ref_field = Field.find_by(slug: criteria[:filter_field_slug])
     p ref_field
+    return scope if ref_field.nil?
+
     klass = "Search::#{ref_field.type.sub(/^Field::/, '')}Strategy"
     strategy = klass.constantize.new(ref_field, locale)
     scope = strategy.search(

@@ -183,7 +183,7 @@ class ChoiceSetSearchContainer extends Component {
 
   render() {
     return (
-      <div>
+      <div id={this.props.srcId + '_container'}>
       {this.renderComponentList()}
       </div>
     );
