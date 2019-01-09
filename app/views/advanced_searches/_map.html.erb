@@ -30,7 +30,40 @@
   </table>
 
   <%# TODO @OURIEL %>
-  <%= react_component("GeoViewer", props: {features: [{"type"=>"Feature", "geometry"=>{"type"=>"Point", "coordinates"=>[9.822104040363055, 46.93338859285157]}, "properties"=>{}}]}, prerender: false) %>
+  <%= react_component("GeoViewer",
+        props: {
+          features: [
+            {
+              type: "Feature",
+              geometry:  {
+                type: "Point",
+                coordinates: [9.822104040363055, 46.93338859285157]},
+                properties: {
+                  popupContent: "<div><div><a href='#'>My link</a></div><div>This is where the Rockies play!</div></div>"
+                }
+            },
+            {
+              type: "Feature",
+              geometry:  {
+                type: "Point",
+                coordinates: [11.822104040363055, 46.93338859285157]},
+                properties: {
+                  popupContent: "<div><div><a href='#'>My link</a></div><div>This is where the Rockies play!</div></div>"
+                }
+            },
+            {
+              type: "Feature",
+              geometry:  {
+                type: "Point",
+                coordinates: [15.822104040363055, 46.93338859285157]},
+                properties: {
+                  popupContent: "<div><div><a href='#'>My link</a></div><div>This is where the Rockies play!</div></div>"
+                }
+            }
+          ]
+        },
+      prerender: false)
+  %>
   <%# END TODO @OURIEL %>
 
   <%= link_to(

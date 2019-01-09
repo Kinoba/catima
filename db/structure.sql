@@ -55,6 +55,7 @@ CREATE TABLE public.advanced_search_configurations (
     title_translations jsonb,
     description jsonb,
     slug character varying,
+    search_type character varying DEFAULT 'default'::character varying,
     fields jsonb DEFAULT '{}'::jsonb,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
@@ -102,6 +103,7 @@ CREATE TABLE public.advanced_searches (
 --
 
 CREATE SEQUENCE public.advanced_searches_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -148,6 +150,7 @@ CREATE TABLE public.catalog_permissions (
 --
 
 CREATE SEQUENCE public.catalog_permissions_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -191,6 +194,7 @@ CREATE TABLE public.catalogs (
 --
 
 CREATE SEQUENCE public.catalogs_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -225,6 +229,7 @@ CREATE TABLE public.categories (
 --
 
 CREATE SEQUENCE public.categories_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -260,6 +265,7 @@ CREATE TABLE public.choice_sets (
 --
 
 CREATE SEQUENCE public.choice_sets_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -298,6 +304,7 @@ CREATE TABLE public.choices (
 --
 
 CREATE SEQUENCE public.choices_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -330,6 +337,7 @@ CREATE TABLE public.configurations (
 --
 
 CREATE SEQUENCE public.configurations_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -366,6 +374,7 @@ CREATE TABLE public.containers (
 --
 
 CREATE SEQUENCE public.containers_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -400,6 +409,7 @@ CREATE TABLE public.exports (
 --
 
 CREATE SEQUENCE public.exports_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -432,6 +442,7 @@ CREATE TABLE public.favorites (
 --
 
 CREATE SEQUENCE public.favorites_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -487,6 +498,7 @@ CREATE TABLE public.fields (
 --
 
 CREATE SEQUENCE public.fields_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -560,6 +572,7 @@ CREATE TABLE public.item_types (
 --
 
 CREATE SEQUENCE public.item_types_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -596,6 +609,7 @@ CREATE TABLE public.item_views (
 --
 
 CREATE SEQUENCE public.item_views_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -639,6 +653,7 @@ CREATE TABLE public.items (
 --
 
 CREATE SEQUENCE public.items_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -712,6 +727,7 @@ CREATE TABLE public.menu_items (
 --
 
 CREATE SEQUENCE public.menu_items_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -750,6 +766,7 @@ CREATE TABLE public.pages (
 --
 
 CREATE SEQUENCE public.pages_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -795,6 +812,7 @@ CREATE TABLE public.template_storages (
 --
 
 CREATE SEQUENCE public.template_storages_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -840,6 +858,7 @@ CREATE TABLE public.users (
 --
 
 CREATE SEQUENCE public.users_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
