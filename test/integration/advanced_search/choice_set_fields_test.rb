@@ -1,6 +1,6 @@
 require "test_helper"
 
-class AdvancedSearch::ReferenceFieldTest < ActionDispatch::IntegrationTest
+class AdvancedSearch::ChoiceSetFieldTest < ActionDispatch::IntegrationTest
   setup { use_javascript_capybara_driver }
 
   test "search for cars by single tag choice" do

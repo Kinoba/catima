@@ -12,6 +12,8 @@ class Search::DateTimeStrategy < Search::BaseStrategy
     p criteria[:start]
     p criteria[:start][:exact]
     p Time.zone.at(criteria[:start][:exact].to_i / 1000)
+    p Time.at(criteria[:start][:exact].to_i / 1000)
+    p Time.zone.at(criteria[:start][:exact].to_i / 1000).utc
     start_date_time = Time.zone.at(criteria[:start][:exact].to_i / 1000) if start_date?(criteria)
     end_date_time = Time.zone.at(criteria[:end][:exact].to_i / 1000) if end_date?(criteria)
 
@@ -57,7 +59,7 @@ class Search::DateTimeStrategy < Search::BaseStrategy
     return scope if exact_date_time.blank?
 
     sql_operator = "#{'<>' if negate} ="
-    scope.where("#{convert_to_timestamp(concat_json_date)} #{sql_operator} to_timestamp(?, '#{field_date_format_to_sql_format}')", exact_date_time)
+    scope.where("#{convert_to_timestamp(concat_json_date)} #{sql_operator} to_timestamp(?, '#{field_date_format_to_sql_format}')", date_remove_utc(exact_date_time))
   end
 
   def inexact_search(scope, date_time, field_condition, negate)
@@ -70,7 +72,7 @@ class Search::DateTimeStrategy < Search::BaseStrategy
       sql_operator = negate ? "<" : ">"
     end
 
-    scope.where("#{convert_to_timestamp(concat_json_date)} #{sql_operator} to_timestamp(?, '#{field_date_format_to_sql_format}')", date_time)
+    scope.where("#{convert_to_timestamp(concat_json_date)} #{sql_operator} to_timestamp(?, '#{field_date_format_to_sql_format}')", date_remove_utc(date_time))
   end
 
   def concat_json_date
@@ -126,6 +128,39 @@ class Search::DateTimeStrategy < Search::BaseStrategy
     end
   end
 
+  def date_remove_utc(date)
+    case field.format
+    when "Y"
+      date.strftime("%Y")
+    when "M"
+      date.strftime("%m")
+    when "h"
+      date.strftime("%H")
+    when "YM"
+      date.strftime("%Y-%m")
+    when "MD"
+      date.strftime("%m-%d")
+    when "hm"
+      date.strftime("%H:M")
+    when "YMD"
+      date.strftime("%Y-%m-%d")
+    when "hms"
+      date.strftime("%H:%M:%S")
+    when "MDh"
+      date.strftime("%m-%d %H")
+    when "YMDh"
+      date.strftime("%Y-%m-%d %H")
+    when "MDhm"
+      date.strftime("%m-%d %H:%M")
+    when "YMDhm"
+      date.strftime("%Y-%m-%d %H:%M")
+    when "MDhms"
+      date.strftime("%m-%d %H:%M:%S")
+    when "YMDhms"
+      date.strftime("%Y-%m-%d %H:%M:%S")
+    end
+  end
+
   def interval_search(scope, start_date_time, end_date_time, field_condition, negate)
     return scope if start_date_time.blank? || end_date_time.blank?
 
@@ -137,8 +172,8 @@ class Search::DateTimeStrategy < Search::BaseStrategy
     where_scope.call(
       "#{convert_to_timestamp(concat_json_date)} BETWEEN to_timestamp(?, 'YYYY-MM-DD hh24:mi:ss')
       AND to_timestamp(?, 'YYYY-MM-DD hh24:mi:ss')",
-      start_date_time,
-      end_date_time
+      date_remove_utc(start_date_time),
+      date_remove_utc(end_date_time)
     )
   end
 

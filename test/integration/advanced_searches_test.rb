@@ -11,7 +11,7 @@ class AdvancedSearchesTest < ActionDispatch::IntegrationTest
     within("#default_search_type") do
       click_on("Vehicle")
     end
-    
+
     fill_in(
       "advanced_search[criteria][search_vehicle_make_uuid][exact]",
       :with => "toyota"

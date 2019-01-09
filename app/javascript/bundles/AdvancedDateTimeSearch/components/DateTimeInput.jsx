@@ -12,9 +12,9 @@ class DateTimeInput extends React.Component {
     input: PropTypes.string.isRequired,
   };
 
-  static defaultValues = {Y:"", M:"", D:"", h:"", m:"", s:""};
+  static defaultValues = {Y:'', M:'', D:'', h:'', m:'', s:''};
 
-  static types = ["Y", "M", "h", "YM", "MD", "hm", "YMD", "hms", "MDh", "YMDh", "MDhm", "YMDhm", "MDhms", "YMDhms"];
+  static types = ['Y', 'M', 'h', 'YM', 'MD', 'hm', 'YMD', 'hms', 'MDh', 'YMDh', 'MDhm', 'YMDhm', 'MDhms', 'YMDhms'];
 
   constructor(props){
     super(props);
@@ -218,17 +218,17 @@ class DateTimeInput extends React.Component {
     let errorMsg = dateValid ? "" : "Invalid value"
     let fmt = this.getFieldOptions().format;
     return (
-      <div>
+      <div id={this.props.inputId + '_' + this.props.inputSuffixId}>
         <div className="dateTimeInput rails-bootstrap-forms-datetime-select">
           <div className="row hidden-datepicker">
             <input type="text" ref="hiddenInput" value={this.state.selectedDate} name={this.props.inputName} onChange={this.selectDate}/>
           </div>
           {fmt.includes('D') ? (
-            <input style={errorStl} type="number" min="0" max="31" className="input-2 form-control" value={this.state.D} onChange={this.handleChangeDay} disabled={this.state.disabled} />
+            <input id={this.props.inputId + '_' + this.props.inputSuffixId + '_day'} style={errorStl} type="number" min="0" max="31" className="input-2 form-control" value={this.state.D} onChange={this.handleChangeDay} disabled={this.state.disabled} />
           ) : null
           }
           {fmt.includes('M') ? (
-            <select style={errorStl} className="form-control" value={this.state.M} onChange={this.handleChangeMonth} disabled={this.state.disabled}>
+            <select id={this.props.inputId + '_' + this.props.inputSuffixId + '_month'} style={errorStl} className="form-control" value={this.state.M} onChange={this.handleChangeMonth} disabled={this.state.disabled}>
             <option value=""></option>
             <option value="1">January</option>
             <option value="2">February</option>
@@ -245,19 +245,19 @@ class DateTimeInput extends React.Component {
             </select>) : null
           }
           {fmt.includes('Y') ? (
-            <input style={errorStl} type="number" className={'input-4 form-control' + this.styleMarginRight} value={this.state.Y} onChange={this.handleChangeYear} disabled={this.state.disabled} />
+            <input id={this.props.inputId + '_' + this.props.inputSuffixId + '_year'} style={errorStl} type="number" className={'input-4 form-control' + this.styleMarginRight} value={this.state.Y} onChange={this.handleChangeYear} disabled={this.state.disabled} />
           ) : null
           }
           {fmt.includes('h') ? (
-            <input style={errorStl} min="0" max="23" type="number" className="input-2 form-control" value={this.state.h} onChange={this.handleChangeHours} disabled={this.state.disabled} />
+            <input id={this.props.inputId + '_' + this.props.inputSuffixId + '_hour'} style={errorStl} min="0" max="23" type="number" className="input-2 form-control" value={this.state.h} onChange={this.handleChangeHours} disabled={this.state.disabled} />
           ) : null
           }
           {fmt.includes('m') ? (
-            <input style={errorStl} min="0" max="59" type="number" className="input-2 form-control" value={this.state.m} onChange={this.handleChangeMinutes} disabled={this.state.disabled} />
+            <input id={this.props.inputId + '_' + this.props.inputSuffixId + '_minutes'} style={errorStl} min="0" max="59" type="number" className="input-2 form-control" value={this.state.m} onChange={this.handleChangeMinutes} disabled={this.state.disabled} />
           ) : null
           }
           {fmt.includes('s') ? (
-            <input style={errorStl} min="0" max="59" type="number" className="input-2 form-control" value={this.state.s} onChange={this.handleChangeSeconds} disabled={this.state.disabled} />
+            <input id={this.props.inputId + '_' + this.props.inputSuffixId + '_seconds'} style={errorStl} min="0" max="59" type="number" className="input-2 form-control" value={this.state.s} onChange={this.handleChangeSeconds} disabled={this.state.disabled} />
           ) : null
           }
         </div>
