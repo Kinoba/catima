@@ -150,5 +150,6 @@ class AdvancedSearch::SimpleFieldsTest < ActionDispatch::IntegrationTest
     click_on("Search")
 
     assert(page.has_content?("Stephen King"))
+    refute(page.has_selector?('h4', text: 'Very Old'))
   end
 end

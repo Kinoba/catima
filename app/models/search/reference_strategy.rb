@@ -1,7 +1,7 @@
 class Search::ReferenceStrategy < Search::BaseStrategy
   include Search::MultivaluedSearch
 
-  permit_criteria :exact, :all_words, :one_word, :less_than, :less_than_or_equal_to, :greater_than, :greater_than_or_equal_to, :field_condition, :filter_field_slug, :condition, :default
+  permit_criteria :exact, :all_words, :one_word, :less_than, :less_than_or_equal_to, :greater_than, :greater_than_or_equal_to, :field_condition, :filter_field_slug, :condition, :default, :start => {}, :end => {}
 
   def keywords_for_index(item)
     primary_text_for_keywords(item)

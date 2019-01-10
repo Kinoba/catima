@@ -1,5 +1,5 @@
 class Search::DateTimeStrategy < Search::BaseStrategy
-  permit_criteria :exact, :condition, :field_condition, start: {}, end: {}
+  permit_criteria :exact, :condition, :field_condition, :start => {}, :end => {}
 
   def keywords_for_index(item)
     date_for_keywords(item)
@@ -10,12 +10,14 @@ class Search::DateTimeStrategy < Search::BaseStrategy
     negate = criteria[:field_condition] == "exclude"
     p "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
     p criteria[:start]
-    p criteria[:start][:exact]
-    p Time.zone.at(criteria[:start][:exact].to_i / 1000)
-    p Time.at(criteria[:start][:exact].to_i / 1000)
-    p Time.zone.at(criteria[:start][:exact].to_i / 1000).utc
-    start_date_time = Time.zone.at(criteria[:start][:exact].to_i / 1000) if start_date?(criteria)
-    end_date_time = Time.zone.at(criteria[:end][:exact].to_i / 1000) if end_date?(criteria)
+    # p criteria[:start][:exact]
+    # p Time.zone.at(criteria[:start][:exact].to_i / 1000)
+    # p Time.at(criteria[:start][:exact].to_i / 1000)
+    # p Time.zone.at(criteria[:start][:exact].to_i / 1000).utc
+    start_condition = criteria[:start].keys.first
+    end_condition = criteria[:start].keys.first
+    start_date_time = Time.zone.at(criteria[:start][start_condition].to_i / 1000) if start_date?(criteria)
+    end_date_time = Time.zone.at(criteria[:end][end_condition].to_i / 1000) if end_date?(criteria)
 
     return scope unless start_date_time.present? || end_date_time.present?
 
@@ -48,7 +50,8 @@ class Search::DateTimeStrategy < Search::BaseStrategy
   end
 
   def start_date?(criteria)
-    criteria[:start].present? && criteria[:start][criteria[:start].keys.first].present?
+    condition = criteria[:start].keys.first
+    criteria[:start].present? && criteria[:start][condition].present?
   end
 
   def end_date?(criteria)
@@ -170,8 +173,8 @@ class Search::DateTimeStrategy < Search::BaseStrategy
     where_scope = ->(*where_query) { field_condition == "outside" ? scope.where.not(where_query) : scope.where(where_query) }
 
     where_scope.call(
-      "#{convert_to_timestamp(concat_json_date)} BETWEEN to_timestamp(?, 'YYYY-MM-DD hh24:mi:ss')
-      AND to_timestamp(?, 'YYYY-MM-DD hh24:mi:ss')",
+      "#{convert_to_timestamp(concat_json_date)} BETWEEN to_timestamp(?, '#{field_date_format_to_sql_format}')
+      AND to_timestamp(?, '#{field_date_format_to_sql_format}')",
       date_remove_utc(start_date_time),
       date_remove_utc(end_date_time)
     )
