@@ -199,17 +199,13 @@ class ItemTypesReferenceSearch extends Component {
                 locale={this.props.locale}
                 onChange={this.selectItem}
               />
-    } else if (this.state.inputType === 'Field::text') {
-      return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.state.inputName} onChange={this.selectItem} type="email" className="form-control"/>
     } else if (this.state.inputType === 'Field::Int' || this.state.inputType === 'Field::Decimal') {
       return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.state.inputName} onChange={this.selectItem} type="number" className="form-control"/>
-    } else if (this.state.inputType === 'Field::URL') {
-      return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.state.inputName} onChange={this.selectItem} type="url" className="form-control"/>
     } else if ((this.state.inputType === 'Field::ChoiceSet' && !this._getChoiceSetMultipleOption()) || this.state.inputType === 'Field::Boolean') {
       return (
         <select id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.state.inputName} onChange={this.selectItem} className="form-control">
           { this.state.inputData.map((item) => {
-            return <option key={item.key}>{item.value}</option>
+            return <option key={item.key} value={item.key}>{item.value}</option>
             })
           }
         </select>
