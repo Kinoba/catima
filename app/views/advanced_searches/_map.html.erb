@@ -1,73 +1,9 @@
-<%= bootstrap_form_for(@advanced_search) do |f| %>
-  <%= hidden_field_tag(:item_type, params[:item_type].presence || @advanced_search_config&.item_type&.slug) %>
-
-  <% if params[:item_type].present? || @advanced_search_config.present? %>
-    <div class="row">
-      <div class="col-md-12">
-        <h3><%= t("advanced_searches.new.item_type_search",  item_type: @advanced_search_config.present? ? @advanced_search_config.item_type.name : @advanced_search.item_type.name) %></h3>
-      </div>
-      <% if @fields.count.zero? %>
-        <div class="col-md-12">
-          <%= t("advanced_searches.new.no_field_in_advance_search_configuration") %>
-        </div>
-      <% end %>
-    </div>
-  <% end %>
-
-  <table class="table">
-    <tbody>
-      <% if params[:item_type].present? || @advanced_search_config.present? %>
-        <% @fields.each do |field| %>
-          <%= render_advanced_search_field(f, field) do |content| %>
-            <tr>
-              <th><%= field.name %></th>
-              <td><%= content %></td>
-            </tr>
-          <% end %>
-        <% end %>
-      <% end %>
-    </tbody>
-  </table>
-
-  <%# TODO @OURIEL %>
-  <%= react_component("GeoViewer",
-        props: {
-          features: [
-            {
-              type: "Feature",
-              geometry:  {
-                type: "Point",
-                coordinates: [9.822104040363055, 46.93338859285157]},
-                properties: {
-                  popupContent: "<div><div><a href='#'>My link</a></div><div>This is where the Rockies play!</div></div>"
-                }
-            },
-            {
-              type: "Feature",
-              geometry:  {
-                type: "Point",
-                coordinates: [11.822104040363055, 46.93338859285157]},
-                properties: {
-                  popupContent: "<div><div><a href='#'>My link</a></div><div>This is where the Rockies play!</div></div>"
-                }
-            },
-            {
-              type: "Feature",
-              geometry:  {
-                type: "Point",
-                coordinates: [15.822104040363055, 46.93338859285157]},
-                properties: {
-                  popupContent: "<div><div><a href='#'>My link</a></div><div>This is where the Rockies play!</div></div>"
-                }
-            }
-          ]
-        },
-      prerender: false)
-  %>
-  <%# END TODO @OURIEL %>
-
-  <%= link_to(
-        t("advanced_searches.new.start_over"),
-        { :type => params[:type] },
-        :class => "btn btn-text") %>
-<% end %>
+<%# TODO @OURIEL %>
+<%= react_component("GeoViewer",
+      id: "results_map_container",
+      props: {
+        features: results
+      },
+    prerender: false)
+%>
+<%# END TODO @OURIEL %>

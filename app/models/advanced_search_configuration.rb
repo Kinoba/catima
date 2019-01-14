@@ -112,4 +112,8 @@ class AdvancedSearchConfiguration < ApplicationRecord
 
     false
   end
+
+  def search_type_map?
+    self.search_type == AdvancedSearchConfiguration::TYPES['Map']
+  end
 end

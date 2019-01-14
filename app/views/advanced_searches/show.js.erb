@@ -1,0 +1,9 @@
+<% results = @search.items_as_geojson %>
+<% results.each_with_index.map do |item, i| %>
+  <%# TODO : display only fields that have been selected to be displayed in the advanced search configuration %>
+  <% ["properties"]["popupContent"] = item_list_link(@search, item, i) %>
+  <% item %>
+<% end %>
+
+$("#results_map_container").replaceWith("<%= j(render :partial => 'map', :locals => { :results => results }) %>");
+ReactOnRails.reactOnRailsPageLoaded()

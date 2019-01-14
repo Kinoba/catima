@@ -50,6 +50,8 @@ class Search::ReferenceStrategy < Search::BaseStrategy
     end
   end
 
+  # Known issue in rails (with the editor field only): https://github.com/rails/rails/issues/34536#issue-384526390
+  # Joins relations order is not preserved, leading in a PG::UndefinedTable: ERROR.
   def search_in_ref_field(scope, criteria)
     p "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
     p criteria
@@ -60,11 +62,20 @@ class Search::ReferenceStrategy < Search::BaseStrategy
 
     klass = "Search::#{ref_field.type.sub(/^Field::/, '')}Strategy"
     strategy = klass.constantize.new(ref_field, locale)
-    scope = strategy.search(
-      scope.select('"parent_items".*')
-        .from("items parent_items")
-        .joins("LEFT JOIN items ON parent_items.data->>'#{field.uuid}' = items.id::text"),
-      criteria)
+
+    if field.multiple?
+      scope = strategy.search(
+        scope.select('"parent_items".*')
+          .from("items parent_items")
+          .joins("LEFT JOIN items ON (parent_items.data->>'#{field.uuid}')::jsonb ?| array[items.id::text]"),
+        criteria)
+    else
+      scope = strategy.search(
+        scope.select('"parent_items".*')
+          .from("items parent_items")
+          .joins("LEFT JOIN items ON parent_items.data->>'#{field.uuid}' = items.id::text"),
+        criteria)
+    end
     p strategy.inspect
     scope
   end

@@ -11,7 +11,6 @@ init = ->
 
 changeInputName = (selectInput) ->
   selectedFilter = selectInput.val()
-  alert(selectedFilter)
   templateField = selectInput.parents(".row").find(".template")
 
   filerFieldName = templateField.attr("name").replace(/__filter__/g, selectedFilter);

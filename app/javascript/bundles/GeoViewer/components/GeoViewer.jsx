@@ -30,6 +30,12 @@ class GeoViewer extends React.Component {
 
     this.pointToLayer = this._pointToLayer.bind(this);
     this.onEachFeature = this._onEachFeature.bind(this);
+
+    console.log("constructed");
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps.features);
   }
 
   componentDidMount(){

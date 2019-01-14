@@ -1,4 +1,4 @@
-<%= bootstrap_form_for(@advanced_search) do |f| %>
+<%= bootstrap_form_for(@advanced_search, :remote => @advanced_search_config&.search_type_map?) do |f| %>
   <%= hidden_field_tag(:item_type, params[:item_type].presence || @advanced_search_config&.item_type&.slug) %>
 
   <% if params[:item_type].present? || @advanced_search_config.present? %>

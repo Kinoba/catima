@@ -3,6 +3,7 @@
 #
 class ItemList::AdvancedSearchResult < ItemList
   include Search::Strategies
+  include ItemMapsHelper
 
   attr_reader :model
   delegate :catalog, :item_type, :criteria, :locale, :to_param, :to => :model
@@ -20,6 +21,19 @@ class ItemList::AdvancedSearchResult < ItemList
     end
     p permitted
     params.permit(:criteria => permitted)
+  end
+
+  # Uses the first Geometry Field found among the advanced_search's fields
+  def items_as_geojson
+    @model.fields.each do |field|
+      next unless field.type_name == "Geometry"
+
+      return items.each_with_index.map do |item, i|
+        # TODO : display only fields that have been selected to be displayed in the advanced search configuration
+        item.data[field.uuid]["features"][0]["properties"]["popupContent"] = ""
+        item.data[field.uuid]["features"][0]
+      end
+    end
   end
 
   private

@@ -23,13 +23,13 @@
   <% end %>
 </ul>
 
+<%= render :partial => "form" %>
+
+<% if @advanced_search_config&.search_type_map? %>
+  <%= render :partial => "map", :locals => { :results => [] } %>
+<% end %>
+
 <% if @advanced_search_config.present? %>
   <h3><%= @advanced_search_config.title %></h3>
   <p><%= @advanced_search_config.description %></p>
-<% end %>
-
-<% if @advanced_search_config&.search_type == AdvancedSearchConfiguration::TYPES['Map'] %>
-  <%= render :partial => "map" %>
-<% else %>
-  <%= render :partial => "form" %>
 <% end %>
