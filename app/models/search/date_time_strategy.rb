@@ -82,15 +82,15 @@ class Search::DateTimeStrategy < Search::BaseStrategy
     "CONCAT(
       CASE WHEN items.data->'#{field.uuid}'->>'Y' IS NULL THEN '0000' ELSE LPAD(items.data->'#{field.uuid}'->>'Y', 4, '0') END,
       '-',
-      CASE WHEN items.data->'#{field.uuid}'->>'M' IS NULL THEN '00' ELSE LPAD(items.data->'#{field.uuid}'->>'M', 1, '0') END,
+      CASE WHEN items.data->'#{field.uuid}'->>'M' IS NULL THEN '00' ELSE LPAD(items.data->'#{field.uuid}'->>'M', 2, '0') END,
       '-',
-      CASE WHEN items.data->'#{field.uuid}'->>'D' IS NULL THEN '00' ELSE LPAD(items.data->'#{field.uuid}'->>'D', 1, '0') END,
+      CASE WHEN items.data->'#{field.uuid}'->>'D' IS NULL THEN '00' ELSE LPAD(items.data->'#{field.uuid}'->>'D', 2, '0') END,
       ' ',
-      CASE WHEN items.data->'#{field.uuid}'->>'h' IS NULL THEN '00' ELSE LPAD(items.data->'#{field.uuid}'->>'h', 1, '0') END,
+      CASE WHEN items.data->'#{field.uuid}'->>'h' IS NULL THEN '00' ELSE LPAD(items.data->'#{field.uuid}'->>'h', 2, '0') END,
       ':',
-      CASE WHEN items.data->'#{field.uuid}'->>'m' IS NULL THEN '00' ELSE LPAD(items.data->'#{field.uuid}'->>'m', 1, '0') END,
+      CASE WHEN items.data->'#{field.uuid}'->>'m' IS NULL THEN '00' ELSE LPAD(items.data->'#{field.uuid}'->>'m', 2, '0') END,
       ':',
-      CASE WHEN items.data->'#{field.uuid}'->>'s' IS NULL THEN '00' ELSE LPAD(items.data->'#{field.uuid}'->>'s', 1, '0') END
+      CASE WHEN items.data->'#{field.uuid}'->>'s' IS NULL THEN '00' ELSE LPAD(items.data->'#{field.uuid}'->>'s', 2, '0') END
     )"
   end
 

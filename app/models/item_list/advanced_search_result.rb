@@ -30,7 +30,13 @@ class ItemList::AdvancedSearchResult < ItemList
 
       return items.each_with_index.map do |item, i|
         # TODO : display only fields that have been selected to be displayed in the advanced search configuration
-        item.data[field.uuid]["features"][0]["properties"]["popupContent"] = ""
+        popup_content = ApplicationController.render(
+          :partial => 'advanced_searches/popup_content',
+          :assigns => {
+            :item => item
+          }
+        )
+        item.data[field.uuid]["features"][0]["properties"]["popupContent"] = popup_content
         item.data[field.uuid]["features"][0]
       end
     end

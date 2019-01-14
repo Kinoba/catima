@@ -27,9 +27,9 @@ class AdvancedSearchesController < ApplicationController
     else
       @item_types = @advanced_search.item_types
       @fields = @advanced_search.fields
-    end
 
-    redirect_to :action => :new, :item_type => @item_types.first unless params[:item_type]
+      return redirect_to :action => :new, :item_type => @item_types.first if params[:item_type].blank?
+    end
   end
 
   def create
