@@ -28,13 +28,23 @@ class AdvancedSearchesController < ApplicationController
       @item_types = @advanced_search.item_types
       @fields = @advanced_search.fields
     end
+
+    redirect_to :action => :new, :item_type => @item_types.first unless params[:item_type]
   end
 
   def create
     build_advanced_search
     if @advanced_search.update(advanced_search_params)
       # return redirect_back(fallback_location: root_path)
-      redirect_to(:action => :show, :uuid => @advanced_search)
+
+      respond_to do |f|
+        f.html { redirect_to(:action => :show, :uuid => @advanced_search) }
+        f.js do
+          params[:uuid] = @advanced_search.uuid
+          find_advanced_search_or_redirect
+          render "show"
+        end
+      end
     else
       render("new")
     end
