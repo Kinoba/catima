@@ -19,7 +19,6 @@ class ItemList::AdvancedSearchResult < ItemList
     strategies.each do |strategy|
       permitted[strategy.field.uuid] = strategy.permitted_keys
     end
-    p permitted
     params.permit(:criteria => permitted)
   end
 
@@ -55,11 +54,7 @@ class ItemList::AdvancedSearchResult < ItemList
       "exclude" => []
     }
     strategies.each do |strategy|
-      # p "unpaginaged_items : #{scope.inspect}"
       criteria = field_criteria(strategy.field)
-      p "°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°"
-      p strategy
-      p criteria
 
       # Simple fields
       if %w[or exclude and].include?(criteria[:field_condition])

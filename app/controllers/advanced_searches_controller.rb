@@ -58,8 +58,7 @@ class AdvancedSearchesController < ApplicationController
 
   def build_advanced_search
     type = catalog.item_types.where(:slug => params[:item_type]).first
-    p "-----------------------"
-    p type
+
     @advanced_search = scope.new do |model|
       model.item_type = type || catalog.item_types.sorted.first
       model.creator = current_user if current_user.authenticated?
@@ -69,9 +68,6 @@ class AdvancedSearchesController < ApplicationController
   def find_advanced_search_or_redirect
     model = scope.where(:uuid => params[:uuid]).first
     return redirect_to(:action => :new) if model.nil?
-
-    p "----------"
-    p model
 
     @search = ItemList::AdvancedSearchResult.new(
       :model => model,

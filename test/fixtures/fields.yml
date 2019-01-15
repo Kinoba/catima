@@ -203,6 +203,15 @@ one_author_language_origin:
   field_set: language (Category)
   uuid: language_category_uuid
 
+one_author_language_earliest_recollection:
+  type: "Field::DateTime"
+  name_translations: { "name_en": "Language earlier recollection" }
+  name_plural_translations: { "name_plural_en": "Language earliest recollections" }
+  slug: language-earliest-recollection
+  field_set: language (Category)
+  uuid: one_author_language_earliest_recollection_uuid
+  options: { "format": "Y" }
+
 one_author_born:
   type: "Field::DateTime"
   name_translations: { "name_en": "Born" }
@@ -233,6 +242,26 @@ one_author_birth_month:
   uuid: one_author_birth_month_uuid
   required: false
   options: { "format": "YM" }
+
+one_author_most_active_month:
+  type: "Field::DateTime"
+  name_translations: { "name_en": "Most Active Month" }
+  name_plural_translations: { "name_plural_en": "Most Active Months" }
+  slug: most-active-month
+  field_set: one_author (ItemType)
+  uuid: one_author_most_active_month_uuid
+  required: false
+  options: { "format": "M" }
+
+one_author_most_active_hour:
+  type: "Field::DateTime"
+  name_translations: { "name_en": "Most Active Hour" }
+  name_plural_translations: { "name_plural_en": "Most Active Hours" }
+  slug: most-active-hour
+  field_set: one_author (ItemType)
+  uuid: one_author_most_active_hour_uuid
+  required: false
+  options: { "format": "h" }
 
 one_author_birthplace:
   type: "Field::Geometry"

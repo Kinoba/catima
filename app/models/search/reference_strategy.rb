@@ -1,20 +1,17 @@
 class Search::ReferenceStrategy < Search::BaseStrategy
   include Search::MultivaluedSearch
 
-  permit_criteria :exact, :all_words, :one_word, :less_than, :less_than_or_equal_to, :greater_than, :greater_than_or_equal_to, :field_condition, :filter_field_slug, :condition, :default, :start => {}, :end => {}
+  permit_criteria :exact, :all_words, :one_word, :less_than, :less_than_or_equal_to, :greater_than,
+                  :greater_than_or_equal_to, :field_condition, :filter_field_slug, :condition, :default,
+                  :start => {}, :end => {}
 
   def keywords_for_index(item)
     primary_text_for_keywords(item)
   end
 
   def search(scope, criteria)
-    p "__________________________________________________________________________________________"
-
     negate = criteria[:field_condition] == "exclude"
 
-    p criteria
-    p criteria[:exact]
-    p criteria[:default]
     # User searched by tag
     if criteria[:default].present?
       criterias = criteria[:default].split(',')
@@ -27,7 +24,6 @@ class Search::ReferenceStrategy < Search::BaseStrategy
       scope = search_data_matching_all(scope, criteria[:default], negate)
     end
 
-    p "----------------------------------------------------------------------------------------------------------------------------------------"
     scope = search_in_ref_field(scope, criteria) if criteria[:filter_field_slug].present?
 
     scope
@@ -53,11 +49,7 @@ class Search::ReferenceStrategy < Search::BaseStrategy
   # Known issue in rails (with the editor field only): https://github.com/rails/rails/issues/34536#issue-384526390
   # Joins relations order is not preserved, leading in a PG::UndefinedTable: ERROR.
   def search_in_ref_field(scope, criteria)
-    p "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-    p criteria
-    p criteria[:filter_field_slug]
     ref_field = Field.find_by(slug: criteria[:filter_field_slug])
-    p ref_field
     return scope if ref_field.nil?
 
     klass = "Search::#{ref_field.type.sub(/^Field::/, '')}Strategy"
@@ -76,7 +68,7 @@ class Search::ReferenceStrategy < Search::BaseStrategy
           .joins("LEFT JOIN items ON parent_items.data->>'#{field.uuid}' = items.id::text"),
         criteria)
     end
-    p strategy.inspect
+
     scope
   end
 end

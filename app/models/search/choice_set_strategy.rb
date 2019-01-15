@@ -1,7 +1,9 @@
 class Search::ChoiceSetStrategy < Search::BaseStrategy
   include Search::MultivaluedSearch
 
-  permit_criteria :exact, :all_words, :one_word, :less_than, :less_than_or_equal_to, :greater_than, :greater_than_or_equal_to, :field_condition, :filter_field_slug, :category_field, :category_criteria => {}
+  permit_criteria :exact, :all_words, :one_word, :less_than, :less_than_or_equal_to, :greater_than,
+                  :greater_than_or_equal_to, :field_condition, :filter_field_slug, :category_field,
+                  :after, :before, :between, :outside, :condition, :category_criteria => {}
 
   def keywords_for_index(item)
     choices = field.selected_choices(item)
@@ -18,22 +20,19 @@ class Search::ChoiceSetStrategy < Search::BaseStrategy
   def search(scope, criteria)
     negate = criteria[:field_condition] == "exclude"
 
-    p "_________________________________________________________________"
-    p criteria
-    p criteria[:category_field]
-    p criteria[:category_criteria]
-
     if criteria[:category_field].present?
       condition = criteria[:category_criteria].keys[0]
       criteria[condition] = criteria[:category_criteria][condition]
-      @field = Field.find_by(slug: criteria[:category_field])
-      p criteria
 
-      return scope if @field.nil?
+      # Second condition may be present for ranges with DateTime fields for example
+      second_condition = criteria[:category_criteria].keys[1] if %w[outside between].include?(criteria[condition].keys[0])
+      criteria[second_condition] = criteria[:category_criteria][second_condition]
+      cat_field = Field.find_by(slug: criteria[:category_field])
+      return scope if cat_field.nil?
 
-      scope = exact_search(scope, criteria[:exact], negate)
-      scope = all_words_search(scope, criteria[:all_words], negate)
-      scope = one_word_search(scope, criteria[:one_word], negate)
+      klass = "Search::#{cat_field.type.sub(/^Field::/, '')}Strategy"
+      strategy = klass.constantize.new(cat_field, locale)
+      scope = strategy.search(scope, criteria)
     else
       scope = search_data_matching_one_or_more(scope, criteria[:exact], negate)
     end
@@ -53,9 +52,6 @@ class Search::ChoiceSetStrategy < Search::BaseStrategy
   end
 
   def search_in_category_field(scope, criteria)
-    p "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-    p criteria
-
     category_field = Field.find_by(slug: criteria[:category_field])
 
     criteria[criteria[:category_criteria].keys[0]] = criteria[:category_criteria][criteria[:category_criteria].keys[0]]
@@ -67,35 +63,7 @@ class Search::ChoiceSetStrategy < Search::BaseStrategy
         .from("items parent_items")
         .joins("LEFT JOIN items ON parent_items.data->>'#{field.uuid}' = items.id::text"),
       criteria)
-    # scope = strategy.search(
-    #   scope.joins("LEFT JOIN items ref_items ON items.data->>'#{field.uuid}' = ref_items.id::text"),
-    #   criteria)
 
     scope
-  end
-
-  def exact_search(scope, exact_phrase, negate)
-    return scope if exact_phrase.blank?
-
-    sql_operator = "#{'NOT' if negate} ILIKE"
-    scope.where("#{data_field_expr} #{sql_operator} ?", exact_phrase.strip.to_s)
-  end
-
-  def one_word_search(scope, str, negate)
-    return scope if str.blank?
-
-    sql_operator = "#{'NOT' if negate} ILIKE"
-    words = str.split.map(&:strip)
-    sql = words.map { |_| "#{data_field_expr} #{sql_operator} ?" }.join(" OR ")
-    scope.where(sql, *words.map { |w| "%#{w}%" })
-  end
-
-  def all_words_search(scope, str, negate)
-    return scope if str.blank?
-
-    sql_operator = "#{'NOT' if negate} ILIKE"
-    words = str.split.map(&:strip)
-    sql = words.map { |_| "#{data_field_expr} #{sql_operator} ?" }.join(" AND ")
-    scope.where(sql, *words.map { |w| "%#{w}%" })
   end
 end

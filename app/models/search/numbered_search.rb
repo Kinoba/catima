@@ -1,5 +1,5 @@
 # Code that is common between fields that are numbered, such as
-# Decimal and Int.
+# Decimal and Int, ChoiceSets
 module Search::NumberedSearch
   private
 
