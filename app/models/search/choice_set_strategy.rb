@@ -25,8 +25,11 @@ class Search::ChoiceSetStrategy < Search::BaseStrategy
       criteria[condition] = criteria[:category_criteria][condition]
 
       # Second condition may be present for ranges with DateTime fields for example
-      second_condition = criteria[:category_criteria].keys[1] if %w[outside between].include?(criteria[condition].keys[0])
-      criteria[second_condition] = criteria[:category_criteria][second_condition]
+      if criteria[condition].is_a?(Hash)
+        second_condition = criteria[:category_criteria].keys[1] if %w[outside between].include?(criteria[condition].keys[0])
+        criteria[second_condition] = criteria[:category_criteria][second_condition]
+      end
+
       cat_field = Field.find_by(slug: criteria[:category_field])
       return scope if cat_field.nil?
 

@@ -27,8 +27,8 @@ class ItemList::AdvancedSearchResult < ItemList
     @model.fields.each do |field|
       next unless field.type_name == "Geometry"
 
-      return items.each_with_index.map do |item, i|
-        # TODO : display only fields that have been selected to be displayed in the advanced search configuration
+      return items.map do |item|
+        # TODO: part 3 : display only fields that have been selected to be displayed in the advanced search configuration
         popup_content = ApplicationController.render(
           :partial => 'advanced_searches/popup_content',
           :assigns => {
@@ -71,9 +71,6 @@ class ItemList::AdvancedSearchResult < ItemList
       end
     end
 
-    # AND relations are grouped together as well as OR relations because we don't know
-    # the order of the field condition.
-    # e.g.: (a OR b) AND c is not the same as (a AND b) OR c
     and_relations = items_strategies["and"].first
     items_strategies["and"].drop(1).each do |relation|
       and_relations = and_relations.merge(relation)
@@ -91,12 +88,6 @@ class ItemList::AdvancedSearchResult < ItemList
 
     and_relations = and_relations.merge(exclude_relations) if exclude_relations.present?
 
-    p "and_relations presence --> #{and_relations.present?}"
-    p "exclude_relations presence --> #{exclude_relations.present?}"
-    p "or_relations presence --> #{or_relations.present?}"
-    p "FULL QUERY"
-    # p and_relations.to_sql
-    # p or_relations.to_sql
     return and_relations.or(or_relations) if or_relations.present?
 
     and_relations
