@@ -57,7 +57,7 @@ class ReferenceSearch extends Component {
         this.setState({selectedCondition: this.props.selectCondition[0].key});
     }
 
-    axios.get(`/api/v2/${this.props.catalog}/${this.props.locale}/${this.props.itemType}`, config)
+    axios.get(`/api/v2/${this.props.catalog}/${this.props.locale}/${this.props.itemType}?simple_fields=true`, config)
     .then(res => {
 <<<<<<< HEAD
 <<<<<<< HEAD
