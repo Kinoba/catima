@@ -344,6 +344,8 @@ en:
   expired: "expired"
   download: "Download"
   or: or
+  and: and
+  exclude: exclude
   options: Options
 
   layouts:

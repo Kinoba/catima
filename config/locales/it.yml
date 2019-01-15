@@ -297,6 +297,8 @@ it:
   expired: "scaduto"
   download: "Scaricare"
   or: o
+  and: e
+  exclude: eccetto
   options: Options
 
   layouts:

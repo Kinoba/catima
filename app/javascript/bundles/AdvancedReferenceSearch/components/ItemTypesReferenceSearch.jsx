@@ -1,21 +1,16 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-<<<<<<< HEAD
-<<<<<<< HEAD
+import ReactSelect from 'react-select';
 import axios from 'axios';
-=======
->>>>>>> Add React components for Reference advanced search
-=======
-import axios from 'axios';
->>>>>>> Improve reference advanced search component
+import $ from 'jquery';
+import 'moment';
+import 'eonasdan-bootstrap-datetimepicker';
+import DateTimeSearch from '../../AdvancedDateTimeSearch/components/DateTimeSearch';
+import striptags from 'striptags';
 
 class ItemTypesReferenceSearch extends Component {
   constructor(props){
     super(props);
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> Improve reference advanced search component
 
     this.state = {
       isLoading: true,
@@ -217,29 +212,14 @@ class ItemTypesReferenceSearch extends Component {
     } else {
       return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.state.inputName} onChange={this.selectItem} type="text" className="form-control"/>
     }
-<<<<<<< HEAD
-=======
->>>>>>> Add React components for Reference advanced search
-=======
->>>>>>> Improve reference advanced search component
   }
 
   render() {
     return (
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> Improve reference advanced search component
       <div className="single-reference-container">
         { this.state.isLoading && <div className="loader"></div> }
         { this.renderInput() }
       </div>
-<<<<<<< HEAD
-=======
-        <div>ItemTypesReferenceSearch</div>
->>>>>>> Add React components for Reference advanced search
-=======
->>>>>>> Improve reference advanced search component
     );
   }
 }

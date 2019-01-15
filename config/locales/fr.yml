@@ -339,7 +339,9 @@ fr:
   expired: "expiré"
   download: "Télécharger"
   or: ou
-  options: Options
+  and: et
+  exclude: sauf
+  options: options
 
   layouts:
     catalog_admin:

@@ -13,8 +13,6 @@ class ReferenceSearch extends Component {
       items: [],
       fields: [],
       isLoading: true,
-<<<<<<< HEAD
-<<<<<<< HEAD
       selectedFilter: null,
       itemTypeSearch: this.props.itemTypeSearch,
       selectCondition: this.props.selectCondition,
@@ -28,23 +26,9 @@ class ReferenceSearch extends Component {
     this.selectFilter = this._selectFilter.bind(this);
     this.selectCondition = this._selectCondition.bind(this);
     this.updateSelectedItem = this._updateSelectedItem.bind(this);
-=======
-      searchPlaceholder: '',
-      filterPlaceholder: '',
-      selectedFilter: null
-    };
-
-    this.selectFilter = this._selectFilter.bind(this);
->>>>>>> Add React components for Reference advanced search
-=======
-      selectedFilter: null,
-      itemTypeSearch: this.props.itemTypeSearch,
-      selectedItem: []
-    };
-
-    this.selectFilter = this._selectFilter.bind(this);
-    this.updateSelectedItem = this._updateSelectedItem.bind(this);
->>>>>>> Add conditional rendering for reference advanced search component
+    this.updateSelectCondition = this._updateSelectCondition.bind(this);
+    this.addComponent = this._addComponent.bind(this);
+    this.deleteComponent = this._deleteComponent.bind(this);
   }
 
   componentDidMount(){
@@ -59,14 +43,6 @@ class ReferenceSearch extends Component {
 
     axios.get(`/api/v2/${this.props.catalog}/${this.props.locale}/${this.props.itemType}?simple_fields=true`, config)
     .then(res => {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-      this.setState({ searchPlaceholder: res.data.search_placeholder });
-      this.setState({ filterPlaceholder: res.data.filter_placeholder });
->>>>>>> Add React components for Reference advanced search
-=======
->>>>>>> Add conditional rendering for reference advanced search component
       this.setState({ items: res.data.items });
       this.setState({ fields: res.data.fields });
       this.setState({ filterPlaceholder: res.data.filter_placeholder });
@@ -100,10 +76,15 @@ class ReferenceSearch extends Component {
     });
   }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> Add conditional rendering for reference advanced search component
+  _buildInputNameCondition(condition) {
+      if(this.state.inputName.length === 2) {
+        if(condition !== '') return this.state.inputName[0] + '[' + condition + ']' + this.state.inputName[1];
+        else return this.state.inputName[0] + '[default]' + this.state.inputName[1];
+      } else {
+        return this.props.inputName;
+      }
+  }
+
   _updateSelectedItem(newVal) {
     this.setState({ selectedItem: newVal });
   }
@@ -120,7 +101,7 @@ class ReferenceSearch extends Component {
     if ((typeof this.state.selectedItem !== 'undefined'
         && this.state.selectedItem.length >= 0
         && this.state.selectedFilter === null)
-        || this.state.selectCondition.length === 0) {
+        || this.state.selectCondition.length === 0) {
        return true;
     }
     else {
@@ -141,29 +122,11 @@ class ReferenceSearch extends Component {
   _selectFilter(value){
     this.setState({ selectedFilter: value });
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     if(typeof value !== 'undefined' && value === null) {
       this.setState({ itemTypeSearch: false });
     } else {
       this.setState({ itemTypeSearch: true });
     }
-=======
-  _selectFilter(filter){
-    this.setState({ selectedFilter: filter });
->>>>>>> Add React components for Reference advanced search
-=======
-    if(typeof this.state.selectedFilter !== 'undefined' && this.state.selectedFilter === null) {
-      this.setState({ itemTypeSearch: true });
-    } else {
-=======
-    if(typeof value !== 'undefined' && value === null) {
->>>>>>> Improve reference advanced search component
-      this.setState({ itemTypeSearch: false });
-    } else {
-      this.setState({ itemTypeSearch: true });
-    }
->>>>>>> Add conditional rendering for reference advanced search component
   }
 
   _getFilterOptions(){
@@ -177,10 +140,6 @@ class ReferenceSearch extends Component {
     return optionsList;
   }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> Add conditional rendering for reference advanced search component
   _isFilterDisabled() {
     if(typeof this.state.selectedItem !== 'undefined' && this.state.selectedItem.length > 0) {
        return true;
@@ -190,11 +149,6 @@ class ReferenceSearch extends Component {
     }
   }
 
-<<<<<<< HEAD
-=======
->>>>>>> Add React components for Reference advanced search
-=======
->>>>>>> Add conditional rendering for reference advanced search component
   _getJSONFilter(field) {
     if(!field.primary) return {value: field.slug, label: field.name};
   }
@@ -222,8 +176,6 @@ class ReferenceSearch extends Component {
 
   renderSearch(){
     if (this.state.isLoading) return null;
-<<<<<<< HEAD
-<<<<<<< HEAD
     if (this.state.itemTypeSearch)
       return <ItemTypesReferenceSearch
                 updateSelectCondition={this.updateSelectCondition}
@@ -235,25 +187,7 @@ class ReferenceSearch extends Component {
                 selectedCondition={this.state.selectedCondition}
                 selectCondition={this.state.selectCondition}
                 itemType={this.props.itemType}
-=======
-    if (this.props.itemTypeSearch)
-      return <ItemTypesReferenceSearch
-                items={this.state.items}
-                fields={this.state.fields}
-                searchPlaceholder={this.state.searchPlaceholder}
-                filterPlaceholder={this.state.filterPlaceholder}
->>>>>>> Add React components for Reference advanced search
-=======
-    if (this.state.itemTypeSearch)
-      return <ItemTypesReferenceSearch
-                items={this.state.items}
-                fields={this.state.fields}
-<<<<<<< HEAD
->>>>>>> Add conditional rendering for reference advanced search component
-=======
-                selectedFilter={this.state.selectedFilter}
-                itemType={this.props.itemType}
->>>>>>> Improve reference advanced search component
+                inputName={this._buildInputNameCondition(this.state.selectedCondition)}
                 srcRef={this.props.srcRef}
                 srcId={this.props.srcId}
                 req={this.props.req}
@@ -261,39 +195,20 @@ class ReferenceSearch extends Component {
                 locale={this.props.locale} />
     else
       return <SelectedReferenceSearch
-<<<<<<< HEAD
-<<<<<<< HEAD
-                updateSelectedItem={this.updateSelectedItem}
-                items={this.state.items}
-                fields={this.state.fields}
-=======
-                items={this.state.items}
-                fields={this.state.fields}
-                searchPlaceholder={this.state.searchPlaceholder}
-                filterPlaceholder={this.state.filterPlaceholder}
->>>>>>> Add React components for Reference advanced search
-=======
                 updateSelectedItem={this.updateSelectedItem}
                 searchPlaceholder={this.state.searchPlaceholder}
                 noOptionsMessage={this._getNoOptionsMessage()}
                 items={this.state.items}
                 fields={this.state.fields}
->>>>>>> Add conditional rendering for reference advanced search component
+                multiple={this.props.multiple}
+                inputName={this._buildInputNameCondition(this.state.selectedCondition)}
                 srcRef={this.props.srcRef}
                 srcId={this.props.srcId}
                 req={this.props.req} />
   }
 
   renderFilter(){
-<<<<<<< HEAD
-<<<<<<< HEAD
-    return <ReactSelect className="single-reference-filter" isSearchable={false} isClearable={true} isDisabled={this._isFilterDisabled()} value={this.state.selectedFilter} onChange={this.selectFilter} options={this._getFilterOptions()} placeholder={this.props.filterPlaceholder}/>
-=======
-    return <ReactSelect className="single-reference-filter" isSearchable={false} isClearable={true} value={this.state.selectedFilter} onChange={this.selectFilter} options={this._getFilterOptions()} placeholder={this.props.filterPlaceholder}/>
->>>>>>> Add React components for Reference advanced search
-=======
-    return <ReactSelect className="single-reference-filter" isSearchable={false} isClearable={true} isDisabled={this._isFilterDisabled()} value={this.state.selectedFilter} onChange={this.selectFilter} options={this._getFilterOptions()} placeholder={this.props.filterPlaceholder}/>
->>>>>>> Add conditional rendering for reference advanced search component
+    return <ReactSelect className="single-reference-filter" name={this.props.referenceFilterName} isSearchable={false} isClearable={true} isDisabled={this._isFilterDisabled()} value={this.state.selectedFilter} onChange={this.selectFilter} options={this._getFilterOptions()} placeholder={this.state.filterPlaceholder} noOptionsMessage={this._getNoOptionsMessage()}/>
   }
 
   renderFieldConditionElement(){
@@ -319,23 +234,45 @@ class ReferenceSearch extends Component {
 
   render() {
     return (
-      <div id={this.editorId} className="referenceSearch row">
-<<<<<<< HEAD
-<<<<<<< HEAD
-        { this.state.isLoading && <div className="loader"></div> }
-        <div className="col-md-8">{ this.renderSearch() }</div>
-        <div className="col-md-4">{ this.renderFilter() }</div>
-=======
-      { this.state.isLoading && <div className="loader"></div> }
-      <div className="col-md-8">{ this.renderSearch() }</div>
-      <div className="col-md-4">{ this.renderFilter() }</div>
->>>>>>> Add React components for Reference advanced search
-=======
-        { this.state.isLoading && <div className="loader"></div> }
-        <div className="col-md-8">{ this.renderSearch() }</div>
-        <div className="col-md-4">{ this.renderFilter() }</div>
->>>>>>> Add conditional rendering for reference advanced search component
-    </div>
+      <div>
+        <div className="col-md-2">
+          { this.renderFieldConditionElement() }
+        </div>
+        <div className="col-md-7">
+          <div className="reference-search-container">
+            <div className="col-md-11 reference-input-container">
+              <div className="row">
+                <div className="col-md-8">
+                  { this.state.isLoading && <div className="loader"></div> }
+                  { this.renderSearch() }
+                </div>
+                <div className="col-md-4">{ this.renderFilter() }</div>
+              </div>
+            </div>
+            { (this.props.itemId === this.props.componentList[0].itemId && this.props.componentList.length === 1) &&
+            <div className="col-md-1 icon-container">
+              <a type="button" onClick={this.addComponent}><i className="fa fa-plus"></i></a>
+            </div>
+            }
+            { (((this.props.itemId !== this.props.componentList[0].itemId) && (this.props.itemId !== this.props.componentList[this.props.componentList.length - 1].itemId)) || (this.props.itemId === this.props.componentList[0].itemId && this.props.componentList.length > 1)) &&
+            <div className="col-md-1 icon-container">
+              <a type="button" onClick={this.deleteComponent}><i className="fa fa-trash"></i></a>
+            </div>
+            }
+            { ((this.props.itemId === this.props.componentList[this.props.componentList.length - 1].itemId) && (this.props.itemId !== this.props.componentList[0].itemId)) &&
+            <div className="col-md-1">
+              <div className="row">
+                <div className="col-md-12"><a type="button" onClick={this.addComponent}><i className="fa fa-plus"></i></a></div>
+                <div className="col-md-12"><a type="button" onClick={this.deleteComponent}><i className="fa fa-trash"></i></a></div>
+              </div>
+            </div>
+            }
+          </div>
+        </div>
+        <div className="col-md-3 condition-input-container">
+            { this.renderSelectConditionElement() }
+        </div>
+      </div>
     );
   }
 }

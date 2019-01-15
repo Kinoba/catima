@@ -305,6 +305,8 @@ de:
   expired: "abgelaufen"
   download: "Herunterladen"
   or: oder
+  and: und
+  exclude: außer
   options: Options
 
   layouts:
