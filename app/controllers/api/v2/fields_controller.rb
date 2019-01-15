@@ -57,6 +57,8 @@ class API::V2::FieldsController < ActionController::Base
 
     if category.blank?
       field = item_type.fields.find_by(:slug => params[:field_slug])
+      # In case we search for a category field in a reference
+      field = item_type.all_fields.select { |fld| fld.slug == params[:field_slug] }.first if field.nil?
     else
       field = category.fields.find_by(:slug => params[:field_slug])
     end

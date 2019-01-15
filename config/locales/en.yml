@@ -50,16 +50,17 @@ en:
   add_another: "Create and add another"
   advanced_searches:
     menu: Advanced searches
-    choice_set_search_field:
-      any: "is any of"
-    date_time_search_field:
-      start_date: Start date
-      end_date: End date
-      exact: exact date
-      after: "after"
-      before: "before"
-      between: between the date
-      outside: outside the dates
+    fields:
+      choice_set_search_field:
+        any: "is any of"
+      date_time_search_field:
+        start_date: Start date
+        end_date: End date
+        exact: exact date
+        after: "after"
+        before: "before"
+        between: between the date
+        outside: outside the dates
     new:
       item_type: Item type
       tab: "%{title} search"
@@ -609,7 +610,7 @@ en:
       reference_editor:
         reference_editor_filter: "Filter..."
         reference_editor_search: "Search..."
-
+        no_options: No options
     pages:
       new:
         create_page: "Create page"

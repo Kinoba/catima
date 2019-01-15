@@ -216,6 +216,10 @@ class ReferenceSearch extends Component {
     this.props.deleteComponent(this.props.itemId);
   }
 
+  _getNoOptionsMessage() {
+    return () => this.props.noOptionsMessage;
+  }
+
   renderSearch(){
     if (this.state.isLoading) return null;
 <<<<<<< HEAD
@@ -224,6 +228,7 @@ class ReferenceSearch extends Component {
       return <ItemTypesReferenceSearch
                 updateSelectCondition={this.updateSelectCondition}
                 searchPlaceholder={this.state.searchPlaceholder}
+                noOptionsMessage={this._getNoOptionsMessage()}
                 items={this.state.items}
                 fields={this.state.fields}
                 selectedFilter={this.state.selectedFilter}
@@ -270,6 +275,7 @@ class ReferenceSearch extends Component {
 =======
                 updateSelectedItem={this.updateSelectedItem}
                 searchPlaceholder={this.state.searchPlaceholder}
+                noOptionsMessage={this._getNoOptionsMessage()}
                 items={this.state.items}
                 fields={this.state.fields}
 >>>>>>> Add conditional rendering for reference advanced search component

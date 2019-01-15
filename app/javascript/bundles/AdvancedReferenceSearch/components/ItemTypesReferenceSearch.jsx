@@ -212,7 +212,7 @@ class ItemTypesReferenceSearch extends Component {
       );
     } else if (this.state.inputType === 'Field::ChoiceSet' && this._getChoiceSetMultipleOption()) {
       return (
-        <ReactSelect id={this.referenceSearchId} name={this.state.inputName} isMulti options={this._getMultipleChoiceSetOptions()} className="basic-multi-select" onChange={this.selectItem} classNamePrefix="select" placeholder={this.props.searchPlaceholder}/>
+        <ReactSelect id={this.referenceSearchId} name={this.state.inputName} isMulti options={this._getMultipleChoiceSetOptions()} className="basic-multi-select" onChange={this.selectItem} classNamePrefix="select" placeholder={this.props.searchPlaceholder} noOptionsMessage={this.props.noOptionsMessage}/>
       );
     } else {
       return <input id={this.referenceSearchId} ref={this.referenceSearchRef} name={this.state.inputName} onChange={this.selectItem} type="text" className="form-control"/>

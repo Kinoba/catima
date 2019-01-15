@@ -148,6 +148,7 @@ class ReferenceSearchContainer extends Component {
       fieldConditionData={item.fieldConditionData}
       addComponent={item.addComponent}
       deleteComponent={item.deleteComponent}
+      noOptionsMessage={this.props.noOptionsMessage}
       /></div>);
     }
   }

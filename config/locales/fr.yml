@@ -50,16 +50,17 @@ fr:
   add_another: "Créer et ajouter un autre"
   advanced_searches:
     menu: Recherches avancées
-    choice_set_search_field:
-      any: "est l'un de"
-    date_time_search_field:
-      start_date: Date de début
-      end_date: Date de fin
-      exact: date exact
-      after: "après"
-      before: "avant"
-      between: entre les dates
-      outside: en dehors des dates
+    fields:
+      choice_set_search_field:
+        any: "est l'un de"
+      date_time_search_field:
+        start_date: Date de début
+        end_date: Date de fin
+        exact: date exacte
+        after: après
+        before: avant
+        between: entre les dates
+        outside: en dehors des dates
     new:
       tab: "Recherche %{title}"
       title: "Recherche avancée"
@@ -605,7 +606,7 @@ fr:
       reference_editor:
         reference_editor_filter: "Filtrer..."
         reference_editor_search: "Chercher..."
-
+        no_options: Aucune option
     pages:
       new:
         create_page: "Créer une page"
