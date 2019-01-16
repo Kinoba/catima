@@ -9,6 +9,8 @@ import DateTimeInput from '../bundles/DateTimeInput/components/DateTimeInput';
 import ChoiceSetSearchContainer from '../bundles/AdvancedChoiceSetSearch/components/ChoiceSetSearchContainer';
 import ChoiceSetSearch from '../bundles/AdvancedChoiceSetSearch/components/ChoiceSetSearch';
 
+import ChoiceSetInput from '../bundles/ChoiceSetInput/components/ChoiceSetInput';
+
 import ImageViewer from '../bundles/ImageViewer/components/ImageViewer';
 import GeoViewer from '../bundles/GeoViewer/components/GeoViewer';
 
@@ -17,5 +19,6 @@ ReactOnRails.register({
   DateTimeSearch, DateTimeInput,
   ChoiceSetSearchContainer, ChoiceSetSearch,
   ImageViewer,
-  GeoViewer
+  GeoViewer,
+  ChoiceSetInput
 });
