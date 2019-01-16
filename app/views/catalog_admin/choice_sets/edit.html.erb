@@ -1,10 +1,14 @@
 <% provide(:title, t(".edit_choice_set")) %>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> Improving choice set nested creation
 
 <div class="panel-body">
 
   <%= react_component('ChoiceSetInput',
     props: {
+<<<<<<< HEAD
       data: [
         {
             shortInput: {
@@ -72,11 +76,17 @@
             },
             children: []
         }
+=======
+      items: [
+        { id: 0, shortInputName: "choice_set[choices_attributes][0][short_name_en]", longInputName: "choice_set[choices_attributes][0][long_name_en]", srcShortId: "choice_set_choices_attributes_0_long_name_en", srcLongId: "choice_set_choices_attributes_0_long_name_en"},
+        { id: 1, shortInputName: "choice_set[choices_attributes][1][short_name_en]", longInputName: "choice_set[choices_attributes][1][long_name_en]", srcShortId: "choice_set_choices_attributes_1_long_name_en", srcLongId: "choice_set_choices_attributes_1_long_name_en"}
+>>>>>>> Improving choice set nested creation
       ],
       shortInputName: "choice_set[choices_attributes][0][short_name_en]",
       longInputName: "choice_set[choices_attributes][0][long_name_en]",
       srcShortId: "choice_set_choices_attributes_0_long_name_en",
       srcLongId: "choice_set_choices_attributes_0_long_name_en",
+<<<<<<< HEAD
 <<<<<<< HEAD
       choiceNameLabel: "Choices",
       shortNameLabel: "Short name",
@@ -91,13 +101,24 @@
       updateButtonLabel: t(".update_choice_set"),
       cancelButtonLabel: t(".cancel"),
       addChoiceLabel: t(".add_choice"),
+=======
+      choiceNameLabel: "Choices",
+      shortNameLabel: "Short name",
+      longNameLabel: "Long name (optional)",
+      updateButtonLabel: t(".update_choice_set"),
+      cancelButtonLabel: t(".cancel"),
+      addChoiceLabel: "Add choice",
+>>>>>>> Improving choice set nested creation
       removeChoiceLabel: "Remove",
       addChildrenChoiceLabel: "Add children",
     },
     prerender: false) %>
 
+<<<<<<< HEAD
 =======
 >>>>>>> Improve edit choice set page
+=======
+>>>>>>> Improving choice set nested creation
   <%= bootstrap_form_for(
         @choice_set,
         :url => catalog_admin_choice_set_path) do |f| %>
