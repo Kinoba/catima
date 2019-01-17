@@ -149,10 +149,6 @@ class Field::DateTime < ::Field
     ]
   end
 
-  def field_value_for_all_item(item)
-    Field::DateTimePresenter.new(nil, item, self).value
-  end
-
   def sql_type
     "JSON"
   end
