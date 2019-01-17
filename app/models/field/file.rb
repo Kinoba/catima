@@ -68,4 +68,8 @@ class Field::File < ::Field
   def sql_type
     "TEXT"
   end
+
+  def sql_type
+    "VARCHAR(255)"
+  end
 end
