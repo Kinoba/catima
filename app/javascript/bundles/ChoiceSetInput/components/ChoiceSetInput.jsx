@@ -289,19 +289,67 @@ class ChoiceSetInput extends Component {
   _deleteComponent(parentComponent) {
      var componentsList = this.state.componentsList;
 
-    var id = itemId + 1;
+  _addComponent() {
+      const itemId = this.state.nextUniqueId;
+      var component = {
+          id: itemId,
+          shortInputName: this._buildShortInputName(itemId),
+          longInputName: this._buildLongInputName(itemId),
+          srcShortId: this._buildShortSrcId(itemId),
+          srcLongId: this._buildLongSrcId(itemId),
+          children: []
+      };
 
-    var item = {
-      itemId: id,
-      srcShortId: this._buildShortSrcId(id),
-      srcLongId: this._buildLongSrcId(id),
-      shortInputName: this._buildShortInputName(id),
-      longInputName: this._buildLongInputName(id),
-    };
+      var componentsList = this.state.componentsList;
+      componentsList.push(component);
 
-    componentsList.push(item);
+      this.setState({nextUniqueId: component.id + 1});
+      this.setState({componentsList: componentsList});
+  }
 
-    this.setState({componentsList: componentsList});
+  _addChildComponent(parentComponent) {
+      const itemId = this.state.nextUniqueId;
+      var childComponent = {
+          id: itemId,
+          shortInputName: this._buildShortInputName(itemId),
+          longInputName: this._buildLongInputName(itemId),
+          srcShortId: this._buildShortSrcId(itemId),
+          srcLongId: this._buildLongSrcId(itemId),
+          children: []
+      };
+
+      var componentsList = this.state.componentsList;
+
+      var resultList = this._insertItemInTree(componentsList, parentComponent, childComponent);
+      if(resultList !== null) {
+          this.setState({nextUniqueId: childComponent.id + 1});
+          this.setState({componentsList: resultList});
+      }
+  }
+
+  _insertItemInTree(list, searchItem, itemToInsert) {
+      for(var i = 0; i < list.length; i++) {
+          var result = this._findById(list[i], searchItem.id);
+          if(result){
+              //Found the parent item
+              if(typeof result.children !== 'undefined') {
+                  result.children.push(itemToInsert);
+              }
+              return list;
+          } else {
+              //Search in the childrens
+              var childrenResult = this._findById(list[i].children, searchItem.id);
+              if(childrenResult){
+                  //Found the parent item
+                  if(typeof childrenResult.children !== 'undefined') {
+                      childrenResult.children.push(itemToInsert);
+                  }
+                  return list;
+              }
+          }
+      }
+
+      return null;
   }
 
   _findById(o, id) {
@@ -386,9 +434,12 @@ class ChoiceSetInput extends Component {
             shortInputName = this.props.shortInputName;
           }
       }
-    });
 
-    this.setState({componentsList: componentsList});
+      return null;
+  }
+
+  _updateComponentTree(list) {
+     this.setState({componentsList: list});
   }
 
   _buildHiddenInputName(parentComponent, position, children) {
@@ -635,7 +686,7 @@ class ChoiceSetInput extends Component {
       }
   }
 
-  _getNestableItem(item) {
+  renderItem({item}) {
     return (
       <div className="row nested-fields">
         <div className="col-md-3">
@@ -671,7 +722,7 @@ class ChoiceSetInput extends Component {
         </div>
       </div>
     );
-  }
+}
 
   renderCollapseIcon({ isCollapsed }) {
     return true;
@@ -691,8 +742,9 @@ class ChoiceSetInput extends Component {
           <div className="col-md-2"></div>
         </div>
         <Nestable
-          items={this.state.componentsList}
-          renderItem={this.getNestableItem}
+          items={[...this.state.componentsList]}
+          renderItem={this.renderItem}
+          onChange={this.updateComponentTree}
         />
         <div className="row">
           <div className="col-md-12">
