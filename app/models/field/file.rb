@@ -66,6 +66,6 @@ class Field::File < ::Field
   end
 
   def sql_type
-    "TEXT"
+    "VARCHAR(255)"
   end
 end
