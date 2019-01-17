@@ -535,7 +535,7 @@ class ChoiceSetInput extends Component {
         </div>
       </div>
     );
-  }
+}
 
   renderCollapseIcon({ isCollapsed }) {
     return true;
