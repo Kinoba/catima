@@ -518,24 +518,17 @@ class ChoiceSetInput extends Component {
   }
 
   _deleteComponent(parentComponent) {
-      var componentsList = this.state.componentsList;
+     var componentsList = this.state.componentsList;
 
-      /*componentsList.forEach((ref, index) => {
-        if(Object.keys(ref).length !== 0 && ref.id === id) {
-          componentsList.splice(index, 1);
-        }
-    });*/
-
-    var resultList = this._deleteItemFromTree(componentsList, parentComponent, {});
+    var resultList = this._deleteItemFromTree(componentsList, parentComponent);
     if(resultList !== null) {
-        //this.setState({nextUniqueId: childComponent.id + 1});
         this.setState({componentsList: resultList});
     }
 
       this.setState({componentsList: componentsList});
   }
 
-  _deleteItemFromTree(list, searchItem, itemToInsert) {
+  _deleteItemFromTree(list, searchItem) {
       for(var i = 0; i < list.length; i++) {
           var result = this._findById(list[i], searchItem.id);
           if(result) { //The item was found
@@ -544,13 +537,10 @@ class ChoiceSetInput extends Component {
                   list.splice(index, 1);
                   return list;
               } else {
-                  console.log("WEIRDO1");
                   //Search in childrens
-                  var resultList = this._deleteItemFromTree(list[i].children, searchItem, {});
-                  return resultList;
+                  return this._deleteItemFromTree(list[i].children, searchItem);
               }
           } else {
-              console.log("ELSE");
               //Search in the childrens
               var childrenResult = this._findById(list[i].children, searchItem.id);
               if(childrenResult) { //The item was found
