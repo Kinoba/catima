@@ -1,5 +1,6 @@
 .nestable-list {
     list-style-type: none;
+<<<<<<< HEAD
     margin-bottom: 0;
 }
 
@@ -27,4 +28,10 @@
 
 .nestable-item-name:hover {
     background-color: #f5f5f5;
+=======
+}
+
+.nested-fields {
+    padding: 1rem 0;
+>>>>>>> Build complex input names for nested choice set creation
 }
