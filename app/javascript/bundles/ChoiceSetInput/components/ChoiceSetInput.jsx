@@ -517,6 +517,22 @@ class ChoiceSetInput extends Component {
      this.setState({componentsList: this._renameTreeComponents(list)});
   }
 
+  _buildCategoryInputName(id) {
+      if(this.state.categoryInputName.length === 2) {
+        return this.state.categoryInputName[0] + '[' + id + ']' + this.state.categoryInputName[1];
+      } else {
+        return this.props.categoryInputName;
+      }
+  }
+
+  _buildCategorySrcId(id) {
+      if(this.state.srcCategoryId.length === 2) {
+        return this.state.srcCategoryId[0] + '_' + id + '_' + this.state.srcCategoryId[1];
+      } else {
+        return this.props.srcCategoryId;
+      }
+  }
+
   renderItem({item}) {
     return (
       <div className="row nested-fields">
