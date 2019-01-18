@@ -517,20 +517,52 @@ class ChoiceSetInput extends Component {
      this.setState({componentsList: this._renameTreeComponents(list)});
   }
 
-  _buildCategoryInputName(id) {
-      if(this.state.categoryInputName.length === 2) {
-        return this.state.categoryInputName[0] + '[' + id + ']' + this.state.categoryInputName[1];
+  _buildCategoryInputName(parentComponent, id, children) {
+      var categoryInputName = '';
+
+      if(children && (Object.keys(parentComponent).length !== 0)) {
+          //Building a child-level name
+          var nameArray = parentComponent.categoryInputName.split('[category_name');
+          if(nameArray.length === 2) {
+            categoryInputName = nameArray[0] + '[' + parentComponent.children.length + '][category_name' + nameArray[1];
+          } else {
+            categoryInputName = parentComponent.categoryInputName + '['+ id +']';
+          }
       } else {
-        return this.props.categoryInputName;
+          //Building a top-level name
+          var nameArray = this.props.categoryInputName.split('[0]');
+          if(nameArray.length === 2) {
+            categoryInputName = nameArray[0] + '[' + id + ']' + nameArray[1];
+          } else {
+            categoryInputName = this.props.categoryInputName;
+          }
       }
+
+      return categoryInputName;
   }
 
-  _buildCategorySrcId(id) {
-      if(this.state.srcCategoryId.length === 2) {
-        return this.state.srcCategoryId[0] + '_' + id + '_' + this.state.srcCategoryId[1];
+  _buildCategorySrcId(parentComponent, id, children) {
+      var srcCategoryId = '';
+
+      if(children && (Object.keys(parentComponent).length !== 0)) {
+          //Building a child-level name
+          var nameArray = parentComponent.srcCategoryId.split('_category_name');
+          if(nameArray.length === 2) {
+            srcCategoryId = nameArray[0] + '_' + parentComponent.children.length + '_category_name' + nameArray[1];
+          } else {
+            srcCategoryId = parentComponent.srcCategoryId + '_'+ id +'_';
+          }
       } else {
-        return this.props.srcCategoryId;
+          //Building a top-level name
+          var nameArray = this.props.srcCategoryId.split('_0_');
+          if(nameArray.length === 2) {
+            srcCategoryId = nameArray[0] + '_' + id + '_' + nameArray[1];
+          } else {
+            srcCategoryId = this.props.srcCategoryId;
+          }
       }
+
+      return srcCategoryId;
   }
 
   renderItem({item}) {
@@ -551,7 +583,15 @@ class ChoiceSetInput extends Component {
         </div>
       </div>
     );
-}
+  }
+
+  renderCollapseIcon({ isCollapsed }) {
+    return (
+      <div>
+        <i class="nestable-icon nestable-item-icon icon-minus-gray"></i>
+      </div>
+    );
+  }
 
   renderCollapseIcon({ isCollapsed }) {
     return true;
