@@ -24,8 +24,10 @@ class ChoiceSetInput extends Component {
       nextUniqueId: 0,
       shortInputName: this.props.shortInputName.split("[0]"),
       longInputName: this.props.longInputName.split("[0]"),
+      categoryInputName: this.props.categoryInputName.split("[0]"),
       srcShortId: this.props.srcShortId.split("_0_"),
-      srcLongId: this.props.srcShortId.split("_0_")
+      srcLongId: this.props.srcShortId.split("_0_"),
+      srcCategoryId: this.props.srcCategoryId.split("_0_")
     };
 
     this.renderItem = this.renderItem.bind(this);
@@ -438,12 +440,15 @@ class ChoiceSetInput extends Component {
 
   _initComponentList() {
       var itemId = 0;
+
       var component = {
           id: itemId,
           shortInputName: this._buildShortInputName(itemId),
           longInputName: this._buildLongInputName(itemId),
+          categoryInputName: this._buildCategoryInputName(itemId),
           srcShortId: this._buildShortSrcId(itemId),
           srcLongId: this._buildLongSrcId(itemId),
+          srcCategoryId: this._buildCategorySrcId(itemId),
           children: []
       };
 
@@ -460,8 +465,10 @@ class ChoiceSetInput extends Component {
           id: itemId,
           shortInputName: this._buildShortInputName(itemId),
           longInputName: this._buildLongInputName(itemId),
+          categoryInputName: this._buildCategoryInputName(itemId),
           srcShortId: this._buildShortSrcId(itemId),
           srcLongId: this._buildLongSrcId(itemId),
+          srcCategoryId: this._buildCategorySrcId(itemId),
           children: []
       };
 
@@ -478,8 +485,10 @@ class ChoiceSetInput extends Component {
           id: itemId,
           shortInputName: this._buildShortInputName(itemId),
           longInputName: this._buildLongInputName(itemId),
+          categoryInputName: this._buildCategoryInputName(itemId),
           srcShortId: this._buildShortSrcId(itemId),
           srcLongId: this._buildLongSrcId(itemId),
+          srcCategoryId: this._buildCategorySrcId(itemId),
           children: []
       };
 
@@ -1190,9 +1199,26 @@ class ChoiceSetInput extends Component {
      this.setState({componentsList: this._renameTreeComponents(list)});
   }
 
+  _buildCategoryInputName(id) {
+      if(this.state.categoryInputName.length === 2) {
+        return this.state.categoryInputName[0] + '[' + id + ']' + this.state.categoryInputName[1];
+      } else {
+        return this.props.categoryInputName;
+      }
+  }
+
+  _buildCategorySrcId(id) {
+      if(this.state.srcCategoryId.length === 2) {
+        return this.state.srcCategoryId[0] + '_' + id + '_' + this.state.srcCategoryId[1];
+      } else {
+        return this.props.srcCategoryId;
+      }
+  }
+
   renderItem({item}) {
     return (
       <div className="row nested-fields">
+<<<<<<< HEAD
 <<<<<<< HEAD
         <div className="col-md-3">
             { Object.keys(item.short_name_translations).map((key) => {
@@ -1226,11 +1252,20 @@ class ChoiceSetInput extends Component {
             <a type="button" title={this.props.removeChoiceLabel} onClick={() => this._deleteComponent(item)} className="btn"><i className="fa fa-trash"></i></a>
 =======
         <div className="col-md-6"><input id={item.srcShortId} name={item.shortInputName} className="form-control" type="text"/></div>
+=======
+        <div className="col-md-3"><input id={item.srcShortId} name={item.shortInputName} className="form-control" type="text"/></div>
+>>>>>>> Add category input for choice set creation
         <div className="col-md-3"><input id={item.srcLongId} name={item.shortInputName} className="form-control" type="text"/></div>
+        <div className="col-md-3"><input id={item.srcCategoryId} name={item.categoryInputName} className="form-control" type="text"/></div>
         <div className="col-md-3">
+<<<<<<< HEAD
             <a type="button" onClick={() => this._addChildComponent(item)} className="btn"><i className="fa fa-plus-square"></i> Add child</a>
             <a type="button" onClick={() => this._deleteComponent(item)} className="btn"><i className="fa fa-trash"></i> Remove</a>
 >>>>>>> Add choice set for choice set creation
+=======
+            <a type="button" onClick={() => this._addChildComponent(item)} className="btn"><i className="fa fa-plus-square"></i> {this.props.addChildrenChoiceLabel}</a>
+            <a type="button" onClick={() => this._deleteComponent(item)} className="btn"><i className="fa fa-trash"></i> {this.props.removeChoiceLabel}</a>
+>>>>>>> Add category input for choice set creation
         </div>
       </div>
     );
@@ -1279,8 +1314,12 @@ class ChoiceSetInput extends Component {
           onChange={this.updateComponentTree}
         />
         <div className="row">
+<<<<<<< HEAD
           <div className="col-md-12"><a type="button" onClick={this.addComponent} className="btn"><i className="fa fa-plus-square"></i> Add choice</a></div>
 >>>>>>> Add choice set for choice set creation
+=======
+          <div className="col-md-12"><a type="button" onClick={this.addComponent} className="btn"><i className="fa fa-plus-square"></i> {this.props.addChoiceLabel}</a></div>
+>>>>>>> Add category input for choice set creation
         </div>
       </div>
     );
