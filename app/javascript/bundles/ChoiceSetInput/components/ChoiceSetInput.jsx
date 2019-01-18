@@ -14,8 +14,10 @@ class ChoiceSetInput extends Component {
       nextUniqueId: 0,
       shortInputName: this.props.shortInputName.split("[0]"),
       longInputName: this.props.longInputName.split("[0]"),
+      categoryInputName: this.props.categoryInputName.split("[0]"),
       srcShortId: this.props.srcShortId.split("_0_"),
-      srcLongId: this.props.srcShortId.split("_0_")
+      srcLongId: this.props.srcShortId.split("_0_"),
+      srcCategoryId: this.props.srcCategoryId.split("_0_")
     };
 
     this.renderItem = this.renderItem.bind(this);
@@ -221,12 +223,15 @@ class ChoiceSetInput extends Component {
 
   _initComponentList() {
       var itemId = 0;
+
       var component = {
           id: itemId,
           shortInputName: this._buildShortInputName(itemId),
           longInputName: this._buildLongInputName(itemId),
+          categoryInputName: this._buildCategoryInputName(itemId),
           srcShortId: this._buildShortSrcId(itemId),
           srcLongId: this._buildLongSrcId(itemId),
+          srcCategoryId: this._buildCategorySrcId(itemId),
           children: []
       };
 
@@ -243,8 +248,10 @@ class ChoiceSetInput extends Component {
           id: itemId,
           shortInputName: this._buildShortInputName(itemId),
           longInputName: this._buildLongInputName(itemId),
+          categoryInputName: this._buildCategoryInputName(itemId),
           srcShortId: this._buildShortSrcId(itemId),
           srcLongId: this._buildLongSrcId(itemId),
+          srcCategoryId: this._buildCategorySrcId(itemId),
           children: []
       };
 
@@ -261,8 +268,10 @@ class ChoiceSetInput extends Component {
           id: itemId,
           shortInputName: this._buildShortInputName(itemId),
           longInputName: this._buildLongInputName(itemId),
+          categoryInputName: this._buildCategoryInputName(itemId),
           srcShortId: this._buildShortSrcId(itemId),
           srcLongId: this._buildLongSrcId(itemId),
+          srcCategoryId: this._buildCategorySrcId(itemId),
           children: []
       };
 
@@ -700,6 +709,22 @@ class ChoiceSetInput extends Component {
       }
   }
 
+  _buildCategoryInputName(id) {
+      if(this.state.categoryInputName.length === 2) {
+        return this.state.categoryInputName[0] + '[' + id + ']' + this.state.categoryInputName[1];
+      } else {
+        return this.props.categoryInputName;
+      }
+  }
+
+  _buildCategorySrcId(id) {
+      if(this.state.srcCategoryId.length === 2) {
+        return this.state.srcCategoryId[0] + '_' + id + '_' + this.state.srcCategoryId[1];
+      } else {
+        return this.props.srcCategoryId;
+      }
+  }
+
   renderItem({item}) {
     return (
       <div className="row nested-fields">
@@ -753,9 +778,10 @@ class ChoiceSetInput extends Component {
       <div className="choiceset-input-container">
         <div className="row"><div className="col-md-12"><label>{ this.props.choiceNameLabel }</label></div></div>
         <div className="row">
-          <div className="col-md-5"><label>{ this.props.shortNameLabel }</label></div>
-          <div className="col-md-5"><label>{ this.props.longNameLabel }</label></div>
-          <div className="col-md-2"></div>
+          <div className="col-md-3"><label>{ this.props.shortNameLabel }</label></div>
+          <div className="col-md-3"><label>{ this.props.longNameLabel }</label></div>
+          <div className="col-md-3"><label>{ this.props.categoryNameLabel }</label></div>
+          <div className="col-md-3"></div>
         </div>
         <Nestable
           items={[...this.state.componentsList]}
@@ -763,7 +789,7 @@ class ChoiceSetInput extends Component {
           onChange={this.updateComponentTree}
         />
         <div className="row">
-          <div className="col-md-12"><a type="button" onClick={this.addComponent} className="btn"><i className="fa fa-plus-square"></i> Add choice</a></div>
+          <div className="col-md-12"><a type="button" onClick={this.addComponent} className="btn"><i className="fa fa-plus-square"></i> {this.props.addChoiceLabel}</a></div>
         </div>
       </div>
     );
