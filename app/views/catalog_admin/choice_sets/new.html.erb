@@ -1,6 +1,4 @@
 <% provide(:title, t('.new_choice_set')) %>
-
-<div class="panel-body">
   <%= bootstrap_form_for([:catalog_admin, @choice_set]) do |f| %>
 
     <%= render("common_form_fields", :f => f) %>
@@ -13,4 +11,3 @@
           :class => "btn btn-link") %>
 
   <% end %>
-</div>
