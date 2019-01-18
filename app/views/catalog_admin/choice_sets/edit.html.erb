@@ -4,6 +4,74 @@
 
   <%= react_component('ChoiceSetInput',
     props: {
+      data: [
+        {
+            shortInput: {
+                value: 'Test1'
+            },
+            longInput: {
+                value: 'Test1'
+            },
+            categoryInput: {
+                value: 'category1',
+                optionsData: [
+                    {key:0, value: 'category11'},
+                    {key:1, value: 'category12'},
+                ]
+            },
+            children: [
+                {
+                    shortInput: {
+                        value: 'Child Test1'
+                    },
+                    longInput: {
+                        value: 'Child Test1'
+                    },
+                    categoryInput: {
+                        value: 'childcategory1',
+                        optionsData: [
+                            {key:0, value: 'childcategory111'},
+                            {key:1, value: 'childcategory112'},
+                        ]
+                    },
+                    children: [
+                        {
+                            shortInput: {
+                                value: 'Child Test1'
+                            },
+                            longInput: {
+                                value: 'Child Test1'
+                            },
+                            categoryInput: {
+                                value: 'childcategory1',
+                                optionsData: [
+                                    {key:0, value: 'childcategory111'},
+                                    {key:1, value: 'childcategory112'},
+                                ]
+                            },
+                            children: []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            shortInput: {
+                value: 'Test2'
+            },
+            longInput: {
+                value: 'Test2'
+            },
+            categoryInput: {
+                value: 'category2',
+                optionsData: [
+                    {key:0, value: 'category21'},
+                    {key:1, value: 'category23'},
+                ]
+            },
+            children: []
+        }
+      ],
       shortInputName: "choice_set[choices_attributes][0][short_name_en]",
       longInputName: "choice_set[choices_attributes][0][long_name_en]",
       srcShortId: "choice_set_choices_attributes_0_long_name_en",
