@@ -1,17 +1,7 @@
 .nestable-list {
     list-style-type: none;
-    margin-bottom: 0;
 }
 
-.nestable {
-    border-bottom: 1px solid #f5f5f5;
-}
-
-.nestable-item-name {
+.nested-fields {
     padding: 1rem 0;
-    border-top: 1px solid #f5f5f5;
-}
-
-.nestable-item-name:hover {
-    background-color: #f5f5f5;
 }
