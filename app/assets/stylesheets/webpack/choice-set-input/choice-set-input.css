@@ -15,3 +15,7 @@
 .nestable-item-name:hover {
     background-color: #f5f5f5;
 }
+
+.nested-fields {
+    padding: 1rem 0;
+}
