@@ -6,94 +6,82 @@
 <hr>
 <div class="panel-body">
 
-    <table class="table table-hover">
-      <thead>
-        <th><%= t('.short_name') %></th>
-        <th><%= t('.long_name_optional') %></th>
-        <th>
-          <% if catalog.categories.any? %>
-            <%= t('.category_optional') %>
-          <% end %>
-        </th>
-        <th></th>
-      </thead>
-      <tbody>
-        <%= f.fields_for(:choices) do |choice| %>
-          <%= render("catalog_admin/choice_sets/choice_fields", :f => choice) %>
-        <% end %>
-        <tr data-link="choices">
-          <td colspan="4">
-            <%= link_to_add_association(
-                  fa_icon(:"plus-square", :text => t(".add_choice")),
-                  f,
-                  :choices,
-                  :class => "btn btn-text",
-                  :"data-association-insertion-node" => "[data-link='choices']",
-                  :partial => 'catalog_admin/choice_sets/choice_fields'
-                ) %>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
   <%= react_component('ChoiceSetInput',
     props: {
-      data: @choice_set.describe,
-      # Data example
-      # data: {
-        #"name":"choix-canton",
-        #"uuid":"0b565a23-0d7e-457d-923e-2057f82a7af5",
-        #choices: [
-          #{
-            #"short_name_translations":
-            #{
-            #  "short_name_en":"GE",
-            #  "short_name_fr":"GE"
-            #},
-            #"long_name_translations": {
-            #  "long_name_en":"A Geneva",
-            #  "long_name_fr":"Genève"
-            #},
-            #"uuid":"95722184-5eb9-482c-b58d-bee0ddec86e3",
-            #"category":nil,
-            # "children": [{
-            #    "short_name_translations":
-            #    {
-            #      "short_name_en":"GE",
-            #      "short_name_fr":"GE"
-            #    },
-            #    "long_name_translations":
-            #    {
-            #      "long_name_en":"A Geneva",
-            #       "long_name_fr":"Genève"
-            #    },
-            #   "uuid":"95722184-5eb9-482c-b58d-bee0ddec86e3",
-            #   "category": "nil",
-            #}]
-          #},
-          #{
-            #"short_name_translations":
-            #{
-            #  "short_name_en":"VD",
-            #  "short_name_fr":"VD"
-            #},
-            #"long_name_translations":
-            #{
-            #  "long_name_en":"Vaud EN",
-            #  "long_name_fr":"Vaud"
-            #},
-            #"uuid":"3cbe2e5a-2575-4b97-a3d0-8402d10e7a62",
-            #"category": "nil"
-          #}
-        #]
-      #},
-      locale: "en", #TODO @Gregoire => mettre ça en dynamique
+      data: [
+        {
+            shortInput: {
+                value: 'Test1'
+            },
+            longInput: {
+                value: 'Test1'
+            },
+            categoryInput: {
+                value: 'category1',
+                optionsData: [
+                    {key:0, value: 'category11'},
+                    {key:1, value: 'category12'},
+                ]
+            },
+            children: [
+                {
+                    shortInput: {
+                        value: 'Child Test1'
+                    },
+                    longInput: {
+                        value: 'Child Test1'
+                    },
+                    categoryInput: {
+                        value: 'childcategory1',
+                        optionsData: [
+                            {key:0, value: 'childcategory111'},
+                            {key:1, value: 'childcategory112'},
+                        ]
+                    },
+                    children: [
+                        {
+                            shortInput: {
+                                value: 'Child Test1'
+                            },
+                            longInput: {
+                                value: 'Child Test1'
+                            },
+                            categoryInput: {
+                                value: 'childcategory1',
+                                optionsData: [
+                                    {key:0, value: 'childcategory111'},
+                                    {key:1, value: 'childcategory112'},
+                                ]
+                            },
+                            children: []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            shortInput: {
+                value: 'Test2'
+            },
+            longInput: {
+                value: 'Test2'
+            },
+            categoryInput: {
+                value: 'category2',
+                optionsData: [
+                    {key:0, value: 'category21'},
+                    {key:1, value: 'category23'},
+                ]
+            },
+            children: []
+        }
+      ],
       shortInputName: "choice_set[choices_attributes][0][short_name_en]",
       longInputName: "choice_set[choices_attributes][0][long_name_en]",
-      categoryInputName: "choice_set[choices_attributes][0][category_id]",
+      categoryInputName: "choice_set[choices_attributes][0][category_name_en]",
       srcShortId: "choice_set_choices_attributes_0_short_name_en",
       srcLongId: "choice_set_choices_attributes_0_long_name_en",
-      srcCategoryId: "choice_set_choices_attributes_0_category_id",
+      srcCategoryId: "choice_set_choices_attributes_0_category_name_en",
       choiceNameLabel: t('.choices'),
       shortNameLabel: t('.short_name'),
       longNameLabel: t('.long_name_optional'),
