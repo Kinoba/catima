@@ -94,7 +94,7 @@ class ChoiceSetSearch extends Component {
 
   _findByProps(o, label, value) {
         //Early return
-        if(typeof o !== 'undefined' && o !== null) {
+        if(typeof o !== 'undefined') {
             if( o.value === label && o.key === value){
               return o;
             }
@@ -189,7 +189,6 @@ class ChoiceSetSearch extends Component {
 
   _getTreeChildrens(item) {
     if(typeof item.children !== 'undefined' && item.children.length>0) {
-        //The item is a node and has children
         return (
             <TreeNode value={item.key} title={item.value} key={item.key}>
                 { item.children.map((childItem) => {
@@ -198,7 +197,6 @@ class ChoiceSetSearch extends Component {
             </TreeNode>
         );
     } else {
-        //The item is not node and has no children
         return <TreeNode value={item.key} title={item.value} key={item.key} />;
     }
   }
@@ -230,11 +228,9 @@ class ChoiceSetSearch extends Component {
             <TreeSelect
               value={this.state.selectedItem}
               placeholder={this.props.searchPlaceholder}
-              showSearch
               allowClear
               labelInValue
               treeDefaultExpandAll
-              treeNodeFilterProp="title"
               onChange={this.selectItem}>
                 { this.props.items.map((item) => {
                   return this._getTreeChildrens(item);
