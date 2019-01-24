@@ -2,6 +2,7 @@
   "dependencies": {
     "@claviska/jquery-minicolors": "^2.2.6",
     "@rails/webpacker": "3.5",
+    "antd": "^3.12.4",
     "axios": "^0.17.1",
     "babel-preset-react": "^6.24.1",
     "bootstrap-loader": "^2.2.0",
@@ -22,6 +23,7 @@
     "leaflet-draw": "^0.4.13",
     "leaflet-editable": "^1.1.0",
     "leaflet.path.drag": "^0.0.6",
+    "less-loader": "^4.1.0",
     "mammoth": "git://github.com/catima/mammoth.js.git#b789554",
     "moment": "^2.23.0",
     "moment-timezone": "^0.5.23",
@@ -33,7 +35,6 @@
     "react-color": "^2.13.8",
     "react-dom": "^16.1.1",
     "react-draggable": "^3.0.5",
-    "react-dropdown-tree-select": "^1.16.0-beta.1",
     "react-fontawesome": "^1.6.1",
     "react-image-crop": "^3.0.7",
     "react-image-lightbox": "^4.3.0",
