@@ -9,15 +9,47 @@ class Field::ChoiceSetPresenter < FieldPresenter
       '<div class="form-component">',
         "<div class=\"row\" #{category} data-choice-set=\"#{field.choice_set.id}\" data-field=\"#{field.id}\">",
           '<div class="col-xs-8">',
-            select2_select(
-              form,
-              method,
-              nil,
-              input_defaults(options).merge(:multiple => field.multiple?),
-              &method(:options_for_select)
-            ),
+             # select2_select(
+               # form,
+               # method,
+               # nil,
+               # input_defaults(options).merge(:multiple => field.multiple?),
+               # &method(:options_for_select)
+             # ),
+
+            react_component('ChoiceSetEditor',
+              props: {
+                  catalog: field.catalog.slug,
+                  itemType: field.item_type.slug,
+                  items: field.search_data_as_hash,
+                  searchPlaceholder: t('advanced_searches.fields.choice_set_search_field.select_placeholder'),
+                  srcId: "item_#{field.uuid}",
+                  srcRef: "item_#{field.uuid}",
+                  inputName: "item[#{field.uuid}]",
+                  multiple: true,
+                  # items: [
+                    #  label: 'search me',
+                    #  value: 'searchme',
+                    #  data: [{name_fr: 'hhhh'}],
+                    #  children: [
+                    #    {
+                    #      label: 'search me too',
+                    #      value: 'searchmetoo',
+                    #      data: [],
+                    #      children: [
+                    #        {
+                    #          label: 'No one can get me',
+                    #          value: 'anonymous',
+                    #          data: [],
+                    #        }
+                    #      ]
+                    #    }
+                    #  ]
+                  # ],
+              },
+              prerender: false),
           '</div>',
-          '<div class="col-xs-4" style="padding-top: 25px; margin-left: -15px;">',
+          '<div class="col-xs-4" style="margin-left: -15px;">',
             '<a class="btn btn-sm btn-default" style="color: #aaa;" data-toggle="modal" data-target="#choice-modal-'+method+'" href="#">',
               '<span class="glyphicon glyphicon-plus"></span>',
             '</a>',
