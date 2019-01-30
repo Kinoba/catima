@@ -86,6 +86,7 @@ class ChoiceSetEditor extends Component {
     }
 
   _getTreeChildrens(item) {
+      console.log(item);
     if(typeof item.children !== 'undefined' && item.children.length>0) {
         return (
             <TreeNode value={item.key} title={item.value} key={item.key}>
