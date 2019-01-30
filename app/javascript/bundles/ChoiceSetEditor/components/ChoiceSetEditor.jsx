@@ -13,6 +13,7 @@ class ChoiceSetEditor extends Component {
       selectedItem: [],
       disabled: false,
       hiddenInputValue: [],
+      defaultValues: [],
       inputName: this.props.inputName
     };
 
@@ -20,7 +21,7 @@ class ChoiceSetEditor extends Component {
   }
 
   componentDidMount(){
-
+      this.setState({ defaultValues: this.state.inputDefaults });
   }
 
   _save(){
@@ -85,6 +86,7 @@ class ChoiceSetEditor extends Component {
     }
 
   _getTreeChildrens(item) {
+      console.log(item);
     if(typeof item.children !== 'undefined' && item.children.length>0) {
         return (
             <TreeNode value={item.key} title={item.value} key={item.key}>
@@ -105,9 +107,13 @@ class ChoiceSetEditor extends Component {
             <TreeSelect
               value={this.state.selectedItem}
               placeholder={this.props.searchPlaceholder}
+              showSearch
               allowClear
               labelInValue
               treeDefaultExpandAll
+              treeNodeFilterProp="title"
+              multiple={this.props.multiple}
+              defaultValue={this.state.defaultValues}
               onChange={this.selectItem}>
                 { this.props.items.map((item) => {
                   return this._getTreeChildrens(item);
