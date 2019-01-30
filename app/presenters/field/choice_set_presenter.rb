@@ -26,9 +26,7 @@ class Field::ChoiceSetPresenter < FieldPresenter
                   srcId: "item_#{field.uuid}",
                   srcRef: "item_#{field.uuid}",
                   inputName: "item[#{field.uuid}]",
-                  inputDefaults: [], #TODO @Greg - pass here and array of default selected options [{lavel: "label", value: 2}, ...]
-                  multiple: true, #TODO @Greg - change this dynamically
-                   #TODO @Greg - add items following this format
+                  multiple: true,
                   # items: [
                     #  label: 'search me',
                     #  value: 'searchme',
