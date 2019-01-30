@@ -16,6 +16,7 @@ class Field::ChoiceSetPresenter < FieldPresenter
                  #input_defaults(options).merge(:multiple => field.multiple?),
                  #&method(:options_for_select)
               # ),
+              form.label(field.label),
 
             react_component('ChoiceSetEditor',
               props: {
@@ -27,7 +28,7 @@ class Field::ChoiceSetPresenter < FieldPresenter
                   srcRef: "item_#{field.uuid}",
                   inputName: "item[#{field.uuid}]",
                   inputDefaults: [], #TODO @Greg - pass here and array of default selected options [{lavel: "label", value: 2}, ...]
-                  multiple: true, #TODO @Greg - change this dynamically
+                  multiple: field.multiple?,
                    #TODO @Greg - add items following this format
                   # items: [
                     #  label: 'search me',

@@ -66,8 +66,11 @@ class CatalogAdmin::ChoiceSetsTest < ActionDispatch::IntegrationTest
     field = fields(:one_author_other_languages)
     visit("/one/en/admin/authors/#{author.to_param}/edit")
 
-    select("Eng", :from => "Other Languages")
-    select("Spanish", :from => "Other Languages")
+    find("#item_one_author_other_languages_uuid_container").click
+    find("li", :text => "Eng").click
+
+    # select("Eng", :from => "Other Languages")
+    # select("Spanish", :from => "Other Languages")
 
     find("div[data-field='#{field.id}'] a", :visible => :all).click
 

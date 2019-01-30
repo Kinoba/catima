@@ -102,7 +102,7 @@ class ChoiceSetEditor extends Component {
 
   renderChoiceSetElement(){
     return (
-        <div>
+        <div id={this.props.srcId + "_container"}>
             <input id={this.choiceSetId} type="hidden" readOnly value={this.state.selectedItem} name={this.props.inputName}/>
             <TreeSelect
               value={this.state.selectedItem}
