@@ -93,7 +93,11 @@
         }
 
         .ant-select-tree-node-content-wrapper.ant-select-tree-node-selected {
+<<<<<<< HEAD
            background-color: #f0f0f0 !important;
+=======
+           background-color: rgba(255, 215, 65, 0.5) !important;
+>>>>>>> Fix ChoiceSetEditor and ChoiceSetSearch search issue
         }
     }
 }
