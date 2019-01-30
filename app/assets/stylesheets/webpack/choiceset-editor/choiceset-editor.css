@@ -1,3 +1,7 @@
+.choiceset-editor-container .ant-select {
+    width: 100%;
+}
+
 .btn-add-choiceset {
     margin-left: -15px;
     min-height: 38px;
@@ -5,4 +9,3 @@
 
 .btn-add-choiceset a {
     margin-top: 15px;
-}
