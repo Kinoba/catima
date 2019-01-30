@@ -226,9 +226,11 @@ class ChoiceSetSearch extends Component {
             <TreeSelect
               value={this.state.selectedItem}
               placeholder={this.props.searchPlaceholder}
+              showSearch
               allowClear
               labelInValue
               treeDefaultExpandAll
+              treeNodeFilterProp="title"
               onChange={this.selectItem}>
                 { this.props.items.map((item) => {
                   return this._getTreeChildrens(item);
