@@ -9,13 +9,13 @@ class Field::ChoiceSetPresenter < FieldPresenter
       '<div class="form-component">',
         "<div class=\"row\" #{category} data-choice-set=\"#{field.choice_set.id}\" data-field=\"#{field.id}\">",
           '<div class="col-xs-8">',
-              #select2_select(
-                 #form,
-                 #method,
-                 #nil,
-                 #input_defaults(options).merge(:multiple => field.multiple?),
-                 #&method(:options_for_select)
-              # ),
+             # select2_select(
+               # form,
+               # method,
+               # nil,
+               # input_defaults(options).merge(:multiple => field.multiple?),
+               # &method(:options_for_select)
+             # ),
 
             react_component('ChoiceSetEditor',
               props: {
@@ -26,9 +26,7 @@ class Field::ChoiceSetPresenter < FieldPresenter
                   srcId: "item_#{field.uuid}",
                   srcRef: "item_#{field.uuid}",
                   inputName: "item[#{field.uuid}]",
-                  inputDefaults: [], #TODO @Greg - pass here and array of default selected options [{lavel: "label", value: 2}, ...]
-                  multiple: true, #TODO @Greg - change this dynamically
-                   #TODO @Greg - add items following this format
+                  multiple: true,
                   # items: [
                     #  label: 'search me',
                     #  value: 'searchme',
@@ -51,7 +49,7 @@ class Field::ChoiceSetPresenter < FieldPresenter
               },
               prerender: false),
           '</div>',
-          '<div class="col-xs-4 btn-add-choiceset">',
+          '<div class="col-xs-4" style="margin-left: -15px;">',
             '<a class="btn btn-sm btn-default" style="color: #aaa;" data-toggle="modal" data-target="#choice-modal-'+method+'" href="#">',
               '<span class="glyphicon glyphicon-plus"></span>',
             '</a>',
