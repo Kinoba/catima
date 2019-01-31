@@ -67,7 +67,7 @@ class ChoiceSetEditor extends Component {
 
   _findByProps(o, label, value) {
         //Early return
-        if(typeof o !== 'undefined') {
+        if(typeof o !== 'undefined' && o !== null) {
             if( o.value === label && o.key === value){
               return o;
             }
