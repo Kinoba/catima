@@ -725,9 +725,10 @@ class ChoiceSetInput extends Component {
 
       if(children && (Object.keys(parentComponent).length !== 0)) {
           //Building a child-level name
-          var nameArray = parentComponent.categoryInput.categoryInputName.split('[category_name');
+          console.log(parentComponent.categoryInput.categoryInputName);
+          var nameArray = parentComponent.categoryInput.categoryInputName.split('[category_');
           if(nameArray.length === 2) {
-            categoryInputName = nameArray[0] + '[' + position + '][category_name' + nameArray[1];
+            categoryInputName = nameArray[0] + '[' + position + '][category_id]';
           } else {
             categoryInputName = parentComponent.categoryInput.categoryInputName + '['+ position +']';
           }
@@ -749,9 +750,9 @@ class ChoiceSetInput extends Component {
 
       if(children && (Object.keys(parentComponent).length !== 0)) {
           //Building a child-level name
-          var nameArray = parentComponent.categoryInput.srcCategoryId.split('_category_name');
+          var nameArray = parentComponent.categoryInput.srcCategoryId.split('_category_');
           if(nameArray.length === 2) {
-            srcCategoryId = nameArray[0] + '_' + position + '_category_name' + nameArray[1];
+            srcCategoryId = nameArray[0] + '_' + position + '_category_id';
           } else {
             srcCategoryId = parentComponent.categoryInput.srcCategoryId + '_'+ position +'_';
           }
