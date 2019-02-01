@@ -42,11 +42,8 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
     find_choice_set
     authorize(@choice_set)
 
-    post_choices = []
-    post_choices = loop_trough_children(choice_set_params[:choices_attributes], post_choices)
-    p post_choices
-    p @choice_set.choices.reject { |c| post_choices.include?(c.uuid) }
-    Choice.delete(@choice_set.choices.reject { |c| post_choices.include?(c.uuid) })
+    p "-----------------------------------------------"
+    loop_trough_children(choice_set_params[:choices_attributes])
 
     # return redirect_to(:back)
 
@@ -57,46 +54,32 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
     end
   end
 
-  def loop_trough_children(params, post_choices=[], parent=nil)
-    params.each do |i, choices_attributes|
+  def loop_trough_children(params, parent=nil)
+    params.each do |_i, choices_attributes|
       # p _i
       # p choices_attributes.inspect
       # p choices_attributes.class
 
       next unless choices_attributes.is_a?(ActionController::Parameters)
-
       allowed_params = {}
-      # Manually allow all numeric params
       choices_attributes.keys.select { |k| !k.to_s.match(/\A\d+\Z/) }.map { |key, _v| allowed_params[key] = choices_attributes[key] }
-      p allowed_params
+      # p allowed_params
 
-      choice = if allowed_params["uuid"].present?
-                 Choice.find_by(:uuid => allowed_params["uuid"])
-               else
-                 Choice.new
-               end
-      
-      choice.assign_attributes(allowed_params)
+      choice = Choice.new(allowed_params)
       choice.parent = parent
       choice.catalog = @choice_set.catalog
-      choice.uuid = SecureRandom.uuid if choice.uuid.blank?
-      
-      post_choices << choice.uuid
-      
-      p choice
+      p choice.short_name
 
       @choice_set.choices << choice
-      @choice_set.save
+      @choice_set.save!
 
-      if i.match?(/\A\d+\Z/)
-        loop_trough_children(choices_attributes, post_choices, choice) if i =~ /\A\d+\Z/
+      if _i =~ /\A\d+\Z/
+        loop_trough_children(choices_attributes, choice) if _i =~ /\A\d+\Z/
       else
 
       end
 
     end
-    
-    post_choices
   end
 
   def create_choice
