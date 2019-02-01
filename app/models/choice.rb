@@ -23,7 +23,7 @@ class Choice < ApplicationRecord
   belongs_to :category, optional: true
   belongs_to :choice_set, optional: true
   belongs_to :parent, :class_name => "Choice", :optional => true
-  has_many :children, :class_name => "Choice", :dependent => :destroy, :foreign_key => 'parent_id', :inverse_of => false
+  has_many :chidren, :class_name => "Choice", :dependent => :destroy
 
   store_translations :short_name, :required => true
   store_translations :long_name, :required => false
@@ -53,9 +53,8 @@ class Choice < ApplicationRecord
   end
 
   def describe
-    ChoiceSerializer.new(self).as_json
-    # as_json(only: %i(uuid short_name_translations long_name_translations), include: %i(children)) \
-    #   .merge("category": category.nil? ? nil : category.uuid)
+    as_json(only: %i(uuid short_name_translations long_name_translations children)) \
+      .merge("category": category.nil? ? nil : category.uuid)
   end
 
   def assign_uuid
