@@ -37,10 +37,44 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
   def update
     find_choice_set
     authorize(@choice_set)
-    if @choice_set.update(choice_set_params)
+
+    p "-----------------------------------------------"
+    loop_trough_children(choice_set_params[:choices_attributes])
+
+    # return redirect_to(:back)
+
+    if @choice_set.update(choice_set_params.except(:choices_attributes))
       redirect_to(catalog_admin_choice_sets_path, :notice => updated_message)
     else
       render("edit")
+    end
+  end
+
+  def loop_trough_children(params, parent=nil)
+    params.each do |_i, choices_attributes|
+      # p _i
+      # p choices_attributes.inspect
+      # p choices_attributes.class
+
+      next unless choices_attributes.is_a?(ActionController::Parameters)
+      allowed_params = {}
+      choices_attributes.keys.select { |k| !k.to_s.match(/\A\d+\Z/) }.map { |key, _v| allowed_params[key] = choices_attributes[key] }
+      # p allowed_params
+
+      choice = Choice.new(allowed_params)
+      choice.parent = parent
+      choice.catalog = @choice_set.catalog
+      p choice.short_name
+
+      @choice_set.choices << choice
+      @choice_set.save!
+
+      if _i =~ /\A\d+\Z/
+        loop_trough_children(choices_attributes, choice) if _i =~ /\A\d+\Z/
+      else
+
+      end
+
     end
   end
 
@@ -75,13 +109,15 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
     params.require(:choice_set).permit(
       :name,
       :deactivated_at,
-      :choices_attributes => [
-        :id, :_destroy,
-        :category_id,
-        :short_name_de, :short_name_en, :short_name_fr, :short_name_it,
-        :long_name_de, :long_name_en, :long_name_fr, :long_name_it
-      ])
+      :choices_attributes => {})
   end
+
+ #  [
+ #   :id, :_destroy,
+ #   :category_id,
+ #   :short_name_de, :short_name_en, :short_name_fr, :short_name_it,
+ #   :long_name_de, :long_name_en, :long_name_fr, :long_name_it
+ # ]
 
   def choice_params
     params.require(:choice).permit(

@@ -39,6 +39,17 @@ CREATE FUNCTION public.bigdate_to_num(json) RETURNS numeric
 
 
 --
+-- Name: strip_tags(text); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.strip_tags(text) RETURNS text
+    LANGUAGE sql
+    AS $_$
+          SELECT regexp_replace($1, '<[^>]*>', '', 'g')
+          $_$;
+
+
+--
 -- Name: validate_geojson(text); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -71,7 +82,8 @@ CREATE TABLE public.advanced_search_configurations (
     slug character varying,
     fields jsonb DEFAULT '{}'::jsonb,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    search_type character varying DEFAULT 'default'::character varying NOT NULL
 );
 
 
@@ -1935,6 +1947,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181207103025'),
 ('20181207145518'),
 ('20181210123619'),
-('20181214095728');
+('20181214095728'),
+('20190201141740');
 
 

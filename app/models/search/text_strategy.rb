@@ -26,8 +26,13 @@ class Search::TextStrategy < Search::BaseStrategy
   def exact_search(scope, exact_phrase, negate)
     return scope if exact_phrase.blank?
 
+    sql = "CREATE OR REPLACE FUNCTION strip_tags(TEXT) RETURNS TEXT AS $$
+          SELECT regexp_replace($1, '<[^>]*>', '', 'g')
+          $$ LANGUAGE SQL;"
+    ActiveRecord::Base.connection.execute sql
+
     sql_operator = "#{'NOT' if negate} ILIKE"
-    scope.where("#{data_field_expr} #{sql_operator} ?", exact_phrase.strip.to_s)
+    scope.where("strip_tags(#{data_field_expr}) #{sql_operator} ?", exact_phrase.strip.to_s)
   end
 
   def one_word_search(scope, str, negate)

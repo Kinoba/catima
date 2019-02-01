@@ -6,82 +6,136 @@
 <hr>
 <div class="panel-body">
 
+  <%= @choice_set.describe %>
   <%= react_component('ChoiceSetInput',
     props: {
-      data: [
-        {
-            shortInput: {
-                value: 'Test1'
-            },
-            longInput: {
-                value: 'Test1'
-            },
-            categoryInput: {
-                value: 'category1',
-                optionsData: [
-                    {key:0, value: 'category11'},
-                    {key:1, value: 'category12'},
-                ]
-            },
-            children: [
-                {
-                    shortInput: {
-                        value: 'Child Test1'
-                    },
-                    longInput: {
-                        value: 'Child Test1'
-                    },
-                    categoryInput: {
-                        value: 'childcategory1',
-                        optionsData: [
-                            {key:0, value: 'childcategory111'},
-                            {key:1, value: 'childcategory112'},
-                        ]
-                    },
-                    children: [
-                        {
-                            shortInput: {
-                                value: 'Child Test1'
-                            },
-                            longInput: {
-                                value: 'Child Test1'
-                            },
-                            categoryInput: {
-                                value: 'childcategory1',
-                                optionsData: [
-                                    {key:0, value: 'childcategory111'},
-                                    {key:1, value: 'childcategory112'},
-                                ]
-                            },
-                            children: []
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            shortInput: {
-                value: 'Test2'
-            },
-            longInput: {
-                value: 'Test2'
-            },
-            categoryInput: {
-                value: 'category2',
-                optionsData: [
-                    {key:0, value: 'category21'},
-                    {key:1, value: 'category23'},
-                ]
-            },
-            children: []
-        }
-      ],
+      # TODO: décommenter la ligne ci-dessous
+      # data: @choice_set.describe,
+      data: @choice_set.describe,
+      # données que je peux te passer en entrée
+      # {
+      #   "name":"choix-canton",
+      #   "uuid":"0b565a23-0d7e-457d-923e-2057f82a7af5",
+      #   choices: [
+      #     {
+      #       "short_name_translations":
+      #       {
+      #         "short_name_en":"GE",
+      #         "short_name_fr":"GE"
+      #       },
+      #       "long_name_translations": {
+      #         "long_name_en":"A Geneva",
+      #         "long_name_fr":"Genève"
+      #       },
+      #       "uuid":"95722184-5eb9-482c-b58d-bee0ddec86e3",
+      #       category:nil,
+      #        children: [{
+      #           short_name_translations":
+      #           {
+      #             "short_name_en":"GE",
+      #             "short_name_fr":"GE"
+      #           },
+      #           "long_name_translations":
+      #           {
+      #             "long_name_en":"A Geneva",
+      #              long_name_fr":"Genève"
+      #           },
+      #          "uuid":"95722184-5eb9-482c-b58d-bee0ddec86e3",
+      #           category:nil,
+      #       }]
+      #     },
+      #     {
+      #       "short_name_translations":
+      #       {
+      #         "short_name_en":"VD",
+      #         "short_name_fr":"VD"
+      #       },
+      #       "long_name_translations":
+      #       {
+      #         "long_name_en":"Vaud EN",
+      #         "long_name_fr":"Vaud"
+      #       },
+      #       "uuid":"3cbe2e5a-2575-4b97-a3d0-8402d10e7a62",
+      #       category:nil
+      #     }
+      #   ]
+      # }
+
+      # DOnnées que tu me passais avant
+        # [
+        # {
+        #     shortInput: {
+        #         value: 'Test1'
+        #     },
+        #     longInput: {
+        #         value: 'Test1'
+        #     },
+        #     categoryInput: {
+        #         value: 'category1',
+        #         optionsData: [
+        #             {key:0, value: 'category11'},
+        #             {key:1, value: 'category12'},
+        #         ]
+        #     },
+        #     children: [
+        #         {
+        #             shortInput: {
+        #                 value: 'Child Test1'
+        #             },
+        #             longInput: {
+        #                 value: 'Child Test1'
+        #             },
+        #             categoryInput: {
+        #                 value: 'childcategory1',
+        #                 optionsData: [
+        #                     {key:0, value: 'childcategory111'},
+        #                     {key:1, value: 'childcategory112'},
+        #                 ]
+        #             },
+        #             children: [
+        #                 {
+        #                     shortInput: {
+        #                         value: 'Child Test2'
+        #                     },
+        #                     longInput: {
+        #                         value: 'Child Test2'
+        #                     },
+        #                     categoryInput: {
+        #                         value: 'childcategory1',
+        #                         optionsData: [
+        #                             {key:0, value: 'childcategory111'},
+        #                             {key:1, value: 'childcategory112'},
+        #                         ]
+        #                     },
+        #                     children: []
+        #                 }
+        #             ]
+        #         }
+        # ]
+      #   },
+      #   {
+      #       shortInput: {
+      #           value: 'Test2'
+      #       },
+      #       longInput: {
+      #           value: 'Test2'
+      #       },
+      #       categoryInput: {
+      #           value: 'category2',
+      #           optionsData: [
+      #               {key:0, value: 'category21'},
+      #               {key:1, value: 'category23'},
+      #           ]
+      #       },
+      #       children: []
+      #   }
+      # ],
       shortInputName: "choice_set[choices_attributes][0][short_name_en]",
       longInputName: "choice_set[choices_attributes][0][long_name_en]",
-      categoryInputName: "choice_set[choices_attributes][0][category_name_en]",
+      categoryInputName: "choice_set[choices_attributes][0][category_id]",
       srcShortId: "choice_set_choices_attributes_0_short_name_en",
       srcLongId: "choice_set_choices_attributes_0_long_name_en",
-      srcCategoryId: "choice_set_choices_attributes_0_category_name_en",
+      srcCategoryId: "choice_set_choices_attributes_0_category_id",
       choiceNameLabel: t('.choices'),
       shortNameLabel: t('.short_name'),
       longNameLabel: t('.long_name_optional'),
