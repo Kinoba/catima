@@ -798,7 +798,7 @@ class ChoiceSetInput extends Component {
   _buildCategoryInputName(parentComponent, position, children) {
       var categoryInputName = '';
 
-      if(children && (Object.keys(parentComponent).length !== 0)) {
+      if(typeof parentComponent !== 'undefined' children && (Object.keys(parentComponent).length !== 0)) {
           //Building a child-level name
           var nameArray = parentComponent.category_input_name.split('[category_');
           if(nameArray.length === 2) {
@@ -822,7 +822,7 @@ class ChoiceSetInput extends Component {
   _buildCategorySrcId(parentComponent, position, children) {
       var srcCategoryId = '';
 
-      if(children && (Object.keys(parentComponent).length !== 0)) {
+      if(typeof parentComponent !== 'undefined' children && (Object.keys(parentComponent).length !== 0)) {
           //Building a child-level name
           var nameArray = parentComponent.category_input_id.split('_category_');
           if(nameArray.length === 2) {
