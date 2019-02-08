@@ -1380,16 +1380,26 @@ class ChoiceSetInput extends Component {
           uuid: itemId,
           long_input_name: this._buildLongInputName({}, this.state.componentsList.length, false),
           long_input_id: this._buildLongSrcId({}, this.state.componentsList.length, false),
-          long_name_translations: {},
+          long_name_translations: this.state.componentsList[0].long_name_translations,
           short_input_name: this._buildShortInputName({}, this.state.componentsList.length, false),
           short_input_id: this._buildShortSrcId({}, this.state.componentsList.length, false),
-          short_name_translations: {},
+          short_name_translations: this.state.componentsList[0].short_name_translations,
           category_input_name: this._buildCategoryInputName({}, this.state.componentsList.length, false),
           category_input_id: this._buildCategorySrcId({}, this.state.componentsList.length, false),
           category: null,
           category_options: [],
           children: []
       };
+
+      //CLear each translation for the new child component
+      Object.keys(component.long_name_translations).forEach((key) => {
+         component.long_name_translations[key] = '';
+      });
+
+      //CLear each translation for the new child component
+      Object.keys(component.short_name_translations).forEach((key) => {
+         component.short_name_translations[key] = '';
+      });
 
       var componentsList = this.state.componentsList;
       componentsList.push(component);
@@ -1405,16 +1415,26 @@ class ChoiceSetInput extends Component {
           uuid: itemId,
           long_input_name: this._buildLongInputName(parentComponent, parentComponent.children.length, true),
           long_input_id: this._buildLongSrcId(parentComponent, parentComponent.children.length, true),
-          long_name_translations: {},
+          long_name_translations: parentComponent.long_name_translations,
           short_input_name: this._buildShortInputName(parentComponent, parentComponent.children.length, true),
           short_input_id: this._buildShortSrcId(parentComponent, parentComponent.children.length, true),
-          short_name_translations: {},
+          short_name_translations: parentComponent.short_name_translations,
           category_input_name: this._buildCategoryInputName(parentComponent, parentComponent.children.length, true),
           category_input_id: this._buildCategorySrcId(parentComponent, parentComponent.children.length, true),
           category: null,
           category_options: [],
           children: []
       };
+
+      //CLear each translation for the new child component
+      Object.keys(childComponent.long_name_translations).forEach((key) => {
+         childComponent.long_name_translations[key] = '';
+      });
+
+      //CLear each translation for the new child component
+      Object.keys(childComponent.short_name_translations).forEach((key) => {
+         childComponent.short_name_translations[key] = '';
+      });
 
       var componentsList = this.state.componentsList;
       var resultList = this._insertItemInTree(componentsList, parentComponent, childComponent);
@@ -1509,11 +1529,11 @@ class ChoiceSetInput extends Component {
   _buildShortInputName(parentComponent, position, children) {
       var shortInputName = '';
 
-      if(children && (Object.keys(parentComponent).length !== 0)) {
+      if(typeof parentComponent !== 'undefined' children && (Object.keys(parentComponent).length !== 0)) {
           //Building a child-level name
           var nameArray = parentComponent.short_input_name.split('[short_name');
           if(nameArray.length === 2) {
-            shortInputName = nameArray[0] + '[' + position + '][short_name' + nameArray[1];
+            shortInputName = nameArray[0] + '[' + position + ']';
           } else {
             shortInputName = parentComponent.short_input_name + '['+ position +']';
           }
@@ -1521,7 +1541,7 @@ class ChoiceSetInput extends Component {
           //Building a top-level name
           var nameArray = this.props.shortInputName.split('[0]');
           if(nameArray.length === 2) {
-            shortInputName = nameArray[0] + '[' + position + ']' + nameArray[1];
+            shortInputName = nameArray[0] + '[' + position + ']';
           } else {
             shortInputName = this.props.shortInputName;
           }
@@ -1533,11 +1553,11 @@ class ChoiceSetInput extends Component {
   _buildShortSrcId(parentComponent, position, children) {
       var srcShortId = '';
 
-      if(children && (Object.keys(parentComponent).length !== 0)) {
+      if(typeof parentComponent !== 'undefined' && children && (Object.keys(parentComponent).length !== 0)) {
           //Building a child-level name
           var nameArray = parentComponent.short_input_id.split('_short_name');
           if(nameArray.length === 2) {
-            srcShortId = nameArray[0] + '_' + position + '_short_name' + nameArray[1];
+            srcShortId = nameArray[0] + '_' + position;
           } else {
             srcShortId = parentComponent.short_input_id + '_'+ position +'_';
           }
@@ -1545,7 +1565,7 @@ class ChoiceSetInput extends Component {
           //Building a top-level name
           var nameArray = this.props.srcShortId.split('_0_');
           if(nameArray.length === 2) {
-            srcShortId = nameArray[0] + '_' + position + '_' + nameArray[1];
+            srcShortId = nameArray[0] + '_' + position;
           } else {
             srcShortId = this.props.srcShortId;
           }
@@ -1557,11 +1577,11 @@ class ChoiceSetInput extends Component {
   _buildLongInputName(parentComponent, position, children) {
       var longInputName = '';
 
-      if(children && (Object.keys(parentComponent).length !== 0)) {
+      if(typeof parentComponent !== 'undefined' children && (Object.keys(parentComponent).length !== 0)) {
           //Building a child-level name
           var nameArray = parentComponent.long_input_name.split('[long_name');
           if(nameArray.length === 2) {
-            longInputName = nameArray[0] + '[' + position + '][long_name' + nameArray[1];
+            longInputName = nameArray[0] + '[' + position + ']';
           } else {
             longInputName = parentComponent.long_input_name + '['+ position +']';
           }
@@ -1569,7 +1589,7 @@ class ChoiceSetInput extends Component {
           //Building a top-level name
           var nameArray = this.props.longInputName.split('[0]');
           if(nameArray.length === 2) {
-            longInputName = nameArray[0] + '[' + position + ']' + nameArray[1];
+            longInputName = nameArray[0] + '[' + position + ']';
           } else {
             longInputName = this.props.longInputName;
           }
@@ -1581,11 +1601,11 @@ class ChoiceSetInput extends Component {
   _buildLongSrcId(parentComponent, position, children) {
       var srcLongId = '';
 
-      if(children && (Object.keys(parentComponent).length !== 0)) {
+      if(typeof parentComponent !== 'undefined' children && (Object.keys(parentComponent).length !== 0)) {
           //Building a child-level name
           var nameArray = parentComponent.long_input_id.split('_long_name');
           if(nameArray.length === 2) {
-            srcLongId = nameArray[0] + '_' + position + '_long_name' + nameArray[1];
+            srcLongId = nameArray[0] + '_' + position;
           } else {
             srcLongId = parentComponent.long_input_id + '_'+ position +'_';
           }
@@ -1593,7 +1613,7 @@ class ChoiceSetInput extends Component {
           //Building a top-level name
           var nameArray = this.props.srcLongId.split('_0_');
           if(nameArray.length === 2) {
-            srcLongId = nameArray[0] + '_' + position + '_' + nameArray[1];
+            srcLongId = nameArray[0] + '_' + position;
           } else {
             srcLongId = this.props.srcLongId;
           }
@@ -1605,7 +1625,7 @@ class ChoiceSetInput extends Component {
   _buildCategoryInputName(parentComponent, position, children) {
       var categoryInputName = '';
 
-      if(children && (Object.keys(parentComponent).length !== 0)) {
+      if(typeof parentComponent !== 'undefined' children && (Object.keys(parentComponent).length !== 0)) {
           //Building a child-level name
           var nameArray = parentComponent.category_input_name.split('[category_');
           if(nameArray.length === 2) {
@@ -1629,7 +1649,7 @@ class ChoiceSetInput extends Component {
   _buildCategorySrcId(parentComponent, position, children) {
       var srcCategoryId = '';
 
-      if(children && (Object.keys(parentComponent).length !== 0)) {
+      if(typeof parentComponent !== 'undefined' children && (Object.keys(parentComponent).length !== 0)) {
           //Building a child-level name
           var nameArray = parentComponent.category_input_id.split('_category_');
           if(nameArray.length === 2) {
@@ -1740,6 +1760,7 @@ class ChoiceSetInput extends Component {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         <div className="col-md-5"><input name="test" className="form-control" type="text" value="HELLO"/></div>
         <div className="col-md-5"><input name="test" className="form-control" type="text" value="HELLO"/></div>
         <div className="col-md-2">Remove</div>
@@ -1762,6 +1783,26 @@ class ChoiceSetInput extends Component {
         <div className="col-md-3"><input id={item.short_input_id} name={item.short_input_name} defaultValue={item.short_name_translations['short_name_' + this.props.locale]} className="form-control" type="text"/></div>
         <div className="col-md-3"><input id={item.long_input_id} name={item.long_input_name} defaultValue={item.long_name_translations['long_name_' + this.props.locale]} className="form-control" type="text"/></div>
 >>>>>>> Adapt hierarchy choice set data to fit the component on choice set creation
+=======
+        <div className="col-md-3">
+            { Object.keys(item.short_name_translations).map((key) => {
+                return (
+                    <div key={item.short_input_id + '_' + key} className="input-group form-group">
+                        <span className="input-group-addon">{key.split('short_name_')[1]}</span>
+                        <input id={item.short_input_id + '_' + key} name={item.short_input_name + '[' + key + ']'} defaultValue={item.short_name_translations[key]} className="form-control" type="text"/>
+                    </div>)
+            })}
+        </div>
+        <div className="col-md-3">
+            { Object.keys(item.long_name_translations).map((key) => {
+                return (
+                    <div key={item.long_input_id + '_' + key} className="input-group form-group">
+                        <span className="input-group-addon">{key.split('long_name_')[1]}</span>
+                        <input id={item.long_input_id + '_' + key} name={item.long_input_name + '[' + key + ']'} defaultValue={item.long_name_translations[key]} className="form-control" type="text"/>
+                    </div>)
+            })}
+        </div>
+>>>>>>> Add translation fields to hierarchy choice set creation
         <div className="col-md-3">
             <select id={item.category_input_id} className="form-control" name={item.category_input_name} defaultValue={item.category} disabled={item.category}>
             { item.category_options.map((item) => {
