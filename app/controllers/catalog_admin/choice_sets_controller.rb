@@ -42,7 +42,6 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
     find_choice_set
     authorize(@choice_set)
 
-    p "-----------------------------------------------"
     loop_trough_children(choice_set_params[:choices_attributes])
 
     # return redirect_to(:back)
