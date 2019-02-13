@@ -522,6 +522,30 @@ class ChoiceSetInput extends Component {
       return hiddenInputName;
   }
 
+  _buildHiddenInputName(parentComponent, position, children) {
+      var hiddenInputName = '';
+
+      if(typeof parentComponent !== 'undefined' && children && (Object.keys(parentComponent).length !== 0)) {
+          //Building a child-level name
+          var nameArray = parentComponent.hidden_input_name.split('[uuid]');
+          if(nameArray.length === 2) {
+            hiddenInputName = nameArray[0] + '[' + position + '][uuid]';
+          } else {
+            hiddenInputName = parentComponent.short_input_name + '['+ position +'][uuid]';
+          }
+      } else {
+          //Building a top-level name
+          var nameArray = this.props.shortInputName.split('[0]');
+          if(nameArray.length === 2) {
+            hiddenInputName = nameArray[0] + '[' + position + '][uuid]';
+          } else {
+            hiddenInputName = this.props.shortInputName + '[uuid]';
+          }
+      }
+
+      return hiddenInputName;
+  }
+
   _buildShortSrcId(parentComponent, position, children) {
       var srcShortId = '';
 
@@ -849,7 +873,7 @@ class ChoiceSetInput extends Component {
                       short_name_translations: component.short_name_translations,
                       category_input_name: this._buildCategoryInputName(parentComponent, i, true),
                       category_input_id: this._buildCategorySrcId(parentComponent, i, true),
-                      category: component.category,
+                      category_id: component.category_id,
                       category_options: component.category_options,
                       children: component.children
                   };
@@ -867,7 +891,7 @@ class ChoiceSetInput extends Component {
                       short_name_translations: component.short_name_translations,
                       category_input_name: this._buildCategoryInputName({}, i, false),
                       category_input_id: this._buildCategorySrcId({}, i, false),
-                      category: component.category,
+                      category_id: component.category_id,
                       category_options: component.category_options,
                       children: component.children
                   };
@@ -906,7 +930,7 @@ class ChoiceSetInput extends Component {
                 return (
                     <div key={item.long_input_id + '_' + key} className="input-group form-group">
                         <span className="input-group-addon">{key.split('long_name_')[1]}</span>
-                        <input id={item.long_input_id + '_' + key} name={item.long_input_name + '[' + key + ']'} value={item.long_name_translations[key]} onChange={this.updateLongNameTranslations} className="form-control" type="text"/>
+                        <input id={item.long_input_id + '_' + key} name={item.long_input_name + '[' + key + ']'} defaultValue={item.long_name_translations[key]} className="form-control" type="text"/>
                     </div>)
             })}
         </div>
