@@ -81,7 +81,7 @@ class ChoiceSetInput extends Component {
               counter++;
 
               if(typeof currentData.children !== 'undefined' && currentData.children.length > 0) {
-                  var returnEl = this._initChildren(newComponent, currentData.children, counter);
+                  var returnEl = this._initChildren(newComponent, newComponent.children, counter);
                   newComponent.children = returnEl.list;
                   counter = returnEl.counter;
               }
@@ -103,13 +103,13 @@ class ChoiceSetInput extends Component {
           var newComponent = currentData;
 
           newComponent.id = counter;
-          newComponent.hidden_input_name = this._buildHiddenInputName(parentComponent, counter, false);
-          newComponent.long_input_name = this._buildLongInputName(parentComponent, counter, false);
-          newComponent.long_input_id = this._buildLongSrcId(parentComponent, counter, false);
-          newComponent.short_input_name = this._buildShortInputName(parentComponent, counter, false);
-          newComponent.short_input_id = this._buildShortSrcId(parentComponent, counter, false);
-          newComponent.category_input_name = this._buildCategoryInputName(parentComponent, counter, false);
-          newComponent.category_input_id = this._buildCategorySrcId(parentComponent, counter, false);
+          newComponent.hidden_input_name = this._buildHiddenInputName(parentComponent, counter, true);
+          newComponent.long_input_name = this._buildLongInputName(parentComponent, counter, true);
+          newComponent.long_input_id = this._buildLongSrcId(parentComponent, counter, true);
+          newComponent.short_input_name = this._buildShortInputName(parentComponent, counter, true);
+          newComponent.short_input_id = this._buildShortSrcId(parentComponent, counter, true);
+          newComponent.category_input_name = this._buildCategoryInputName(parentComponent, counter, true);
+          newComponent.category_input_id = this._buildCategorySrcId(parentComponent, counter, true);
           newComponent.category_options = this.props.category_options;
 
           if(!newComponent.category) {
@@ -153,7 +153,6 @@ class ChoiceSetInput extends Component {
   _updateSelectedCategory({ target }) {
       var searchName = target.name.split('[category]');
       var result = this._findByName(this.state.componentsList, target.name, 'category_input_name');
-      console.log(result);
       if(result !== null) {
           var replaceList = this._replaceCategoryValueInTree(this.state.componentsList, result, 'category', target.value);
           this.setState({componentsList: replaceList});
