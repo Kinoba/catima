@@ -65,7 +65,6 @@ class ChoiceSetInput extends Component {
               newComponent.short_input_id = this._buildShortSrcId({}, newComponent.uuid, false);
               newComponent.category_input_name = this._buildCategoryInputName({}, newComponent.uuid, false);
               newComponent.category_input_id = this._buildCategorySrcId({}, newComponent.uuid, false);
-              newComponent.children = [];
               newComponent.category_options = this.props.category_options;
 
               counter++;
@@ -99,7 +98,6 @@ class ChoiceSetInput extends Component {
           newComponent.short_input_id = this._buildShortSrcId(parentComponent, newComponent.uuid, false);
           newComponent.category_input_name = this._buildCategoryInputName(parentComponent, newComponent.uuid, false);
           newComponent.category_input_id = this._buildCategorySrcId(parentComponent, newComponent.uuid, false);
-          newComponent.children = [];
           newComponent.category_options = this.props.category_options;
 
           counter++;
@@ -988,7 +986,7 @@ class ChoiceSetInput extends Component {
             <select id={item.category_input_id} className="form-control" name={item.category_input_name} defaultValue={item.category} disabled={item.category_options.length === 0}>
               <option key="" value={null}></option>
               { item.category_options.map((item) => {
-                return <option key={item.uuid} value={item.uuid}>{item.name_translations['name_' + this.props.locale]}</option>
+                return <option key={item.uuid} value={item.uuid}>{item.name}</option>
               })}
             </select>
         </div>
