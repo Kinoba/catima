@@ -8,9 +8,9 @@ class CatalogAdmin::ChoiceSetsTest < ActionDispatch::IntegrationTest
     visit("/one/en/admin/_choices")
     click_on("New choice set")
     fill_in("Name", :with => "Test Set")
-    click_on("Add choice")
-    fill_in("Short name", :with => "Eng")
-    fill_in("Long name", :with => "English")
+    # find("#addRootChoice").click
+    fill_in("choice_set[choices_attributes][0][short_name_en]", :with => "Eng")
+    fill_in("choice_set[choices_attributes][0][long_name_en]", :with => "English")
 
     assert_difference("catalogs(:one).choice_sets.count") do
       assert_difference("Choice.count") do
@@ -29,16 +29,16 @@ class CatalogAdmin::ChoiceSetsTest < ActionDispatch::IntegrationTest
     visit("/multilingual/en/admin/_choices")
     click_on("New choice set")
     fill_in("Name", :with => "Test Set")
-    click_on("Add choice")
+    # click_on("Add choice")
 
-    fill_in("Short name de", :with => "Ger")
-    fill_in("Long name de", :with => "German")
-    fill_in("Short name en", :with => "Eng")
-    fill_in("Long name en", :with => "English")
-    fill_in("Short name fr", :with => "Fre")
-    fill_in("Long name fr", :with => "French")
-    fill_in("Short name it", :with => "Ita")
-    fill_in("Long name it", :with => "Italian")
+    fill_in("choice_set[choices_attributes][0][short_name_de]", :with => "Ger")
+    fill_in("choice_set[choices_attributes][0][long_name_de]", :with => "German")
+    fill_in("choice_set[choices_attributes][0][short_name_en]", :with => "Eng")
+    fill_in("choice_set[choices_attributes][0][long_name_en]", :with => "English")
+    fill_in("choice_set[choices_attributes][0][short_name_fr]", :with => "Fre")
+    fill_in("choice_set[choices_attributes][0][long_name_fr]", :with => "French")
+    fill_in("choice_set[choices_attributes][0][short_name_it]", :with => "Ita")
+    fill_in("choice_set[choices_attributes][0][long_name_it]", :with => "Italian")
 
     assert_difference("catalogs(:multilingual).choice_sets.count") do
       assert_difference("Choice.count") do

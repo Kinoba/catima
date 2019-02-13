@@ -53,10 +53,9 @@ class Choice < ApplicationRecord
   end
 
   def describe
-    p "coucou"
-    p children
-    as_json(only: %i(uuid short_name_translations long_name_translations), include: %i(children)) \
-      .merge("category": category.nil? ? nil : category.uuid)
+    ChoiceSerializer.new(self).as_json
+    # as_json(only: %i(uuid short_name_translations long_name_translations), include: %i(children)) \
+    #   .merge("category": category.nil? ? nil : category.uuid)
   end
 
   def assign_uuid
