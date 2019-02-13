@@ -4,11 +4,12 @@
     </div>
 </div>
 <hr>
+
 <div class="panel-body">
   <%= react_component('ChoiceSetInput',
     props: {
       data: @choice_set.describe,
-      category_options: @choice_set.category_fields_as_options,
+      category_options: @choice_set.catalog.categories,
       available_locales: @choice_set.catalog.valid_locales,
       # Data example
       # data: {
@@ -58,7 +59,6 @@
           #}
         #]
       #},
-      locale: "en",
       shortInputName: "choice_set[choices_attributes][0][short_name_en]",
       longInputName: "choice_set[choices_attributes][0][long_name_en]",
       categoryInputName: "choice_set[choices_attributes][0][category_id]",

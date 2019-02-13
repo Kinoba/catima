@@ -14,7 +14,11 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
   def create
     build_choice_set
     authorize(@choice_set)
-    if @choice_set.update(choice_set_params)
+
+    @choice_set.assign_attributes(choice_set_params.except(:choices_attributes))
+    loop_trough_children(choice_set_params[:choices_attributes])
+
+    if @choice_set.update(choice_set_params.except(:choices_attributes))
       if request.xhr?
         render json: { choice_set: @choice_set }
       else
