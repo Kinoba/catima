@@ -1,5 +1,3 @@
-//TODO : revoir la propriété category_options du modèle de données (à passer par Greg ?)
-
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Nestable from 'react-nestable';
@@ -125,7 +123,6 @@ class ChoiceSetInput extends Component {
               newComponent.children = returnEl.list;
               counter = returnEl.counter;
           }
-
 
           childrenList.push(newComponent);
       }
