@@ -755,9 +755,9 @@ class ChoiceSetInput extends Component {
 
       if(typeof parentComponent !== 'undefined' && children && (Object.keys(parentComponent).length !== 0)) {
           //Building a child-level name
-          var nameArray = parentComponent.category_input_name.split('[category]');
+          var nameArray = parentComponent.category_input_name.split('[category_id]');
           if(nameArray.length === 2) {
-            categoryInputName = nameArray[0] + '[' + position + '][category]';
+            categoryInputName = nameArray[0] + '[' + position + '][category_id]';
           } else {
             categoryInputName = parentComponent.category_input_name + '['+ position +']';
           }
@@ -779,17 +779,17 @@ class ChoiceSetInput extends Component {
 
       if(typeof parentComponent !== 'undefined' && children && (Object.keys(parentComponent).length !== 0)) {
           //Building a child-level name
-          var nameArray = parentComponent.category_input_id.split('_category');
+          var nameArray = parentComponent.category_input_id.split('_category_id');
           if(nameArray.length === 2) {
-            srcCategoryId = nameArray[0] + '_' + position + '_category';
+            srcCategoryId = nameArray[0] + '_' + position + '_category_id';
           } else {
-            srcCategoryId = parentComponent.category_input_id + '_' + position + '_category';
+            srcCategoryId = parentComponent.category_input_id + '_' + position + '_category_id';
           }
       } else {
           //Building a top-level name
           var nameArray = this.props.srcCategoryId.split('_0_');
           if(nameArray.length === 2) {
-            srcCategoryId = nameArray[0] + '_' + position + '_category';
+            srcCategoryId = nameArray[0] + '_' + position + '_category_id';
           } else {
             srcCategoryId = this.props.srcCategoryId;
           }
