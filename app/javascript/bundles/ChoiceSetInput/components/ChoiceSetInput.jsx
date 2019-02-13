@@ -214,6 +214,7 @@ class ChoiceSetInput extends Component {
 
       var componentsList = this.state.componentsList;
       var resultList = this._insertItemInTree(componentsList, parentComponent, childComponent);
+
       if(resultList !== null) {
           this.nextUniqueId = childComponent.id + 1;
           this.setState({componentsList: resultList});
@@ -790,42 +791,82 @@ class ChoiceSetInput extends Component {
       for(var i = 0; i < list.length; i++) {
 
           var component = list[i];
+
           if(parentComponent && Object.keys(parentComponent).length > 0) {
-              var newComponent = {
-                  id: component.id,
-                  uuid: component.uuid,
-                  long_input_name: this._buildLongInputName(parentComponent, i, true),
-                  long_input_id: this._buildLongSrcId(parentComponent, i, true),
-                  long_name_translations: component.long_name_translations,
-                  short_input_name: this._buildShortInputName(parentComponent, i, true),
-                  short_input_id: this._buildShortSrcId(parentComponent, i, true),
-                  short_name_translations: component.short_name_translations,
-                  category_input_name: this._buildCategoryInputName(parentComponent, i, true),
-                  category_input_id: this._buildCategorySrcId(parentComponent, i, true),
-                  category: component.category,
-                  category_options: component.category_options,
-                  children: component.children
-              };
+              //This component is a child component
+              if(typeof component.uuid === 'string') {
+                  var newComponent = {
+                      id: component.id,
+                      uuid: component.uuid,
+                      long_input_name: this._buildLongInputName(parentComponent, component.uuid, true),
+                      long_input_id: this._buildLongSrcId(parentComponent, component.uuid, true),
+                      long_name_translations: component.long_name_translations,
+                      short_input_name: this._buildShortInputName(parentComponent, component.uuid, true),
+                      short_input_id: this._buildShortSrcId(parentComponent, component.uuid, true),
+                      short_name_translations: component.short_name_translations,
+                      category_input_name: this._buildCategoryInputName(parentComponent, component.uuid, true),
+                      category_input_id: this._buildCategorySrcId(parentComponent, component.uuid, true),
+                      category: component.category,
+                      category_options: component.category_options,
+                      children: component.children
+                  };
+              } else {
+                  var newComponent = {
+                      id: component.id,
+                      uuid: component.uuid,
+                      long_input_name: this._buildLongInputName(parentComponent, i, true),
+                      long_input_id: this._buildLongSrcId(parentComponent, i, true),
+                      long_name_translations: component.long_name_translations,
+                      short_input_name: this._buildShortInputName(parentComponent, i, true),
+                      short_input_id: this._buildShortSrcId(parentComponent, i, true),
+                      short_name_translations: component.short_name_translations,
+                      category_input_name: this._buildCategoryInputName(parentComponent, i, true),
+                      category_input_id: this._buildCategorySrcId(parentComponent, i, true),
+                      category: component.category,
+                      category_options: component.category_options,
+                      children: component.children
+                  };
+              }
+
           } else {
-              var newComponent = {
-                  id: component.id,
-                  uuid: component.uuid,
-                  long_input_name: this._buildLongInputName({}, i, false),
-                  long_input_id: this._buildLongSrcId({}, i, false),
-                  long_name_translations: component.long_name_translations,
-                  short_input_name: this._buildShortInputName({}, i, false),
-                  short_input_id: this._buildShortSrcId(parentComponent, i, true),
-                  short_name_translations: component.short_name_translations,
-                  category_input_name: this._buildCategoryInputName({}, i, false),
-                  category_input_id: this._buildCategorySrcId({}, i, false),
-                  category: component.category,
-                  category_options: component.category_options,
-                  children: component.children
-              };
+              //This component is a root-level component
+              if(typeof component.uuid === 'string') {
+                  var newComponent = {
+                      id: component.id,
+                      uuid: component.uuid,
+                      long_input_name: this._buildLongInputName({}, component.uuid, false),
+                      long_input_id: this._buildLongSrcId({}, component.uuid, false),
+                      long_name_translations: component.long_name_translations,
+                      short_input_name: this._buildShortInputName({}, component.uuid, false),
+                      short_input_id: this._buildShortSrcId(parentComponent, component.uuid, true),
+                      short_name_translations: component.short_name_translations,
+                      category_input_name: this._buildCategoryInputName({}, component.uuid, false),
+                      category_input_id: this._buildCategorySrcId({}, component.uuid, false),
+                      category: component.category,
+                      category_options: component.category_options,
+                      children: component.children
+                  };
+              } else {
+                  var newComponent = {
+                      id: component.id,
+                      uuid: component.uuid,
+                      long_input_name: this._buildLongInputName({}, i, false),
+                      long_input_id: this._buildLongSrcId({}, i, false),
+                      long_name_translations: component.long_name_translations,
+                      short_input_name: this._buildShortInputName({}, i, false),
+                      short_input_id: this._buildShortSrcId(parentComponent, i, true),
+                      short_name_translations: component.short_name_translations,
+                      category_input_name: this._buildCategoryInputName({}, i, false),
+                      category_input_id: this._buildCategorySrcId({}, i, false),
+                      category: component.category,
+                      category_options: component.category_options,
+                      children: component.children
+                  };
+              }
           }
 
           if(newComponent.children.length > 0) {
-            var newChildrenList = this._renameTreeComponents(newComponent.children, component);
+            var newChildrenList = this._renameTreeComponents(newComponent.children, newComponent);
             newComponent.children = newChildrenList;
           }
 
