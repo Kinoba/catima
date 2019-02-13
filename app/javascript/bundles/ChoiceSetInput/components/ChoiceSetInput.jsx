@@ -214,7 +214,6 @@ class ChoiceSetInput extends Component {
 
       var componentsList = this.state.componentsList;
       var resultList = this._insertItemInTree(componentsList, parentComponent, childComponent);
-
       if(resultList !== null) {
           this.nextUniqueId = childComponent.id + 1;
           this.setState({componentsList: resultList});
