@@ -39,4 +39,20 @@ class ChoiceSet < ApplicationRecord
   def assign_uuid
     self.uuid ||= SecureRandom.uuid
   end
+
+  def category_fields_as_options
+    fields = []
+
+    choices.each do |choice|
+      next unless choice.category.present? && choice.category.active?
+
+      choice.category.fields.each do |field|
+        next if field.is_a?(Field::ChoiceSet) || field.is_a?(Field::Reference) || !field.human_readable?
+
+        fields << field
+      end
+    end
+
+    fields.uniq
+  end
 end
