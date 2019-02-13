@@ -74,7 +74,7 @@ class ChoiceSetInput extends Component {
               newComponent.category_input_id = this._buildCategorySrcId({}, counter, false);
               newComponent.category_options = this.props.category_options;
 
-              if(!newComponent.category) {
+              if(newComponent.category === null) {
                   newComponent.category = '';
               }
 
@@ -112,7 +112,7 @@ class ChoiceSetInput extends Component {
           newComponent.category_input_id = this._buildCategorySrcId(parentComponent, counter, true);
           newComponent.category_options = this.props.category_options;
 
-          if(!newComponent.category) {
+          if(newComponent.category === null) {
               newComponent.category = '';
           }
 
