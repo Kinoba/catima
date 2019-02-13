@@ -43,7 +43,7 @@ class ChoiceSetInput extends Component {
               short_name_translations: {},
               category_input_name: this._buildCategoryInputName({}, this.state.componentsList.length, false),
               category_input_id: this._buildCategorySrcId({}, this.state.componentsList.length, false),
-              category: null,
+              category: '',
               category_options: [],
               children: []
           };
@@ -73,6 +73,10 @@ class ChoiceSetInput extends Component {
               newComponent.category_input_name = this._buildCategoryInputName({}, counter, false);
               newComponent.category_input_id = this._buildCategorySrcId({}, counter, false);
               newComponent.category_options = this.props.category_options;
+
+              if(!newComponent.category) {
+                  newComponent.category = '';
+              }
 
               counter++;
 
@@ -108,6 +112,10 @@ class ChoiceSetInput extends Component {
           newComponent.category_input_id = this._buildCategorySrcId(parentComponent, counter, false);
           newComponent.category_options = this.props.category_options;
 
+          if(!newComponent.category) {
+              newComponent.category = '';
+          }
+
           counter++;
 
           if(typeof currentData.children !== 'undefined' && currentData.children.length > 0) {
@@ -122,16 +130,34 @@ class ChoiceSetInput extends Component {
       return {list: childrenList, counter: counter};
   }
 
-  _updateLongNameTranslations(event) {
-      console.log(event.target.value);
+  _updateLongNameTranslations({ target }) {
+      var searchName = target.name.split('[long_name');
+      var locale = searchName[1].split(']')[0];
+      var result = this._findByName(this.state.componentsList, searchName[0], 'long_input_name');
+      if(result !== null) {
+          var replaceList = this._replaceTranslationValueInTree(this.state.componentsList, result, 'long_name_translations', 'long_name' + locale, target.value);
+          this.setState({componentsList: replaceList});
+      }
   }
 
-  _updateShortNameTranslations(event) {
-      console.log(event.target.value);
+  _updateShortNameTranslations({ target }) {
+      var searchName = target.name.split('[short_name');
+      var locale = searchName[1].split(']')[0];
+      var result = this._findByName(this.state.componentsList, searchName[0], 'short_input_name');
+      if(result !== null) {
+          var replaceList = this._replaceTranslationValueInTree(this.state.componentsList, result, 'short_name_translations', 'short_name' + locale, target.value);
+          this.setState({componentsList: replaceList});
+      }
   }
 
-  _updateSelectedCategory(event) {
-      console.log(event.target.value);
+  _updateSelectedCategory({ target }) {
+      var searchName = target.name.split('[category]');
+      var result = this._findByName(this.state.componentsList, target.name, 'category_input_name');
+      console.log(result);
+      if(result !== null) {
+          var replaceList = this._replaceCategoryValueInTree(this.state.componentsList, result, 'category', target.value);
+          this.setState({componentsList: replaceList});
+      }
   }
 
   _addComponent() {
@@ -147,7 +173,7 @@ class ChoiceSetInput extends Component {
           short_name_translations: {},
           category_input_name: this._buildCategoryInputName({}, this.state.componentsList.length, false),
           category_input_id: this._buildCategorySrcId({}, this.state.componentsList.length, false),
-          category: null,
+          category: '',
           category_options: this.props.category_options,
           children: []
       };
@@ -179,7 +205,7 @@ class ChoiceSetInput extends Component {
           short_name_translations: {},
           category_input_name: this._buildCategoryInputName(parentComponent, parentComponent.children.length, true),
           category_input_id: this._buildCategorySrcId(parentComponent, parentComponent.children.length, true),
-          category: null,
+          category: '',
           category_options: this.props.category_options,
           children: []
       };
@@ -413,6 +439,27 @@ class ChoiceSetInput extends Component {
         }
         return result;
     }
+
+    _findByName(o, name, nameString) {
+          //Early return
+          if( o[nameString] === name){
+            return o;
+          }
+          var result, p;
+          for (p in o) {
+              if( o.hasOwnProperty(p) && typeof o[p] === 'object' && p !== 'category_options') {
+                  if(o[p] !== null) {
+                      result = this._findByName(o[p], name, nameString);
+                      if(result){
+                          //Found !
+                          return result;
+                      }
+                  }
+
+              }
+          }
+          return result;
+      }
 
     _buildHiddenInputName(parentComponent, position, children) {
         var hiddenInputName = '';
@@ -829,9 +876,9 @@ class ChoiceSetInput extends Component {
 
       if(typeof parentComponent !== 'undefined' && children && (Object.keys(parentComponent).length !== 0)) {
           //Building a child-level name
-          var nameArray = parentComponent.category_input_name.split('[category_');
+          var nameArray = parentComponent.category_input_name.split('[category]');
           if(nameArray.length === 2) {
-            categoryInputName = nameArray[0] + '[' + position + '][category_id]';
+            categoryInputName = nameArray[0] + '[' + position + '][category]';
           } else {
             categoryInputName = parentComponent.category_input_name + '['+ position +']';
           }
@@ -853,17 +900,17 @@ class ChoiceSetInput extends Component {
 
       if(typeof parentComponent !== 'undefined' && children && (Object.keys(parentComponent).length !== 0)) {
           //Building a child-level name
-          var nameArray = parentComponent.category_input_id.split('_category_');
+          var nameArray = parentComponent.category_input_id.split('_category');
           if(nameArray.length === 2) {
-            srcCategoryId = nameArray[0] + '_' + position + '_category_id';
+            srcCategoryId = nameArray[0] + '_' + position + '_category';
           } else {
-            srcCategoryId = parentComponent.category_input_id + '_' + position + '_';
+            srcCategoryId = parentComponent.category_input_id + '_' + position + '_category';
           }
       } else {
           //Building a top-level name
           var nameArray = this.props.srcCategoryId.split('_0_');
           if(nameArray.length === 2) {
-            srcCategoryId = nameArray[0] + '_' + position + '_';
+            srcCategoryId = nameArray[0] + '_' + position + '_category';
           } else {
             srcCategoryId = this.props.srcCategoryId;
           }
@@ -985,8 +1032,8 @@ class ChoiceSetInput extends Component {
             })}
         </div>
         <div className="col-md-3">
-            <select id={item.category_input_id} className="form-control" name={item.category_input_name} defaultValue={item.category} disabled={item.category_options.length === 0}>
-              <option key="" value={null}></option>
+            <select id={item.category_input_id} className="form-control" name={item.category_input_name} value={item.category} onChange={this.updateSelectedCategory} disabled={item.category_options.length === 0}>
+              <option key="" value=""></option>
               { item.category_options.map((item) => {
                 return <option key={item.uuid} value={item.uuid}>{item.name}</option>
               })}
