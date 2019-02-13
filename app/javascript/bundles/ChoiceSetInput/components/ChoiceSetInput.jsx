@@ -177,7 +177,6 @@ class ChoiceSetInput extends Component {
 
       var componentsList = this.state.componentsList;
       var resultList = this._insertItemInTree(componentsList, parentComponent, childComponent);
-
       if(resultList !== null) {
           this.nextUniqueId = childComponent.id + 1;
           this.setState({componentsList: resultList});
@@ -255,12 +254,15 @@ class ChoiceSetInput extends Component {
         }
         var result, p;
         for (p in o) {
-            if( o.hasOwnProperty(p) && typeof o[p] === 'object' && p === 'children') {
-                result = this._findById(o[p], id);
-                if(result){
-                    //Found !
-                    return result;
+            if( o.hasOwnProperty(p) && typeof o[p] === 'object') {
+                if(o[p] !== null) {
+                    result = this._findById(o[p], id);
+                    if(result){
+                        //Found !
+                        return result;
+                    }
                 }
+
             }
         }
         return result;
