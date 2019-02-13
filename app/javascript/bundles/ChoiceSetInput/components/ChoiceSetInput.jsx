@@ -1,5 +1,3 @@
-//TODO : revoir la propriété category_options du modèle de données (à passer par Greg ?)
-
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Nestable from 'react-nestable';
@@ -10,10 +8,10 @@ class ChoiceSetInput extends Component {
     super(props);
 
     this.state = {
-      componentsList: [],
-      nextUniqueId: 0
+      componentsList: []
     };
 
+    this.nextUniqueId = 0;
     this.renderItem = this.renderItem.bind(this);
     this.addComponent = this._addComponent.bind(this);
     this.updateComponentTree = this._updateComponentTree.bind(this);
@@ -27,11 +25,11 @@ class ChoiceSetInput extends Component {
       var componentsList = [];
 
       if(this.props.data.choices.length === 0) {
-          var itemId = 0;
+          this.nextUniqueId = 0;
 
           var component = {
-              id: itemId,
-              uuid: itemId,
+              id: this.nextUniqueId,
+              uuid: this.nextUniqueId,
               long_input_name: this._buildLongInputName({}, this.state.componentsList.length, false),
               long_input_id: this._buildLongSrcId({}, this.state.componentsList.length, false),
               long_name_translations: {},
@@ -41,14 +39,19 @@ class ChoiceSetInput extends Component {
               category_input_name: this._buildCategoryInputName({}, this.state.componentsList.length, false),
               category_input_id: this._buildCategorySrcId({}, this.state.componentsList.length, false),
               category: null,
-              category_options: [],
+              category_options: this.props.category_options,
               children: []
           };
+
+          this.props.available_locales.forEach((lang) => {
+             component.long_name_translations['long_name_' + lang] = '';
+             component.short_name_translations['short_name_' + lang] = '';
+          });
 
 
           componentsList.push(component);
 
-          this.setState({nextUniqueId: component.id + 1});
+          this.nextUniqueId = component.id + 1;
       } else {
           var counter = 0;
           for(var i=0; i<this.props.data.choices.length; i++) {
@@ -64,8 +67,7 @@ class ChoiceSetInput extends Component {
               newComponent.category_input_name = this._buildCategoryInputName({}, newComponent.uuid, false);
               newComponent.category_input_id = this._buildCategorySrcId({}, newComponent.uuid, false);
               newComponent.children = [];
-              newComponent.category_options = [];
-
+              newComponent.category_options = this.props.category_options;
 
               counter++;
 
@@ -75,13 +77,12 @@ class ChoiceSetInput extends Component {
                   counter = returnEl.counter;
               }
 
-
               componentsList.push(newComponent);
           }
+
+          this.nextUniqueId = counter;
       }
 
-
-      this.setState({nextUniqueId: counter});
       this.setState({componentsList: componentsList});
   }
 
@@ -100,8 +101,7 @@ class ChoiceSetInput extends Component {
           newComponent.category_input_name = this._buildCategoryInputName(parentComponent, newComponent.uuid, false);
           newComponent.category_input_id = this._buildCategorySrcId(parentComponent, newComponent.uuid, false);
           newComponent.children = [];
-          newComponent.category_options = [];
-
+          newComponent.category_options = this.props.category_options;
 
           counter++;
 
@@ -111,7 +111,6 @@ class ChoiceSetInput extends Component {
               counter = returnEl.counter;
           }
 
-
           childrenList.push(newComponent);
       }
 
@@ -119,11 +118,9 @@ class ChoiceSetInput extends Component {
   }
 
   _addComponent() {
-      const itemId = this.state.nextUniqueId;
-
       var component = {
-          id: itemId,
-          uuid: itemId,
+          id: this.nextUniqueId,
+          uuid: this.nextUniqueId,
           long_input_name: this._buildLongInputName({}, this.state.componentsList.length, false),
           long_input_id: this._buildLongSrcId({}, this.state.componentsList.length, false),
           long_name_translations: this.state.componentsList[0].long_name_translations,
@@ -133,7 +130,7 @@ class ChoiceSetInput extends Component {
           category_input_name: this._buildCategoryInputName({}, this.state.componentsList.length, false),
           category_input_id: this._buildCategorySrcId({}, this.state.componentsList.length, false),
           category: null,
-          category_options: [],
+          category_options: this.props.category_options,
           children: []
       };
 
@@ -145,20 +142,20 @@ class ChoiceSetInput extends Component {
       //CLear each translation for the new child component
       Object.keys(component.short_name_translations).forEach((key) => {
          component.short_name_translations[key] = '';
-      });
+     });
 
       var componentsList = this.state.componentsList;
       componentsList.push(component);
 
-      this.setState({nextUniqueId: component.id + 1});
+      this.nextUniqueId = component.id + 1;
       this.setState({componentsList: componentsList});
   }
 
   _addChildComponent(parentComponent) {
-      const itemId = this.state.nextUniqueId;
+
       var childComponent = {
-          id: itemId,
-          uuid: itemId,
+          id: this.nextUniqueId,
+          uuid: this.nextUniqueId,
           long_input_name: this._buildLongInputName(parentComponent, parentComponent.children.length, true),
           long_input_id: this._buildLongSrcId(parentComponent, parentComponent.children.length, true),
           long_name_translations: parentComponent.long_name_translations,
@@ -168,7 +165,7 @@ class ChoiceSetInput extends Component {
           category_input_name: this._buildCategoryInputName(parentComponent, parentComponent.children.length, true),
           category_input_id: this._buildCategorySrcId(parentComponent, parentComponent.children.length, true),
           category: null,
-          category_options: [],
+          category_options: this.props.category_options,
           children: []
       };
 
@@ -180,12 +177,12 @@ class ChoiceSetInput extends Component {
       //CLear each translation for the new child component
       Object.keys(childComponent.short_name_translations).forEach((key) => {
          childComponent.short_name_translations[key] = '';
-      });
+     });
 
       var componentsList = this.state.componentsList;
       var resultList = this._insertItemInTree(componentsList, parentComponent, childComponent);
       if(resultList !== null) {
-          this.setState({nextUniqueId: childComponent.id + 1});
+          this.nextUniqueId = childComponent.id + 1;
           this.setState({componentsList: resultList});
       }
   }
