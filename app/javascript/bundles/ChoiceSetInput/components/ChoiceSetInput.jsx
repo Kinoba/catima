@@ -43,7 +43,7 @@ class ChoiceSetInput extends Component {
               short_name_translations: {},
               category_input_name: this._buildCategoryInputName({}, this.state.componentsList.length, false),
               category_input_id: this._buildCategorySrcId({}, this.state.componentsList.length, false),
-              category: '',
+              category_id: '',
               category_options: [],
               children: []
           };
@@ -74,8 +74,8 @@ class ChoiceSetInput extends Component {
               newComponent.category_input_id = this._buildCategorySrcId({}, counter, false);
               newComponent.category_options = this.props.category_options;
 
-              if(newComponent.category === null) {
-                  newComponent.category = '';
+              if(newComponent.category_id === null || typeof newComponent.category_id === 'undefined') {
+                  newComponent.category_id = '';
               }
 
               counter++;
@@ -112,8 +112,8 @@ class ChoiceSetInput extends Component {
           newComponent.category_input_id = this._buildCategorySrcId(parentComponent, counter, true);
           newComponent.category_options = this.props.category_options;
 
-          if(newComponent.category === null) {
-              newComponent.category = '';
+          if(newComponent.category_id === null || typeof newComponent.category_id === 'undefined') {
+              newComponent.category_id = '';
           }
 
           counter++;
@@ -154,7 +154,7 @@ class ChoiceSetInput extends Component {
       var searchName = target.name.split('[category_id]');
       var result = this._findByName(this.state.componentsList, target.name, 'category_input_name');
       if(result !== null) {
-          var replaceList = this._replaceCategoryValueInTree(this.state.componentsList, result, 'category', target.value);
+          var replaceList = this._replaceCategoryValueInTree(this.state.componentsList, result, 'category_id', target.value);
           this.setState({componentsList: replaceList});
       }
   }
@@ -172,7 +172,7 @@ class ChoiceSetInput extends Component {
           short_name_translations: {},
           category_input_name: this._buildCategoryInputName({}, this.state.componentsList.length, false),
           category_input_id: this._buildCategorySrcId({}, this.state.componentsList.length, false),
-          category: '',
+          category_id: '',
           category_options: this.props.category_options,
           children: []
       };
@@ -204,7 +204,7 @@ class ChoiceSetInput extends Component {
           short_name_translations: {},
           category_input_name: this._buildCategoryInputName(parentComponent, parentComponent.children.length, true),
           category_input_id: this._buildCategorySrcId(parentComponent, parentComponent.children.length, true),
-          category: '',
+          category_id: '',
           category_options: this.props.category_options,
           children: []
       };
@@ -506,6 +506,30 @@ class ChoiceSetInput extends Component {
 
   _updateComponentTree(list) {
      this.setState({componentsList: list});
+  }
+
+  _buildHiddenInputName(parentComponent, position, children) {
+      var hiddenInputName = '';
+
+      if(typeof parentComponent !== 'undefined' && children && (Object.keys(parentComponent).length !== 0)) {
+          //Building a child-level name
+          var nameArray = parentComponent.hidden_input_name.split('[uuid]');
+          if(nameArray.length === 2) {
+            hiddenInputName = nameArray[0] + '[' + position + '][uuid]';
+          } else {
+            hiddenInputName = parentComponent.short_input_name + '['+ position +'][uuid]';
+          }
+      } else {
+          //Building a top-level name
+          var nameArray = this.props.shortInputName.split('[0]');
+          if(nameArray.length === 2) {
+            hiddenInputName = nameArray[0] + '[' + position + '][uuid]';
+          } else {
+            hiddenInputName = this.props.shortInputName + '[uuid]';
+          }
+      }
+
+      return hiddenInputName;
   }
 
   _buildShortSrcId(parentComponent, position, children) {
@@ -969,7 +993,7 @@ class ChoiceSetInput extends Component {
                       short_name_translations: component.short_name_translations,
                       category_input_name: this._buildCategoryInputName(parentComponent, i, true),
                       category_input_id: this._buildCategorySrcId(parentComponent, i, true),
-                      category: component.category,
+                      category_id: component.category_id,
                       category_options: component.category_options,
                       children: component.children
                   };
@@ -987,7 +1011,7 @@ class ChoiceSetInput extends Component {
                       short_name_translations: component.short_name_translations,
                       category_input_name: this._buildCategoryInputName({}, i, false),
                       category_input_id: this._buildCategorySrcId({}, i, false),
-                      category: component.category,
+                      category_id: component.category_id,
                       category_options: component.category_options,
                       children: component.children
                   };
@@ -1016,7 +1040,7 @@ class ChoiceSetInput extends Component {
                 return (
                     <div key={item.short_input_id + '_' + key} className="input-group form-group">
                         <span className="input-group-addon">{key.split('short_name_')[1]}</span>
-                        <input id={item.short_input_id + '_' + key} name={item.short_input_name + '[' + key + ']'} value={item.short_name_translations[key]} onChange={this.updateShortNameTranslations} className="form-control" type="text"/>
+                        <input id={item.short_input_id + '_' + key} name={item.short_input_name + '[' + key + ']'} defaultValue={item.short_name_translations[key]} className="form-control" type="text" required/>
                     </div>)
             })}
         </div>
@@ -1026,15 +1050,15 @@ class ChoiceSetInput extends Component {
                 return (
                     <div key={item.long_input_id + '_' + key} className="input-group form-group">
                         <span className="input-group-addon">{key.split('long_name_')[1]}</span>
-                        <input id={item.long_input_id + '_' + key} name={item.long_input_name + '[' + key + ']'} value={item.long_name_translations[key]} onChange={this.updateLongNameTranslations} className="form-control" type="text"/>
+                        <input id={item.long_input_id + '_' + key} name={item.long_input_name + '[' + key + ']'} defaultValue={item.long_name_translations[key]} className="form-control" type="text"/>
                     </div>)
             })}
         </div>
         <div className="col-md-3">
-            <select id={item.category_input_id} className="form-control" name={item.category_input_name} value={item.category} onChange={this.updateSelectedCategory} disabled={item.category_options.length === 0}>
+            <select id={item.category_input_id} className="form-control" name={item.category_input_name} value={item.category_id} onChange={this.updateSelectedCategory} disabled={item.category_options.length === 0}>
               <option key="" value=""></option>
               { item.category_options.map((item) => {
-                return <option key={item.uuid} value={item.uuid}>{item.name}</option>
+                return <option key={item.id} value={item.id}>{item.name}</option>
               })}
             </select>
         </div>
@@ -1079,7 +1103,11 @@ class ChoiceSetInput extends Component {
           onChange={this.updateComponentTree}
         />
         <div className="row">
-          <div className="col-md-12"><a type="button" onClick={this.addComponent} className="btn"><i className="fa fa-plus-square"></i> {this.props.addChoiceLabel}</a></div>
+          <div className="col-md-12">
+            <a id="addRootChoice" type="button" onClick={this.addComponent} className="btn">
+              <i className="fa fa-plus-square"></i> {this.props.addChoiceLabel}
+            </a>
+          </div>
         </div>
       </div>
     );
