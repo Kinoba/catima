@@ -17,8 +17,8 @@ Rails.application.routes.draw do
         scope :path => ':locale' do
           get '/' => 'catalogs#show'
           get ':item_type' => 'items#index', as: 'items'
-          get ':item_type_slug/:field_slug' => 'fields#index', as: 'fields'
-          get '/categories/:category_id/:field_slug' => 'fields#index', as: 'category_fields'
+          get ':item_type_slug/:field_uuid' => 'fields#index', as: 'fields'
+          get '/categories/:category_id/:field_uuid' => 'fields#index', as: 'category_fields'
         end
       end
     end
