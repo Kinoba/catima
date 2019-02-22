@@ -13,12 +13,12 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
 
   def create
     build_choice_set
-    authorize(@choice_set)
+    authorize(@field)
 
-    @choice_set.assign_attributes(choice_set_params.except(:choices_attributes))
+    @field.assign_attributes(choice_set_params.except(:choices_attributes))
     loop_trough_children(choice_set_params[:choices_attributes])
 
-    if @choice_set.update(choice_set_params.except(:choices_attributes))
+    if @field.update(choice_set_params.except(:choices_attributes))
       if request.xhr?
         render json: { choice_set: @field }
       else
@@ -40,17 +40,17 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
 
   def update
     find_choice_set
-    authorize(@choice_set)
+    authorize(@field)
 
     post_choices = []
     post_choices = loop_trough_children(choice_set_params[:choices_attributes], post_choices)
     p post_choices
-    p @choice_set.choices.reject { |c| post_choices.include?(c.uuid) }
-    Choice.delete(@choice_set.choices.reject { |c| post_choices.include?(c.uuid) })
+    p @field.choices.reject { |c| post_choices.include?(c.uuid) }
+    Choice.delete(@field.choices.reject { |c| post_choices.include?(c.uuid) })
 
     # return redirect_to(:back)
 
-    if @choice_set.update(choice_set_params.except(:choices_attributes))
+    if @field.update(choice_set_params.except(:choices_attributes))
       redirect_to(catalog_admin_choice_sets_path, :notice => updated_message)
     else
       render("edit")
@@ -58,6 +58,8 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
   end
 
   def loop_trough_children(params, post_choices=[], parent=nil)
+    return unless params.present?
+    
     params.each do |i, choices_attributes|
       # p _i
       # p choices_attributes.inspect
@@ -75,18 +77,18 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
                else
                  Choice.new
                end
-      
+
       choice.assign_attributes(allowed_params)
       choice.parent = parent
-      choice.catalog = @choice_set.catalog
+      choice.catalog = @field.catalog
       choice.uuid = SecureRandom.uuid if choice.uuid.blank?
-      
+
       post_choices << choice.uuid
-      
+
       p choice
 
-      @choice_set.choices << choice
-      @choice_set.save
+      @field.choices << choice
+      @field.save
 
       if i.match?(/\A\d+\Z/)
         loop_trough_children(choices_attributes, post_choices, choice) if i =~ /\A\d+\Z/
@@ -95,7 +97,7 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
       end
 
     end
-    
+
     post_choices
   end
 
