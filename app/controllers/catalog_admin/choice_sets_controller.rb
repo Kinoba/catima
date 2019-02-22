@@ -8,25 +8,25 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
 
   def new
     build_choice_set
-    authorize(@choice_set)
+    authorize(@field)
   end
 
   def create
     build_choice_set
-    authorize(@choice_set)
+    authorize(@field)
 
-    @choice_set.assign_attributes(choice_set_params.except(:choices_attributes))
+    @field.assign_attributes(choice_set_params.except(:choices_attributes))
     loop_trough_children(choice_set_params[:choices_attributes])
 
-    if @choice_set.update(choice_set_params.except(:choices_attributes))
+    if @field.update(choice_set_params.except(:choices_attributes))
       if request.xhr?
-        render json: { choice_set: @choice_set }
+        render json: { choice_set: @field }
       else
         redirect_to(after_create_path, :notice => created_message)
       end
     else
       if request.xhr?
-        render json: { errors: @choice_set.errors.full_messages.join(', ') }, status: :unprocessable_entity
+        render json: { errors: @field.errors.full_messages.join(', ') }, status: :unprocessable_entity
       else
         render("new")
       end
@@ -35,22 +35,22 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
 
   def edit
     find_choice_set
-    authorize(@choice_set)
+    authorize(@field)
   end
 
   def update
     find_choice_set
-    authorize(@choice_set)
+    authorize(@field)
 
     post_choices = []
     post_choices = loop_trough_children(choice_set_params[:choices_attributes], post_choices)
     p post_choices
-    p @choice_set.choices.reject { |c| post_choices.include?(c.uuid) }
-    Choice.delete(@choice_set.choices.reject { |c| post_choices.include?(c.uuid) })
+    p @field.choices.reject { |c| post_choices.include?(c.uuid) }
+    Choice.delete(@field.choices.reject { |c| post_choices.include?(c.uuid) })
 
     # return redirect_to(:back)
 
-    if @choice_set.update(choice_set_params.except(:choices_attributes))
+    if @field.update(choice_set_params.except(:choices_attributes))
       redirect_to(catalog_admin_choice_sets_path, :notice => updated_message)
     else
       render("edit")
@@ -58,6 +58,8 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
   end
 
   def loop_trough_children(params, post_choices=[], parent=nil)
+    return unless params.present?
+    
     params.each do |i, choices_attributes|
       # p _i
       # p choices_attributes.inspect
@@ -75,18 +77,18 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
                else
                  Choice.new
                end
-      
+
       choice.assign_attributes(allowed_params)
       choice.parent = parent
-      choice.catalog = @choice_set.catalog
+      choice.catalog = @field.catalog
       choice.uuid = SecureRandom.uuid if choice.uuid.blank?
-      
+
       post_choices << choice.uuid
-      
+
       p choice
 
-      @choice_set.choices << choice
-      @choice_set.save
+      @field.choices << choice
+      @field.save
 
       if i.match?(/\A\d+\Z/)
         loop_trough_children(choices_attributes, post_choices, choice) if i =~ /\A\d+\Z/
@@ -95,7 +97,7 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
       end
 
     end
-    
+
     post_choices
   end
 
@@ -119,11 +121,11 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
   private
 
   def build_choice_set
-    @choice_set = catalog.choice_sets.new
+    @field = catalog.choice_sets.new
   end
 
   def find_choice_set
-    @choice_set = catalog.choice_sets.find(params[:id])
+    @field = catalog.choice_sets.find(params[:id])
   end
 
   def choice_set_params
@@ -148,13 +150,13 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
   end
 
   def created_message
-    "Choice set “#{@choice_set.name}” has been created."
+    "Choice set “#{@field.name}” has been created."
   end
 
   def updated_message
-    message = "Choice set “#{@choice_set.name}” has been "
+    message = "Choice set “#{@field.name}” has been "
     message << if choice_set_params.key?(:deactivated_at)
-                 (@choice_set.active? ? "reactivated." : "deactivated.")
+                 (@field.active? ? "reactivated." : "deactivated.")
                else
                  "updated."
                end

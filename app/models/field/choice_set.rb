@@ -95,6 +95,8 @@ class Field::ChoiceSet < ::Field
   end
 
   def describe
+    return super unless choice_set.present?
+    
     super.merge("choice_set": choice_set.uuid)
   end
 
