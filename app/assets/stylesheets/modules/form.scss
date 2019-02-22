@@ -167,8 +167,13 @@ button[data-active=true]:focus {
   }
 }
 
-.choiceset-input-container {
-  .nestable-group {
-    padding: 0;
-  }
+/* Makes choice set dropdown go over other elements */
+.css-10nd86i {
+    .css-15k3avv {
+        z-index: 401;
+    }
+
+    .css-11unzgr {
+        z-index: 401;
+    }
 }
