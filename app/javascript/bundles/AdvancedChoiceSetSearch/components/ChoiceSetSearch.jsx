@@ -189,6 +189,7 @@ class ChoiceSetSearch extends Component {
 
   _getTreeChildrens(item) {
     if(typeof item.children !== 'undefined' && item.children.length>0) {
+        //The item is a node and has children
         return (
             <TreeNode value={item.key} title={item.value} key={item.key}>
                 { item.children.map((childItem) => {
@@ -197,6 +198,7 @@ class ChoiceSetSearch extends Component {
             </TreeNode>
         );
     } else {
+        //The item is not node and has no children
         return <TreeNode value={item.key} title={item.value} key={item.key} />;
     }
   }
