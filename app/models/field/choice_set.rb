@@ -96,7 +96,7 @@ class Field::ChoiceSet < ::Field
 
   def describe
     return super unless choice_set.present?
-    
+
     super.merge("choice_set": choice_set.uuid)
   end
 
@@ -129,9 +129,12 @@ class Field::ChoiceSet < ::Field
   def search_data_as_hash
     choices_as_options = []
 
-    choices.each do |choice|
+    choices.select{ |c| c.parent.blank? }.each do |choice|
       option = { :value => choice.short_name, :key => choice.id }
       option[:category_data] = choice.filterable_category_fields
+      #TODO @Gregoire - must be an array and have childrens of childrens
+      #TODO @Gregoire - children must have {key: 2, value: "My choiceset label"}
+      option[:children] = choice.children
 
       choices_as_options << option
     end

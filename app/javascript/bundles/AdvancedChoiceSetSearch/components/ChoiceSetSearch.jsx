@@ -37,6 +37,8 @@ class ChoiceSetSearch extends Component {
     if(typeof this.props.selectCondition !== 'undefined' && this.props.selectCondition.length !== 0) {
         this.setState({selectedCondition: this.props.selectCondition[0].key});
     }
+
+    console.log(this.props.items)
   }
 
   _save(){
@@ -187,6 +189,7 @@ class ChoiceSetSearch extends Component {
 
   _getTreeChildrens(item) {
     if(typeof item.children !== 'undefined' && item.children.length>0) {
+        //The item is a node and has children
         return (
             <TreeNode value={item.key} title={item.value} key={item.key}>
                 { item.children.map((childItem) => {
@@ -195,6 +198,7 @@ class ChoiceSetSearch extends Component {
             </TreeNode>
         );
     } else {
+        //The item is not node and has no children
         return <TreeNode value={item.key} title={item.value} key={item.key} />;
     }
   }
