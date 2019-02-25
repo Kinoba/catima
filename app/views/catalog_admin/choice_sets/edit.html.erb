@@ -1,137 +1,18 @@
 <% provide(:title, t(".edit_choice_set")) %>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> Improving choice set nested creation
 
 <div class="panel-body">
-
+  <%= @field.describe %> 
   <%= react_component('ChoiceSetInput',
     props: {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> Improve choice set input component initialisation with server data
-      data: [
-        {
-            shortInput: {
-                value: 'Test1'
-            },
-            longInput: {
-                value: 'Test1'
-            },
-            categoryInput: {
-                value: 'category1',
-                optionsData: [
-                    {key:0, value: 'category11'},
-                    {key:1, value: 'category12'},
-                ]
-            },
-            children: [
-                {
-                    shortInput: {
-                        value: 'Child Test1'
-                    },
-                    longInput: {
-                        value: 'Child Test1'
-                    },
-                    categoryInput: {
-                        value: 'childcategory1',
-                        optionsData: [
-                            {key:0, value: 'childcategory111'},
-                            {key:1, value: 'childcategory112'},
-                        ]
-                    },
-                    children: [
-                        {
-                            shortInput: {
-                                value: 'Child Test1'
-                            },
-                            longInput: {
-                                value: 'Child Test1'
-                            },
-                            categoryInput: {
-                                value: 'childcategory1',
-                                optionsData: [
-                                    {key:0, value: 'childcategory111'},
-                                    {key:1, value: 'childcategory112'},
-                                ]
-                            },
-                            children: []
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            shortInput: {
-                value: 'Test2'
-            },
-            longInput: {
-                value: 'Test2'
-            },
-            categoryInput: {
-                value: 'category2',
-                optionsData: [
-                    {key:0, value: 'category21'},
-                    {key:1, value: 'category23'},
-                ]
-            },
-            children: []
-        }
-<<<<<<< HEAD
-=======
-      items: [
-        { id: 0, shortInputName: "choice_set[choices_attributes][0][short_name_en]", longInputName: "choice_set[choices_attributes][0][long_name_en]", srcShortId: "choice_set_choices_attributes_0_long_name_en", srcLongId: "choice_set_choices_attributes_0_long_name_en"},
-        { id: 1, shortInputName: "choice_set[choices_attributes][1][short_name_en]", longInputName: "choice_set[choices_attributes][1][long_name_en]", srcShortId: "choice_set_choices_attributes_1_long_name_en", srcLongId: "choice_set_choices_attributes_1_long_name_en"}
->>>>>>> Improving choice set nested creation
-      ],
-=======
->>>>>>> Add choice set for choice set creation
-=======
-      ],
->>>>>>> Improve choice set input component initialisation with server data
+      data: @field.describe,
+      items: @field.describe,
       shortInputName: "choice_set[choices_attributes][0][short_name_en]",
       longInputName: "choice_set[choices_attributes][0][long_name_en]",
       categoryInputName: "choice_set[choices_attributes][0][category_name_en]",
       srcShortId: "choice_set_choices_attributes_0_short_name_en",
       srcLongId: "choice_set_choices_attributes_0_long_name_en",
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-      choiceNameLabel: "Choices",
-      shortNameLabel: "Short name",
-      longNameLabel: "Long name (optional)",
-=======
-      srcCategoryId: "choice_set_choices_attributes_0_category_name_en",
-      choiceNameLabel: t('.choices'),
-      shortNameLabel: t('.short_name'),
-      longNameLabel: t('.long_name_optional'),
-      categoryNameLabel: t('.category_optional'),
->>>>>>> Add dynamic strings for choice sets creation
-      updateButtonLabel: t(".update_choice_set"),
-      cancelButtonLabel: t(".cancel"),
-      addChoiceLabel: t(".add_choice"),
-=======
-=======
       srcCategoryId: "choice_set_choices_attributes_0_category_en",
->>>>>>> Add category input for choice set creation
-=======
-      srcCategoryId: "choice_set_choices_attributes_0_category_name_en",
-<<<<<<< HEAD
->>>>>>> Build complex input names for nested choice set creation
-      choiceNameLabel: "Choices",
-      shortNameLabel: "Short name",
-      longNameLabel: "Long name (optional)",
-      categoryNameLabel: "Category (optional)",
-      updateButtonLabel: t(".update_choice_set"),
-      cancelButtonLabel: t(".cancel"),
-      addChoiceLabel: "Add choice",
->>>>>>> Improving choice set nested creation
-=======
+      # srcCategoryId: "choice_set_choices_attributes_0_category_name_en",
       choiceNameLabel: t('.choices'),
       shortNameLabel: t('.short_name'),
       longNameLabel: t('.long_name_optional'),
@@ -139,19 +20,11 @@
       updateButtonLabel: t(".update_choice_set"),
       cancelButtonLabel: t(".cancel"),
       addChoiceLabel: t(".add_choice"),
->>>>>>> Add dynamic strings for choice sets creation
       removeChoiceLabel: "Remove",
-      addChildrenChoiceLabel: "Add children",
+      addChildrenChoiceLabel: "Add children"
     },
     prerender: false) %>
 
-<<<<<<< HEAD
-=======
->>>>>>> Improve edit choice set page
-=======
->>>>>>> Improving choice set nested creation
-=======
->>>>>>> Improve edit choice set page
   <%= bootstrap_form_for(
         @field,
         :url => catalog_admin_choice_set_path) do |f| %>

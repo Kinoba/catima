@@ -44,9 +44,9 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
 
     post_choices = []
     post_choices = loop_trough_children(choice_set_params[:choices_attributes], post_choices)
-    p post_choices
-    p @field.choices.reject { |c| post_choices.include?(c.uuid) }
-    Choice.delete(@field.choices.reject { |c| post_choices.include?(c.uuid) })
+    # p post_choices
+    # p @field.choices.reject { |c| post_choices.include?(c.uuid) }
+    Choice.delete(@field.choices.reject { |c| post_choices&.include?(c.uuid) })
 
     # return redirect_to(:back)
 
@@ -59,7 +59,7 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
 
   def loop_trough_children(params, post_choices=[], parent=nil)
     return unless params.present?
-    
+
     params.each do |i, choices_attributes|
       # p _i
       # p choices_attributes.inspect

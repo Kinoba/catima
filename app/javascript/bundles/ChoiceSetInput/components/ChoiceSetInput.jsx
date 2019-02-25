@@ -242,47 +242,6 @@ class ChoiceSetInput extends Component {
           }
       }
 
-  }
-
-  _replaceTranslationValueInTree(list, searchItem, translationKey, itemKey, replaceValue) {
-      for(var i = 0; i < list.length; i++) {
-          var result = this._findById(list[i], searchItem.id);
-          if(result){
-              //Found the parent item
-              result[translationKey][itemKey] = replaceValue;
-              return list;
-          } else {
-              //Search in the childrens
-              var childrenResult = this._findById(list[i].children, searchItem.id);
-              if(childrenResult){
-                  //Found the parent item
-                  childrenResult[translationKey][itemKey] = replaceValue;
-                  return list;
-              }
-          }
-      }
-
-      return null;
-  }
-
-  _replaceCategoryValueInTree(list, searchItem, itemKey, replaceValue) {
-      for(var i = 0; i < list.length; i++) {
-          var result = this._findById(list[i], searchItem.id);
-          if(result){
-              //Found the parent item
-              result[itemKey] = replaceValue;
-              return list;
-          } else {
-              //Search in the childrens
-              var childrenResult = this._findById(list[i].children, searchItem.id);
-              if(childrenResult){
-                  //Found the parent item
-                  childrenResult[itemKey] = replaceValue;
-                  return list;
-              }
-          }
-      }
-
       return null;
   }
 
@@ -331,76 +290,35 @@ class ChoiceSetInput extends Component {
   _deleteComponent(parentComponent) {
      var componentsList = this.state.componentsList;
 
-  _addComponent() {
-      const itemId = this.state.nextUniqueId;
+    var resultList = this._deleteItemFromTree(componentsList, parentComponent);
+    if(resultList !== null) {
+        this.setState({componentsList: resultList});
+    }
 
-      var component = {
-          id: itemId,
-          uuid: itemId,
-          long_input_name: this._buildLongInputName({}, this.state.componentsList.length, false),
-          long_input_id: this._buildLongSrcId({}, this.state.componentsList.length, false),
-          long_name_translations: {},
-          short_input_name: this._buildShortInputName({}, this.state.componentsList.length, false),
-          short_input_id: this._buildShortSrcId({}, this.state.componentsList.length, false),
-          short_name_translations: {},
-          category_input_name: this._buildCategoryInputName({}, this.state.componentsList.length, false),
-          category_input_id: this._buildCategorySrcId({}, this.state.componentsList.length, false),
-          category: null,
-          category_options: [],
-          children: []
-      };
-
-      var componentsList = this.state.componentsList;
-      componentsList.push(component);
-
-      this.setState({nextUniqueId: component.id + 1});
       this.setState({componentsList: componentsList});
   }
 
-  _addChildComponent(parentComponent) {
-      const itemId = this.state.nextUniqueId;
-      var childComponent = {
-          id: itemId,
-          uuid: itemId,
-          long_input_name: this._buildLongInputName(parentComponent, parentComponent.children.length, true),
-          long_input_id: this._buildLongSrcId(parentComponent, parentComponent.children.length, true),
-          long_name_translations: {},
-          short_input_name: this._buildShortInputName(parentComponent, parentComponent.children.length, true),
-          short_input_id: this._buildShortSrcId(parentComponent, parentComponent.children.length, true),
-          short_name_translations: {},
-          category_input_name: this._buildCategoryInputName(parentComponent, parentComponent.children.length, true),
-          category_input_id: this._buildCategorySrcId(parentComponent, parentComponent.children.length, true),
-          category: null,
-          category_options: [],
-          children: []
-      };
-
-      var componentsList = this.state.componentsList;
-      var resultList = this._insertItemInTree(componentsList, parentComponent, childComponent);
-      if(resultList !== null) {
-          this.setState({nextUniqueId: childComponent.id + 1});
-          this.setState({componentsList: resultList});
-      }
-  }
-
-  _insertItemInTree(list, searchItem, itemToInsert) {
+  _deleteItemFromTree(list, searchItem) {
       for(var i = 0; i < list.length; i++) {
           var result = this._findById(list[i], searchItem.id);
-          if(result){
-              //Found the parent item
-              if(typeof result.children !== 'undefined') {
-                  result.children.push(itemToInsert);
+          if(result) { //The item was found
+              var index = list.indexOf(result);
+              if(index > -1) {
+                  list.splice(index, 1);
+                  return list;
+              } else {
+                  //Search in childrens
+                  return this._deleteItemFromTree(list[i].children, searchItem);
               }
-              return list;
           } else {
               //Search in the childrens
               var childrenResult = this._findById(list[i].children, searchItem.id);
-              if(childrenResult){
-                  //Found the parent item
-                  if(typeof childrenResult.children !== 'undefined') {
-                      childrenResult.children.push(itemToInsert);
+              if(childrenResult) { //The item was found
+                  var index = list[i].children.indexOf(childrenResult);
+                  if(index > -1) {
+                      list[i].children.splice(index, 1);
+                      return list;
                   }
-                  return list;
               }
           }
       }
@@ -491,35 +409,7 @@ class ChoiceSetInput extends Component {
           }
       }
 
-      return null;
-  }
-
-  _updateComponentTree(list) {
-     this.setState({componentsList: list});
-  }
-
-  _buildHiddenInputName(parentComponent, position, children) {
-      var hiddenInputName = '';
-
-      if(typeof parentComponent !== 'undefined' && children && (Object.keys(parentComponent).length !== 0)) {
-          //Building a child-level name
-          var nameArray = parentComponent.hidden_input_name.split('[uuid]');
-          if(nameArray.length === 2) {
-            hiddenInputName = nameArray[0] + '[' + position + '][uuid]';
-          } else {
-            hiddenInputName = parentComponent.short_input_name + '['+ position +'][uuid]';
-          }
-      } else {
-          //Building a top-level name
-          var nameArray = this.props.shortInputName.split('[0]');
-          if(nameArray.length === 2) {
-            hiddenInputName = nameArray[0] + '[' + position + '][uuid]';
-          } else {
-            hiddenInputName = this.props.shortInputName + '[uuid]';
-          }
-      }
-
-      return hiddenInputName;
+      return shortInputName;
   }
 
   _buildHiddenInputName(parentComponent, position, children) {
@@ -566,6 +456,8 @@ class ChoiceSetInput extends Component {
             srcShortId = this.props.srcShortId;
           }
       }
+
+      return srcShortId;
   }
 
   _buildLongInputName(parentComponent, position, children) {
@@ -588,6 +480,8 @@ class ChoiceSetInput extends Component {
             longInputName = this.props.longInputName;
           }
       }
+
+      return longInputName;
   }
 
   _buildLongSrcId(parentComponent, position, children) {
@@ -600,166 +494,6 @@ class ChoiceSetInput extends Component {
             srcLongId = nameArray[0] + '_' + position;
           } else {
             srcLongId = parentComponent.long_input_id + '_'+ position;
-          }
-      } else {
-          //Building a top-level name
-          var nameArray = this.props.srcLongId.split('_0_');
-          if(nameArray.length === 2) {
-            srcLongId = nameArray[0] + '_' + position;
-          } else {
-            srcLongId = this.props.srcLongId;
-          }
-      }
-  }
-
-  _buildCategoryInputName(parentComponent, position, children) {
-      var categoryInputName = '';
-
-      if(typeof parentComponent !== 'undefined' && children && (Object.keys(parentComponent).length !== 0)) {
-          //Building a child-level name
-          var nameArray = parentComponent.category_input_name.split('[category_id]');
-          if(nameArray.length === 2) {
-            categoryInputName = nameArray[0] + '[' + position + '][category_id]';
-          } else {
-            categoryInputName = parentComponent.category_input_name + '['+ position +']';
-          }
-      } else {
-          //Building a top-level name
-          var nameArray = this.props.categoryInputName.split('[0]');
-          if(nameArray.length === 2) {
-            categoryInputName = nameArray[0] + '[' + position + ']' + nameArray[1];
-          } else {
-            categoryInputName = this.props.categoryInputName;
-          }
-      }
-
-      return categoryInputName;
-  }
-
-  _buildCategorySrcId(parentComponent, position, children) {
-      var srcCategoryId = '';
-
-      if(typeof parentComponent !== 'undefined' && children && (Object.keys(parentComponent).length !== 0)) {
-          //Building a child-level name
-          var nameArray = parentComponent.category_input_id.split('_category_id');
-          if(nameArray.length === 2) {
-            srcCategoryId = nameArray[0] + '_' + position + '_category_id';
-          } else {
-            srcCategoryId = parentComponent.category_input_id + '_' + position + '_category_id';
-          }
-      } else {
-          //Building a top-level name
-          var nameArray = this.props.srcCategoryId.split('_0_');
-          if(nameArray.length === 2) {
-            srcCategoryId = nameArray[0] + '_' + position + '_category_id';
-          } else {
-            srcCategoryId = this.props.srcCategoryId;
-          }
-      }
-
-      return srcCategoryId;
-  }
-
-  _getItemPositionInTree(list, searchItem) {
-      var position = [];
-
-      for(var i = 0; i < list.length; i++) {
-          var result = this._findById(list[i], searchItem.id);
-          if(result) { //The item was found
-              var index = list.indexOf(result);
-              if(index > -1) {
-                  position.push(index);
-                  return position;
-              } else {
-                  //Search in childrens
-                  return this._deleteItemFromTree(list[i].children, searchItem);
-              }
-          } else {
-              //Search in the childrens
-              var childrenResult = this._findById(list[i].children, searchItem.id);
-              if(childrenResult) { //The item was found
-                  var index = list[i].children.indexOf(childrenResult);
-                  if(index > -1) {
-                      position.push(index);
-                      return position;
-                  }
-              }
-          }
-      }
-
-      return null;
-  }
-
-  _renameTreeComponents(list, parentComponent) {
-      for(var i = 0; i < list.length; i++) {
-
-          var component = list[i];
-
-          if(typeof component.children === "undefined") component.children = [];
-
-          if(parentComponent && Object.keys(parentComponent).length > 0) {
-              //This component is a child component
-                  var newComponent = {
-                      id: component.id,
-                      uuid: component.uuid,
-                      hidden_input_name: this._buildHiddenInputName(parentComponent, i, true),
-                      long_input_name: this._buildLongInputName(parentComponent, i, true),
-                      long_input_id: this._buildLongSrcId(parentComponent, i, true),
-                      long_name_translations: component.long_name_translations,
-                      short_input_name: this._buildShortInputName(parentComponent, i, true),
-                      short_input_id: this._buildShortSrcId(parentComponent, i, true),
-                      short_name_translations: component.short_name_translations,
-                      category_input_name: this._buildCategoryInputName(parentComponent, i, true),
-                      category_input_id: this._buildCategorySrcId(parentComponent, i, true),
-                      category_id: component.category_id,
-                      category_options: component.category_options,
-                      children: component.children
-                  };
-          } else {
-              //This component is a root-level component
-                  var newComponent = {
-                      id: component.id,
-                      uuid: component.uuid,
-                      hidden_input_name: this._buildHiddenInputName({}, i, false),
-                      long_input_name: this._buildLongInputName({}, i, false),
-                      long_input_id: this._buildLongSrcId({}, i, false),
-                      long_name_translations: component.long_name_translations,
-                      short_input_name: this._buildShortInputName({}, i, false),
-                      short_input_id: this._buildShortSrcId(parentComponent, i, true),
-                      short_name_translations: component.short_name_translations,
-                      category_input_name: this._buildCategoryInputName({}, i, false),
-                      category_input_id: this._buildCategorySrcId({}, i, false),
-                      category_id: component.category_id,
-                      category_options: component.category_options,
-                      children: component.children
-                  };
-          }
-
-          if(newComponent.children.length > 0) {
-            var newChildrenList = this._renameTreeComponents(newComponent.children, newComponent);
-            newComponent.children = newChildrenList;
-          }
-
-          list[i] = newComponent;
-      }
-
-      return list;
-  }
-
-  _updateComponentTree(list, component) {
-     this.setState({componentsList: this._renameTreeComponents(list)});
-  }
-
-  _buildCategoryInputName(parentComponent, id, children) {
-      var categoryInputName = '';
-
-      if(children && (Object.keys(parentComponent).length !== 0)) {
-          //Building a child-level name
-          var nameArray = parentComponent.categoryInput.categoryInputName.split('[category_name');
-          if(nameArray.length === 2) {
-            categoryInputName = nameArray[0] + '[' + position + '][category_name' + nameArray[1];
-          } else {
-            categoryInputName = parentComponent.categoryInput.categoryInputName + '['+ position +']';
           }
       } else {
           //Building a top-level name
@@ -948,14 +682,6 @@ class ChoiceSetInput extends Component {
         </div>
       </div>
     );
-  }
-
-  renderCollapseIcon({ isCollapsed }) {
-    return true;
-  }
-
-  renderCollapseIcon({ isCollapsed }) {
-    return true;
   }
 
   renderCollapseIcon({ isCollapsed }) {
