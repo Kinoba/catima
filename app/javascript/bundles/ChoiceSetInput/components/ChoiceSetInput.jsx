@@ -72,7 +72,10 @@ class ChoiceSetInput extends Component {
               newComponent.short_input_id = this._buildShortSrcId({}, counter, false);
               newComponent.category_input_name = this._buildCategoryInputName({}, counter, false);
               newComponent.category_input_id = this._buildCategorySrcId({}, counter, false);
-              newComponent.category_options = this.props.category_options;
+
+              if(typeof this.props.category_options !== 'undefined') newComponent.category_options = this.props.category_options;
+              else newComponent.category_options = [];
+
 
               if(newComponent.category_id === null || typeof newComponent.category_id === 'undefined') {
                   newComponent.category_id = '';
@@ -110,7 +113,8 @@ class ChoiceSetInput extends Component {
           newComponent.short_input_id = this._buildShortSrcId(parentComponent, counter, true);
           newComponent.category_input_name = this._buildCategoryInputName(parentComponent, counter, true);
           newComponent.category_input_id = this._buildCategorySrcId(parentComponent, counter, true);
-          newComponent.category_options = this.props.category_options;
+          if(typeof this.props.category_options !== 'undefined') newComponent.category_options = this.props.category_options;
+          else newComponent.category_options = [];
 
           if(newComponent.category_id === null || typeof newComponent.category_id === 'undefined') {
               newComponent.category_id = '';
