@@ -5,7 +5,7 @@
     props: {
       data: @field.describe,
       items: @field.describe,
-      category_options: [], # TODO @Greg : this is undefined
+      category_options: @field.catalog.categories,
       shortInputName: "choice_set[choices_attributes][0][short_name_en]",
       longInputName: "choice_set[choices_attributes][0][long_name_en]",
       categoryInputName: "choice_set[choices_attributes][0][category_name_en]",
