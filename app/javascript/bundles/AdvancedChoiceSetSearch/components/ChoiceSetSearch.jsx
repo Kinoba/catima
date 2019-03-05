@@ -37,8 +37,6 @@ class ChoiceSetSearch extends Component {
     if(typeof this.props.selectCondition !== 'undefined' && this.props.selectCondition.length !== 0) {
         this.setState({selectedCondition: this.props.selectCondition[0].key});
     }
-
-    console.log(this.props.items)
   }
 
   _save(){
@@ -187,19 +185,19 @@ class ChoiceSetSearch extends Component {
     }
   }
 
-  _getTreeChildrens(item) {
+  _getTreeChildrens(item, index) {
     if(typeof item.children !== 'undefined' && item.children.length>0) {
         //The item is a node and has children
         return (
-            <TreeNode value={item.key} title={item.value} key={item.key}>
-                { item.children.map((childItem) => {
-                  return this._getTreeChildrens(childItem);
+            <TreeNode value={item.key} title={item.value} key={item.key + '_' + index}>
+                { item.children.map((childItem, index) => {
+                  return this._getTreeChildrens(childItem, index);
                 })}
             </TreeNode>
         );
     } else {
         //The item is not node and has no children
-        return <TreeNode value={item.key} title={item.value} key={item.key} />;
+        return <TreeNode value={item.key} title={item.value} key={item.key + '_' + index} />;
     }
   }
 
@@ -236,8 +234,8 @@ class ChoiceSetSearch extends Component {
               treeDefaultExpandAll
               treeNodeFilterProp="title"
               onChange={this.selectItem}>
-                { this.props.items.map((item) => {
-                  return this._getTreeChildrens(item);
+                { this.props.items.map((item, index) => {
+                  return this._getTreeChildrens(item, index);
                 })}
             </TreeSelect>
         </div>
