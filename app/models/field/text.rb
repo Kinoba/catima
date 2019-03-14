@@ -113,10 +113,6 @@ class Field::Text < ::Field
   end
 
   def sql_type
-    "VARCHAR(#{maximum.presence || 255})"
-  end
-
-  def sql_type
     if maximum.present?
       maximum = [maximum.to_i, 21_845].max
       # 21845 is the max length of the SQL TEXT type
