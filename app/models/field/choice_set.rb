@@ -154,55 +154,6 @@ class Field::ChoiceSet < ::Field
     ]
   end
 
-  def field_value_for_all_item(_it)
-    choices_as_hash = []
-
-    choices.each do |choice|
-      option = { :value => choice.short_name }
-      option[:category_name] = choice.category.name if choice.category.present?
-
-      choices_as_hash << option
-    end
-
-    choices_as_hash.to_json
-  end
-
-  def sql_type
-    "INT"
-  end
-
-  def search_data_as_hash
-    choices_as_options = []
-
-    choices.each do |choice|
-      option = { :value => choice.short_name, :key => choice.id }
-      option[:category_data] = choice.filterable_category_fields
-
-      choices_as_options << option
-    end
-
-    choices_as_options
-  end
-
-  def search_options_as_hash
-    [
-      { :multiple => multiple? }
-    ]
-  end
-
-  def field_value_for_all_item(it)
-    value = super
-    return if value.blank? || value.is_a?(String)
-
-    value.map do |choice_id|
-      Choice.find(choice_id).short_name
-    end.join("; ")
-  end
-
-  def sql_type
-    "INT"
-  end
-
   private
 
   # TODO: validate choice belongs to specified ChoiceSet

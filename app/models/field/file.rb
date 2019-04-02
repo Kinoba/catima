@@ -72,19 +72,10 @@ class Field::File < ::Field
   def field_value_for_all_item(item)
     value = super
 
-    case
-    when value.is_a?(Hash)
-      return if value["path"].blank?
-
-      return i["path"]
-    when value.is_a?(Array)
-      return if value.blank?
-
-      value.map do |i|
-        next if i["path"].blank?
-
-        i["path"]
-      end.join('; ')
+    if value.is_a?(Hash)
+      process_single_file(value)
+    elsif value.is_a?(Array)
+      process_multiple_files(value)
     end
   end
 
@@ -105,5 +96,23 @@ class Field::File < ::Field
     end
 
     files.to_json
+  end
+
+  private
+
+  def process_single_file(value)
+    return if value["path"].blank?
+
+    i["path"]
+  end
+
+  def process_multiple_files(values)
+    return if values.blank?
+
+    values.map do |i|
+      next if i["path"].blank?
+
+      i["path"]
+    end.join('; ')
   end
 end
