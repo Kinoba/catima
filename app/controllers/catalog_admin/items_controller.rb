@@ -128,8 +128,6 @@ class CatalogAdmin::ItemsController < CatalogAdmin::BaseController
   end
 
   def item_params
-    p "@@@@@@@@@@@@@@@@@@@@@@@@@"
-    p params
     params.require(:item).permit(
       :submit_for_review,
       *@item.data_store_permitted_attributes,

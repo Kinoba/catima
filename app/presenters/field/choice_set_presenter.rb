@@ -1,7 +1,6 @@
 class Field::ChoiceSetPresenter < FieldPresenter
-  delegate :choices, :selected_choices, :selected_choice?, :to => :field
-  delegate :select2_select, :browse_similar_items_link, :content_tag,
-           :to => :view
+  delegate :choices, :selected_choices, :selected_choices_as_hash, :selected_choice?, :to => :field
+  delegate :browse_similar_items_link_with_tooltip, :content_tag, :to => :view
 
   def input(form, method, options={})
     category = field.belongs_to_category? ? "data-field-category=\"#{field.category_id}\"" : ''
@@ -9,46 +8,19 @@ class Field::ChoiceSetPresenter < FieldPresenter
       '<div class="form-component">',
         "<div class=\"row\" #{category} data-choice-set=\"#{field.choice_set.id}\" data-field=\"#{field.id}\">",
           '<div class="col-xs-8">',
-              #select2_select(
-                 #form,
-                 #method,
-                 #nil,
-                 #input_defaults(options).merge(:multiple => field.multiple?),
-                 #&method(:options_for_select)
-              # ),
               form.label(field.label),
 
             react_component('ChoiceSetEditor',
               props: {
-                  catalog: field.catalog.slug,
-                  itemType: field.item_type.slug,
-                  items: field.search_data_as_hash,
-                  searchPlaceholder: t('advanced_searches.fields.choice_set_search_field.select_placeholder'),
-                  srcId: "item_#{field.uuid}",
-                  srcRef: "item_#{field.uuid}",
-                  inputName: "item[#{field.uuid}]",
-                  inputDefaults: [], #TODO @Greg - pass here and array of default selected options [{lavel: "label", value: 2}, ...]
-                  multiple: field.multiple?,
-                   #TODO @Greg - add items following this format
-                  # items: [
-                    #  label: 'search me',
-                    #  value: 'searchme',
-                    #  data: [{name_fr: 'hhhh'}],
-                    #  children: [
-                    #    {
-                    #      label: 'search me too',
-                    #      value: 'searchmetoo',
-                    #      data: [],
-                    #      children: [
-                    #        {
-                    #          label: 'No one can get me',
-                    #          value: 'anonymous',
-                    #          data: [],
-                    #        }
-                    #      ]
-                    #    }
-                    #  ]
-                  # ],
+                catalog: field.catalog.slug,
+                itemType: field.item_type.slug,
+                items: field.search_data_as_hash,
+                searchPlaceholder: t('advanced_searches.fields.choice_set_search_field.select_placeholder'),
+                srcId: "item_#{field.uuid}",
+                srcRef: "item_#{field.uuid}",
+                inputName: "item[#{field.uuid}_json]",
+                inputDefaults: selected_choices_as_hash(@item),
+                multiple: field.multiple?
               },
               prerender: false),
           '</div>',
@@ -68,8 +40,9 @@ class Field::ChoiceSetPresenter < FieldPresenter
 
     choices.map do |choice|
       value_slug = [I18n.locale, choice.short_name].join("-")
-      browse_similar_items_link(
-        choice.long_display_name, item, field, value_slug
+      tootltip_title = choice.top_parent_to_self.join(' / ')
+      browse_similar_items_link_with_tooltip(
+        choice.long_display_name, item, field, value_slug, tootltip_title
       )
     end.join(", ").html_safe
   end

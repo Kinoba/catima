@@ -150,6 +150,17 @@ class Field::ChoiceSet < ::Field
     ]
   end
 
+  def selected_choices_as_hash(item)
+    choices_as_options = []
+
+    selected_choices(item).each do |choice|
+      option = { :value => choice.id, :label => choice.short_name }
+      choices_as_options << option
+    end
+
+    choices_as_options
+  end
+
   private
 
   # TODO: validate choice belongs to specified ChoiceSet

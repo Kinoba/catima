@@ -86,11 +86,22 @@ class Choice < ApplicationRecord
 
     children.each do |child|
       options[:children] << child.children_as_options
-      # options[:children][:value] = child.short_name
-      # options[:children][:key] = child.id
-      # options[:children] << child.children_as_options
     end
 
     options
+  end
+
+  # Used in show item
+  def top_parent_to_self
+    return [] if parent.nil?
+
+    choice = self
+    choices = [choice.short_name]
+    while choice.parent.present?
+      choices << choice.parent.short_name
+      choice = choice.parent
+    end
+
+    choices.reverse
   end
 end

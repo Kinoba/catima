@@ -21,7 +21,8 @@ class ChoiceSetEditor extends Component {
   }
 
   componentDidMount(){
-      this.setState({ defaultValues: this.state.inputDefaults });
+      this.setState({ selectedItems: this.props.inputDefaults });
+      this._selectItem(this.props.inputDefaults);
   }
 
   _selectItem(items){
@@ -36,9 +37,13 @@ class ChoiceSetEditor extends Component {
           items = [];
       }
 
-      this.setState({ hiddenInputValue: items.map((selectedItem) => {
-          return selectedItem.value;
-        })
+      this.setState({ hiddenInputValue: [
+        JSON.stringify(
+          items.map((selectedItem) => {
+            return selectedItem.value.toString();
+          })
+        )
+      ]
       });
       console.log(items);
       this.setState({ selectedItems: items });
