@@ -136,6 +136,7 @@ Rails.application.routes.draw do
 
     resources :choice_sets, :path => "_choices", :except => :show do
       post 'create_choice' => 'choice_sets#create_choice'
+      post 'create_synonyms' => 'choice_sets#create_synonyms'
     end
 
     resources :pages, :path => "_pages", :param => :slug do

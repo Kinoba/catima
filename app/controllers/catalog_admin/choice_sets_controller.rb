@@ -46,6 +46,7 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
     post_choices = loop_trough_children(choice_set_params[:choices_attributes], post_choices)
     # p post_choices
     # p @field.choices.reject { |c| post_choices.include?(c.uuid) }
+    # Deletes choices that are not in the params but were previously in the database
     Choice.delete(@field.choices.reject { |c| post_choices&.include?(c.uuid) })
 
     # return redirect_to(:back)
@@ -118,6 +119,28 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
     end
   end
 
+  def create_synonyms
+    choice_set = catalog.choice_sets.find(params[:choice_set_id])
+    authorize(choice_set)
+
+    choice_synonym_params.each do |choice_uuid, synonyms|
+      choice = Choice.find_by(:uuid => choice_uuid)
+      choice.synonyms = []
+
+      synonyms.each do |synonym_params|
+        synonym = {}
+
+        synonym_params.each do |lang, syn|
+          synonym[lang] = syn
+        end
+
+        choice.synonyms << synonym
+      end
+
+      choice.update
+    end
+  end
+
   private
 
   def build_choice_set
@@ -147,6 +170,10 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
       :short_name_de, :short_name_en, :short_name_fr, :short_name_it,
       :long_name_de, :long_name_en, :long_name_fr, :long_name_it
     )
+  end
+
+  def choice_synonym_params
+    params.require(:choice_synonyms)
   end
 
   def created_message

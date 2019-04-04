@@ -39,4 +39,22 @@ class ChoiceSet < ApplicationRecord
   def assign_uuid
     self.uuid ||= SecureRandom.uuid
   end
+
+  def search_data_as_hash
+    choices_as_options = []
+
+    choices.select { |c| c.parent.blank? }.each do |choice|
+      option = { :value => choice.short_name, :key => choice.id }
+      option[:category_data] = choice.filterable_category_fields
+
+      option[:children] = []
+      choice.children.each do |child|
+        option[:children] << child.children_as_options
+      end
+
+      choices_as_options << option
+    end
+
+    choices_as_options
+  end
 end

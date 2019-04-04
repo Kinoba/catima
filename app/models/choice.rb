@@ -99,7 +99,10 @@ class Choice < ApplicationRecord
     choice = self
     choices = [choice.short_name]
     while choice.parent.present?
-      choices << choice.parent.short_name
+      synonyms = choice.synonyms&.map { |s| s[I18n.locale.to_s] }
+      synonyms = synonyms.present? ? "(#{synonyms.join(', ')})" : ""
+
+      choices << "#{choice.parent.short_name} #{synonyms}"
       choice = choice.parent
     end
 

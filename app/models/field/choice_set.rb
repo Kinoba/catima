@@ -37,6 +37,8 @@ class Field::ChoiceSet < ::Field
 
   belongs_to :choice_set, :class_name => "::ChoiceSet"
 
+  delegate :search_data_as_hash, :to => :choice_set
+
   validates_presence_of :choice_set
   validates_inclusion_of :choice_set,
                          :in => :choice_set_choices,
@@ -124,24 +126,6 @@ class Field::ChoiceSet < ::Field
 
   def order_items_by
     "(choices.long_name_translations->>'long_name_#{I18n.locale}') ASC" unless choices.nil?
-  end
-
-  def search_data_as_hash
-    choices_as_options = []
-
-    choices.select { |c| c.parent.blank? }.each do |choice|
-      option = { :value => choice.short_name, :key => choice.id }
-      option[:category_data] = choice.filterable_category_fields
-
-      option[:children] = []
-      choice.children.each do |child|
-        option[:children] << child.children_as_options
-      end
-
-      choices_as_options << option
-    end
-
-    choices_as_options
   end
 
   def search_options_as_hash
