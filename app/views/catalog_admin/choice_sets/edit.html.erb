@@ -1,18 +1,24 @@
 <% provide(:title, t(".edit_choice_set")) %>
 <div class="panel-body">
-
-
   <%= bootstrap_form_for(
-        @field,
-        :url => catalog_admin_choice_set_path) do |f| %>
+    @field,
+    :url => catalog_admin_choice_set_path) do |f| %>
 
     <%= render("common_form_fields", :f => f) %>
+
+      <div class="row">
         <div class="col-md-12">
-            <%= f.primary(t(".update_choice_set")) %>
-            <%= link_to(
-                  t("cancel"),
-                  catalog_admin_choice_sets_path,
-                  :class => "btn btn-link") %>
+          <h3>Synonyms</h3>
+          
         </div>
+      </div>
+
+      <div class="col-md-12">
+          <%= f.primary(t(".update_choice_set")) %>
+          <%= link_to(
+                t("cancel"),
+                catalog_admin_choice_sets_path,
+                :class => "btn btn-link") %>
+      </div>
   <% end %>
 </div>
