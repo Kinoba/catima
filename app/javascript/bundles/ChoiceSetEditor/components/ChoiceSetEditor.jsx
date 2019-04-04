@@ -10,7 +10,7 @@ class ChoiceSetEditor extends Component {
 
     this.state = {
       selectedCategory: {},
-      selectedItem: [],
+      selectedItems: [],
       disabled: false,
       hiddenInputValue: [],
       defaultValues: [],
@@ -24,26 +24,24 @@ class ChoiceSetEditor extends Component {
       this.setState({ defaultValues: this.state.inputDefaults });
   }
 
-  _save(){
-    if(this.state.selectedItem !== null) {
-      this.setState({ hiddenInputValue: this.state.selectedItem });
-    }
-  }
-
-  _selectItem(item){
-      if(typeof item !== 'undefined') {
-          var itemData = this._getItemData(this.props.items, item);
+  _selectItem(items){
+      if(typeof items !== 'undefined') {
+          var itemData = this._getItemData(this.props.items, items);
           if(typeof itemData !== 'undefined') {
-              item.data = itemData;
+              items.data = itemData;
           } else {
-              item.data = [];
+              items.data = [];
           }
       } else {
-          item = [];
+          items = [];
       }
 
-
-      this.setState({ selectedItem: item });
+      this.setState({ hiddenInputValue: items.map((selectedItem) => {
+          return selectedItem.value;
+        })
+      });
+      console.log(items);
+      this.setState({ selectedItems: items });
   }
 
   _getItemData(list, searchItem) {
@@ -102,9 +100,9 @@ class ChoiceSetEditor extends Component {
   renderChoiceSetElement(){
     return (
         <div id={this.props.srcId + "_container"}>
-            <input id={this.choiceSetId} type="hidden" readOnly value={this.state.selectedItem} name={this.props.inputName}/>
+            <input id={this.choiceSetId} type="hidden" readOnly value={this.state.hiddenInputValue} name={this.props.inputName}/>
             <TreeSelect
-              value={this.state.selectedItem}
+              value={this.state.selectedItems}
               placeholder={this.props.searchPlaceholder}
               showSearch
               allowClear

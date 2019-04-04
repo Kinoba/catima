@@ -18,8 +18,8 @@ class ChoiceSetSearch extends Component {
             selectedCategory: {},
             selectedItem: [],
             disabled: false,
-            hiddenInputValue: [],
-            inputName: this.props.inputName.split("[exact]")
+            hiddenInputValue: null,
+            inputName: this.props.inputName.split("[default]")
         };
 
         this.choiceSetId = `${this.props.srcId}`;
@@ -35,18 +35,21 @@ class ChoiceSetSearch extends Component {
 
     componentDidMount(){
         if(typeof this.props.selectCondition !== 'undefined' && this.props.selectCondition.length !== 0) {
-            this.setState({selectedCondition: this.props.selectCondition[0].key});
+            this.setState({selectedCondition: 'default'});
+            // this.setState({selectedCondition: this.props.selectCondition[0].key});
         }
     }
 
     _save(){
         if(this.state.selectedItem !== null) {
-            this.setState({ hiddenInputValue: this.state.selectedItem });
+            this.setState({ hiddenInputValue: this.state.selectedItem.value });
             document.getElementsByName(this._buildInputNameCondition(this.state.selectedCondition))[0].value = this.state.hiddenInputValue;
         }
     }
 
     _buildInputNameCondition(condition) {
+      console.log(this.state.inputName);
+      console.log(condition);
         if(this.state.inputName.length === 2) {
             if(condition !== '') return this.state.inputName[0] + '[' + condition + ']' + this.state.inputName[1];
             else return this.state.inputName[0] + '[default]' + this.state.inputName[1];
@@ -67,7 +70,7 @@ class ChoiceSetSearch extends Component {
             item = [];
         }
 
-
+        this.setState({ hiddenInputValue: item.value });
         this.setState({ selectedItem: item });
     }
 
@@ -226,20 +229,21 @@ class ChoiceSetSearch extends Component {
     renderChoiceSetElement(){
         return (
             <div>
-            <input id={this.choiceSetId} type="hidden" readOnly value={this.state.selectedItem} name={this._buildInputNameCondition(this.state.selectedCondition)}/>
-            <TreeSelect
-            value={this.state.selectedItem}
-            placeholder={this.props.searchPlaceholder}
-            showSearch
-            allowClear
-            labelInValue
-            treeDefaultExpandAll
-            treeNodeFilterProp="title"
-            onChange={this.selectItem}>
-            { this.props.items.map((item, index) => {
-                return this._getTreeChildrens(item, index, 'root' + index);
-            })}
-            </TreeSelect>
+            { this.state.selectedCondition }
+              <input id={this.choiceSetId} type="hidden" readOnly value={this.state.hiddenInputValue} name={this._buildInputNameCondition(this.state.selectedCondition)}/>
+              <TreeSelect
+              value={this.state.selectedItem}
+              placeholder={this.props.searchPlaceholder}
+              showSearch
+              allowClear
+              labelInValue
+              treeDefaultExpandAll
+              treeNodeFilterProp="title"
+              onChange={this.selectItem}>
+              { this.props.items.map((item, index) => {
+                  return this._getTreeChildrens(item, index, 'root' + index);
+              })}
+              </TreeSelect>
             </div>
         );
     }

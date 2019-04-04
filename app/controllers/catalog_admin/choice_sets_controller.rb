@@ -58,7 +58,7 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
   end
 
   def loop_trough_children(params, post_choices=[], parent=nil)
-    return unless params.present?
+    return if params.blank?
 
     params.each do |i, choices_attributes|
       # p _i

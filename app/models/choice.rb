@@ -75,4 +75,22 @@ class Choice < ApplicationRecord
 
     fields
   end
+
+  # Used in the advanced search
+  def children_as_options
+    options = {
+      :value => short_name,
+      :key => id,
+      :children => []
+    }
+
+    children.each do |child|
+      options[:children] << child.children_as_options
+      # options[:children][:value] = child.short_name
+      # options[:children][:key] = child.id
+      # options[:children] << child.children_as_options
+    end
+
+    options
+  end
 end
