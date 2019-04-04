@@ -9,7 +9,18 @@
       <div class="row">
         <div class="col-md-12">
           <h3>Synonyms</h3>
-          <%= @field.search_data_as_hash.inspect %>
+          <%=
+              react_component('ChoiceSynonymEditorContainer',
+                props: {
+                  choices: @field.search_data_as_hash,
+                  synonyms: [],
+                  available_languages: ['en', 'fr'], #TODO @Greg - turn this dynamic
+                  add_synonym_label: "Add synonym",
+                  select_placeholder: "Select a choice"
+                  #synonyms: [{choice_id: 1, synonym: {en: 'Hello', fr: 'Coucou'}}]
+                },
+                prerender: false)
+          %>
         </div>
       </div>
 

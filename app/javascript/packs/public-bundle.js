@@ -14,11 +14,14 @@ import ChoiceSetInput from '../bundles/ChoiceSetInput/components/ChoiceSetInput'
 import ImageViewer from '../bundles/ImageViewer/components/ImageViewer';
 import GeoViewer from '../bundles/GeoViewer/components/GeoViewer';
 
+import ChoiceSynonymEditorContainer from '../bundles/ChoiceSynonymEditor/components/ChoiceSynonymEditorContainer';
+
 ReactOnRails.register({
   ReferenceSearchContainer, ReferenceSearch, SelectedReferenceSearch, ItemTypesReferenceSearch,
   DateTimeSearch, DateTimeInput,
   ChoiceSetSearchContainer, ChoiceSetSearch,
   ImageViewer,
   GeoViewer,
-  ChoiceSetInput
+  ChoiceSetInput,
+  ChoiceSynonymEditorContainer
 });

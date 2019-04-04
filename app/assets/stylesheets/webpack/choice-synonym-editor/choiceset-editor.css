@@ -1,0 +1,7 @@
+.synonym-container .row {
+    margin-bottom: 15px;
+}
+
+.synonym-container .icon-container a:hover {
+    cursor: pointer;
+}

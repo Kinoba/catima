@@ -45,7 +45,7 @@ class ChoiceSetEditor extends Component {
         )
       ]
       });
-      console.log(items);
+
       this.setState({ selectedItems: items });
   }
 
