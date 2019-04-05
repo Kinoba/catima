@@ -66,7 +66,10 @@ class ChoiceSet < ApplicationRecord
     choices.reject { |c| c.synonyms.blank? }.each do |choice|
       choice.synonyms.each do |synonym|
         synonyms << {
-          :choice_id => choice.id,
+          :choice_option => {
+            :label => choice.short_name,
+            :value => choice.id.to_s
+          },
           :synonym => synonym
         }
       end

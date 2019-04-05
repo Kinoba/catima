@@ -13,10 +13,9 @@
                 props: {
                   choices: @field.search_data_as_hash,
                   synonyms: @field.synonyms,
-                  available_languages: @field.catalog.valid_locales, #TODO @Greg - turn this dynamic
+                  available_languages: @field.catalog.valid_locales,
                   add_synonym_label: t(".add"),
                   select_placeholder: t(".choice_placeholder")
-                  #synonyms: [{choice_id: 1, synonym: {en: 'Hello', fr: 'Coucou'}}]
                 },
                 prerender: false)
           %>
