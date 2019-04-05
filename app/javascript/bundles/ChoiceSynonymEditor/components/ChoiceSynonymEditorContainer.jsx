@@ -17,10 +17,6 @@ class ChoiceSynonymEditorContainer extends Component {
   componentDidMount(){
       this.setState({ choices: this.props.choices });
       this.setState({ synonyms: this.props.synonyms });
-
-      if(this.props.synonyms.length === 0) {
-          this.addSynonym();
-      }
   }
 
   _addSynonym(){
