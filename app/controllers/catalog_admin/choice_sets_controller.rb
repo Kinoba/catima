@@ -128,8 +128,16 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
     choice_set = catalog.choice_sets.find(params[:choice_set_id])
     authorize(choice_set)
 
+    if params[:choice_synonyms].nil?
+      choice_set.choices.each { |c| c.update(:synonyms => nil) }
+      return redirect_to :action => :synonyms
+    end
+
+    updated_choices = []
     choice_synonym_params.each do |choice_id, synonyms|
       choice = Choice.find_by(:id => choice_id)
+      next if choice.nil?
+
       choice.synonyms = []
 
       synonyms.each do |_i, synonym_params|
@@ -143,8 +151,10 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
       end
 
       choice.save
-      redirect_to :action => :synonyms
+      updated_choices << choice
     end
+
+    redirect_to :action => :synonyms
   end
 
   private

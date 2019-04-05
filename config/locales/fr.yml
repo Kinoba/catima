@@ -439,6 +439,8 @@ fr:
       new:
         new_choice_set: "Nouvel ensemble de choix"
         create_choice_set: Créer ensemble de choix
+      synonyms:
+        title: Synonymes
 
     containers:
       item_type_warning: "Vous devez créer au moins un type de fiche pour utiliser ce type de conteneur"

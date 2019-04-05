@@ -229,7 +229,6 @@ class ChoiceSetSearch extends Component {
     renderChoiceSetElement(){
         return (
             <div>
-            { this.state.selectedCondition }
               <input id={this.choiceSetId} type="hidden" readOnly value={this.state.hiddenInputValue} name={this._buildInputNameCondition(this.state.selectedCondition)}/>
               <TreeSelect
               value={this.state.selectedItem}

@@ -40,7 +40,7 @@ class Field::ChoiceSetPresenter < FieldPresenter
 
     choices.map do |choice|
       value_slug = [I18n.locale, choice.short_name].join("-")
-      tootltip_title = choice.top_parent_to_self.join(' / ')
+      tootltip_title = choice.top_parent_to_self.join(' > ')
       browse_similar_items_link_with_tooltip(
         choice.long_display_name, item, field, value_slug, tootltip_title
       )

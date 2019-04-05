@@ -97,18 +97,27 @@ class Choice < ApplicationRecord
 
   # Used in show item
   def top_parent_to_self
-    return [] if parent.nil?
-
     choice = self
-    choices = [choice.short_name]
-    while choice.parent.present?
-      synonyms = choice.synonyms&.map { |s| s[I18n.locale.to_s] }
-      synonyms = synonyms.present? ? "(#{synonyms.join(', ')})" : ""
+    return [locale_synonyms(choice)] if parent.nil?
 
-      choices << "#{choice.parent.short_name} #{synonyms}"
+    choices = []
+    loop do
+      c = choice.short_name
+      c << " (#{locale_synonyms(choice)})" if locale_synonyms(choice).present?
+      choices << c
+
+      break if choice.parent.blank?
+
       choice = choice.parent
     end
 
     choices.reverse
+  end
+
+  private
+
+  def locale_synonyms(choice)
+    synonyms = choice.synonyms&.map { |s| s[I18n.locale.to_s] }
+    synonyms&.join(", ")
   end
 end
