@@ -5,3 +5,7 @@
 .synonym-container .icon-container a:hover {
     cursor: pointer;
 }
+
+.synonym-container .ant-select-selection__placeholder {
+    position: relative;
+}

@@ -7,7 +7,7 @@ class ChoiceSynonymEditorContainer extends Component {
 
     this.state = {
       choices: [],
-      synonyms: [],
+      synonyms: []
     };
 
     this.addSynonym = this._addSynonym.bind(this);

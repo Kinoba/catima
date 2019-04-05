@@ -11,7 +11,7 @@ class ChoiceSynonymEditor extends Component {
     this.state = {
       choices: [],
       synonym: {},
-      selectedItem: {label: "", value: ""}
+      selectedItem: null
     };
 
     this.selectItem = this._selectItem.bind(this);
@@ -21,9 +21,13 @@ class ChoiceSynonymEditor extends Component {
   componentDidMount(){
       this.setState({ choices: this.props.choices });
       this.setState({ synonym: this.props.synonym });
+      console.log(this.props.selectPlaceholder)
   }
 
   _selectItem(item){
+      if(typeof item === 'undefined') {
+          item = null;
+      }
       this.setState({ selectedItem: item });
   }
 
@@ -81,7 +85,9 @@ class ChoiceSynonymEditor extends Component {
   }
 
   _buildInputName(lang) {
-      var inputName = "choice_synonyms[" + this.state.selectedItem.value + "][" + this.props.position + "][" + lang + "]"
+      var selectedItemKey = "";
+      if(this.state.selectedItem !== null && this.state.selectedItem) selectedItemKey = this.state.selectedItem.value;
+      var inputName = "choice_synonyms[" + selectedItemKey + "][" + this.props.position + "][" + lang + "]"
       return inputName;
   }
 
@@ -100,16 +106,17 @@ class ChoiceSynonymEditor extends Component {
   }
 
   renderChoiceSetSelectElement(){
+      console.log(this.props.selectDefaultValue)
     return (
         <div id={"synonym_select_" + this.props.position + "_container"}>
             <TreeSelect
               value={this.state.selectedItem}
-              placeholder={this.props.searchPlaceholder}
+              placeholder={this.props.selectPlaceholder}
               showSearch
               allowClear
               labelInValue
               treeDefaultExpandAll
-              treeNodeFilterProp="title"
+              treeNodeFilterProp="label"
               multiple={false}
               defaultValue={this.props.selectDefaultValue}
               onChange={this.selectItem}>
@@ -125,7 +132,7 @@ class ChoiceSynonymEditor extends Component {
       return(
       <div className="input-group">
         <span className="input-group-addon">{key}</span>
-        <input className="form-control" name={this._buildInputName(key)} data-locale={key} type="text" value={this.state.synonym.synonym[key]} onChange={(e) => this._updateSynonym(e, key)}/>
+        <input className="form-control" name={this._buildInputName(key)} disabled={this.state.selectedItem === null} data-locale={key} type="text" value={this.state.synonym.synonym[key]} onChange={(e) => this._updateSynonym(e, key)}/>
       </div>
       );
   }
