@@ -46,7 +46,7 @@ class ChoiceSynonymEditorContainer extends Component {
             choices={list}
             deleteComponent={this.deleteSynonym}
             selectPlaceholder={this.props.select_placeholder}
-            selectDefaultValue={item.choice_id}/>
+            selectDefaultValue={item.choice_option}/>
       );
   }
 

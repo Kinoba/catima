@@ -37,14 +37,24 @@ class ChoiceSetEditor extends Component {
           items = [];
       }
 
-      this.setState({ hiddenInputValue: [
-        JSON.stringify(
-          items.map((selectedItem) => {
-            return selectedItem.value.toString();
-          })
-        )
-      ]
-      });
+      console.log(items)
+
+          if(this.props.multiple) {
+              this.setState({ hiddenInputValue: [
+                JSON.stringify(
+                  items.map((selectedItem) => {
+                    return selectedItem.value.toString();
+                  })
+                )
+              ]
+              });
+          } else {
+              if(items.value) {
+                  this.setState({ hiddenInputValue: [
+                      items.value.toString()
+                  ]});
+              }
+          }
 
       this.setState({ selectedItems: items });
   }

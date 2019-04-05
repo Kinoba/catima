@@ -1,4 +1,8 @@
-.synonym-container .row {
+.synonym-container .select-container {
+    margin-bottom: 15px;
+}
+
+.synonym-container .col-md-6 {
     margin-bottom: 15px;
 }
 

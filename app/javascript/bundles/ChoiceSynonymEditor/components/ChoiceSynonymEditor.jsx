@@ -21,6 +21,7 @@ class ChoiceSynonymEditor extends Component {
   componentDidMount(){
       this.setState({ choices: this.props.choices });
       this.setState({ synonym: this.props.synonym });
+      this._selectItem(this.props.selectDefaultValue);
   }
 
   _selectItem(item){
@@ -106,7 +107,7 @@ class ChoiceSynonymEditor extends Component {
 
   renderChoiceSetSelectElement(){
     return (
-        <div id={"synonym_select_" + this.props.position + "_container"}>
+        <div id={"synonym_select_" + this.props.position + "_container"} className="select-container">
             <TreeSelect
               value={this.state.selectedItem}
               placeholder={this.props.selectPlaceholder}
@@ -114,9 +115,8 @@ class ChoiceSynonymEditor extends Component {
               allowClear
               labelInValue
               treeDefaultExpandAll
-              treeNodeFilterProp="label"
+              treeNodeFilterProp="title"
               multiple={false}
-              defaultValue={this.props.selectDefaultValue}
               onChange={this.selectItem}>
                 { this.state.choices.map((item) => {
                   return this._getTreeChildrens(item);
