@@ -1,4 +1,4 @@
-<% provide(:title, t(".title")) %>
+<% provide(:title, t(".title", :choice_set_name => @field.name)) %>
 
 
 <div class="panel-body">
@@ -13,9 +13,9 @@
                 props: {
                   choices: @field.search_data_as_hash,
                   synonyms: @field.synonyms,
-                  available_languages: ['en', 'fr'], #TODO @Greg - turn this dynamic
-                  add_synonym_label: "Add synonym",
-                  select_placeholder: "Select a choice"
+                  available_languages: @field.catalog.valid_locales, #TODO @Greg - turn this dynamic
+                  add_synonym_label: t(".add"),
+                  select_placeholder: t(".choice_placeholder")
                   #synonyms: [{choice_id: 1, synonym: {en: 'Hello', fr: 'Coucou'}}]
                 },
                 prerender: false)
@@ -24,7 +24,7 @@
       </div>
 
       <div class="col-md-12">
-          <%= f.primary("UPDATE SYNONYMS") %>
+          <%= f.primary(t(".save")) %>
           <%= link_to(
                 t("cancel"),
                 edit_catalog_admin_choice_set_path(:id => @field.id),

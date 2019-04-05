@@ -62,16 +62,11 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
     return if params.blank?
 
     params.each do |i, choices_attributes|
-      # p _i
-      # p choices_attributes.inspect
-      # p choices_attributes.class
-
       next unless choices_attributes.is_a?(ActionController::Parameters)
 
       allowed_params = {}
       # Manually allow all numeric params
       choices_attributes.keys.select { |k| !k.to_s.match(/\A\d+\Z/) }.map { |key, _v| allowed_params[key] = choices_attributes[key] }
-      p allowed_params
 
       choice = if allowed_params["uuid"].present?
                  Choice.find_by(:uuid => allowed_params["uuid"])
@@ -87,17 +82,12 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
 
       post_choices << choice.uuid
 
-      p choice
-
       @field.choices << choice
       @field.save
 
       if i.match?(/\A\d+\Z/)
         loop_trough_children(choices_attributes, post_choices, choice) if i =~ /\A\d+\Z/
-      else
-
       end
-
     end
 
     post_choices
@@ -173,13 +163,6 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
       :deactivated_at,
       :choices_attributes => {})
   end
-
- #  [
- #   :id, :_destroy,
- #   :category_id,
- #   :short_name_de, :short_name_en, :short_name_fr, :short_name_it,
- #   :long_name_de, :long_name_en, :long_name_fr, :long_name_it
- # ]
 
   def choice_params
     params.require(:choice).permit(
