@@ -1,28 +1,17 @@
 <% provide(:title, t(".edit_choice_set")) %>
+
+<% provide(:actions) do %>
+  <%= link_to(catalog_admin_choice_set_synonyms_path(:choice_set_id => @field.id)) do %>
+    <%= fa_icon(:"plus-square", :text => "SYNONYMS") %>
+  <% end %>
+<% end %>
+
 <div class="panel-body">
   <%= bootstrap_form_for(
     @field,
     :url => catalog_admin_choice_set_path) do |f| %>
 
     <%= render("common_form_fields", :f => f) %>
-
-      <div class="row">
-        <div class="col-md-12">
-          <h3>Synonyms</h3>
-          <%=
-              react_component('ChoiceSynonymEditorContainer',
-                props: {
-                  choices: @field.search_data_as_hash,
-                  synonyms: [],
-                  available_languages: ['en', 'fr'], #TODO @Greg - turn this dynamic
-                  add_synonym_label: "Add synonym",
-                  select_placeholder: "Select a choice"
-                  #synonyms: [{choice_id: 1, synonym: {en: 'Hello', fr: 'Coucou'}}]
-                },
-                prerender: false)
-          %>
-        </div>
-      </div>
 
       <div class="col-md-12">
           <%= f.primary(t(".update_choice_set")) %>

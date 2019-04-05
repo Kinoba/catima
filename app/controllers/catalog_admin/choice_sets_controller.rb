@@ -79,6 +79,7 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
                  Choice.new
                end
 
+      choice.row_order = i
       choice.assign_attributes(allowed_params)
       choice.parent = parent
       choice.catalog = @field.catalog
@@ -119,15 +120,19 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
     end
   end
 
-  def create_synonyms
+  def synonyms
+    @field = catalog.choice_sets.find(params[:choice_set_id])
+  end
+
+  def update_synonyms
     choice_set = catalog.choice_sets.find(params[:choice_set_id])
     authorize(choice_set)
 
-    choice_synonym_params.each do |choice_uuid, synonyms|
-      choice = Choice.find_by(:uuid => choice_uuid)
+    choice_synonym_params.each do |choice_id, synonyms|
+      choice = Choice.find_by(:id => choice_id)
       choice.synonyms = []
 
-      synonyms.each do |synonym_params|
+      synonyms.each do |_i, synonym_params|
         synonym = {}
 
         synonym_params.each do |lang, syn|
@@ -137,7 +142,8 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
         choice.synonyms << synonym
       end
 
-      choice.update
+      choice.save
+      redirect_to :action => :synonyms
     end
   end
 

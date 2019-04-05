@@ -16,7 +16,9 @@ class ChoiceSet < ApplicationRecord
   include HasDeactivation
 
   belongs_to :catalog
-  has_many :choices, ->(set) { where(:catalog_id => set.catalog_id) }, :dependent => :destroy
+  has_many :choices, (lambda do |set|
+    where(:catalog_id => set.catalog_id).order(:row_order)
+  end), :dependent => :destroy
   has_many :fields, :dependent => :destroy
 
   accepts_nested_attributes_for :choices,
@@ -56,5 +58,20 @@ class ChoiceSet < ApplicationRecord
     end
 
     choices_as_options
+  end
+
+  def synonyms
+    synonyms = []
+
+    choices.reject { |c| c.synonyms.blank? }.each do |choice|
+      choice.synonyms.each do |synonym|
+        synonyms << {
+          :choice_id => choice.id,
+          :synonym => synonym
+        }
+      end
+    end
+
+    synonyms
   end
 end

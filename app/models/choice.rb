@@ -18,13 +18,16 @@
 #
 
 class Choice < ApplicationRecord
+  include RankedModel
   include HasTranslations
+
+  ranks :row_order, with_same: [:parent_id]
 
   belongs_to :catalog
   belongs_to :category, optional: true
   belongs_to :choice_set, optional: true
   belongs_to :parent, :class_name => "Choice", :optional => true
-  has_many :children, :class_name => "Choice", :dependent => :destroy, :foreign_key => 'parent_id', :inverse_of => false
+  has_many :children, -> { order(:row_order) }, :class_name => "Choice", :dependent => :destroy, :foreign_key => 'parent_id', :inverse_of => false
 
   store_translations :short_name, :required => true
   store_translations :long_name, :required => false

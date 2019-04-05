@@ -1,0 +1,35 @@
+<% provide(:title, "ADD / EDIT SYNONYM") %>
+
+
+<div class="panel-body">
+  <%= bootstrap_form_for(
+    @field,
+    :url => catalog_admin_choice_set_update_synonyms_path) do |f| %>
+
+      <div class="row">
+        <div class="col-md-12">
+          <h3>Synonyms</h3>
+          <%=
+              react_component('ChoiceSynonymEditorContainer',
+                props: {
+                  choices: @field.search_data_as_hash,
+                  synonyms: @field.synonyms,
+                  available_languages: ['en', 'fr'], #TODO @Greg - turn this dynamic
+                  add_synonym_label: "Add synonym",
+                  select_placeholder: "Select a choice"
+                  #synonyms: [{choice_id: 1, synonym: {en: 'Hello', fr: 'Coucou'}}]
+                },
+                prerender: false)
+          %>
+        </div>
+      </div>
+
+      <div class="col-md-12">
+          <%= f.primary("UPDATE SYNONYMS") %>
+          <%= link_to(
+                t("cancel"),
+                edit_catalog_admin_choice_set_path(:id => @field.id),
+                :class => "btn btn-link") %>
+      </div>
+  <% end %>
+</div>

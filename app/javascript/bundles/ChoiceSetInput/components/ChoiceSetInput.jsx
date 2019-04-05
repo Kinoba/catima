@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import Nestable from 'react-nestable';
 import striptags from 'striptags';
 
+// Used to create choices within a choiceset
 class ChoiceSetInput extends Component {
   constructor(props){
     super(props);
@@ -57,6 +58,8 @@ class ChoiceSetInput extends Component {
 
           this.nextUniqueId = component.id + 1;
       } else {
+        console.log(this.props.data.choices);
+
           //We are editing an existing choice set
           var counter = 0;
           for(var i=0; i<this.props.data.choices.length; i++) {
