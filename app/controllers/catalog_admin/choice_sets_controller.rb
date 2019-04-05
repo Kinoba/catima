@@ -66,7 +66,9 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
 
       allowed_params = {}
       # Manually allow all numeric params
-      choices_attributes.keys.select { |k| !k.to_s.match(/\A\d+\Z/) }.map { |key, _v| allowed_params[key] = choices_attributes[key] }
+      choices_attributes.keys.reject { |k| k.to_s.match(/\A\d+\Z/) }.map do |key, _v|
+        allowed_params[key] = choices_attributes[key]
+      end
 
       choice = if allowed_params["uuid"].present?
                  Choice.find_by(:uuid => allowed_params["uuid"])
@@ -83,12 +85,13 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
       post_choices << choice.uuid
 
       @field.choices << choice
-      @field.save
 
       if i.match?(/\A\d+\Z/)
         loop_trough_children(choices_attributes, post_choices, choice) if i =~ /\A\d+\Z/
       end
     end
+
+    @field.save
 
     post_choices
   end
@@ -143,6 +146,9 @@ class CatalogAdmin::ChoiceSetsController < CatalogAdmin::BaseController
       choice.save
       updated_choices << choice
     end
+
+    # Removes synonyms that where not present in the params
+    choice_set.choices.each { |c| c.update(:synonyms => nil) unless updated_choices.include?(c) }
 
     redirect_to :action => :synonyms
   end
