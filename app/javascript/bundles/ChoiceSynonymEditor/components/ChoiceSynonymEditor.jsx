@@ -21,7 +21,6 @@ class ChoiceSynonymEditor extends Component {
   componentDidMount(){
       this.setState({ choices: this.props.choices });
       this.setState({ synonym: this.props.synonym });
-      console.log(this.props.selectPlaceholder)
   }
 
   _selectItem(item){
@@ -106,7 +105,6 @@ class ChoiceSynonymEditor extends Component {
   }
 
   renderChoiceSetSelectElement(){
-      console.log(this.props.selectDefaultValue)
     return (
         <div id={"synonym_select_" + this.props.position + "_container"}>
             <TreeSelect
