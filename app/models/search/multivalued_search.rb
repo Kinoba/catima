@@ -4,10 +4,7 @@ module Search::MultivaluedSearch
   private
 
   def search_data_matching_one_or_more(scope, exact_values, negate=false)
-    p exact_values
     exact_values = Array.wrap(exact_values).select(&:present?)
-    p "--------------"
-    p exact_values
     return scope if exact_values.empty?
 
     where_scope = ->(*where_query) { negate ? scope.where.not(where_query) : scope.where(where_query) }

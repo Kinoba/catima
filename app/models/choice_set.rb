@@ -67,7 +67,8 @@ class ChoiceSet < ApplicationRecord
       choice.synonyms.each do |synonym|
         synonyms << {
           :choice_option => {
-            :value => choice.short_name,
+            :value => choice.id,
+            :label => choice.short_name,
             :key => choice.id
           },
           :synonym => synonym

@@ -25,6 +25,7 @@ class ChoiceSynonymEditor extends Component {
   }
 
   _selectItem(item){
+    console.log(item);
       if(typeof item === 'undefined') {
           item = null;
       }
