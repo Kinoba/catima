@@ -6,10 +6,13 @@ class Field::ChoiceSetPresenter < FieldPresenter
     category = field.belongs_to_category? ? "data-field-category=\"#{field.category_id}\"" : ''
     [
       '<div class="form-component">',
-        "<div class=\"row\" #{category} data-choice-set=\"#{field.choice_set.id}\" data-field=\"#{field.id}\">",
+        "<div class=\"row\">",
+            "<div class=\"col-xs-12\">",
+                form.label(field.label),
+            "</div>",
+        "</div>",
+        "<div class=\"row choice-set-editor\" #{category} data-choice-set=\"#{field.choice_set.id}\" data-field=\"#{field.id}\">",
           '<div class="col-xs-8">',
-              form.label(field.label),
-
             react_component('ChoiceSetEditor',
               props: {
                 catalog: field.catalog.slug,
