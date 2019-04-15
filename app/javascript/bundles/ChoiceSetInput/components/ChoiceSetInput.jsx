@@ -58,8 +58,6 @@ class ChoiceSetInput extends Component {
 
           this.nextUniqueId = component.id + 1;
       } else {
-        console.log(this.props.data.choices);
-
           //We are editing an existing choice set
           var counter = 0;
           for(var i=0; i<this.props.data.choices.length; i++) {
@@ -137,22 +135,22 @@ class ChoiceSetInput extends Component {
       return {list: childrenList, counter: counter};
   }
 
-  _updateLongNameTranslations({ target }) {
-      var searchName = target.name.split('[long_name');
+  _updateLongNameTranslations(event) {
+      var searchName = event.target.name.split('[long_name');
       var locale = searchName[1].split(']')[0];
       var result = this._findByName(this.state.componentsList, searchName[0], 'long_input_name');
       if(result !== null) {
-          var replaceList = this._replaceTranslationValueInTree(this.state.componentsList, result, 'long_name_translations', 'long_name' + locale, target.value);
+          var replaceList = this._replaceTranslationValueInTree(this.state.componentsList, result, 'long_name_translations', 'long_name' + locale, event.target.value);
           this.setState({componentsList: replaceList});
       }
   }
 
-  _updateShortNameTranslations({ target }) {
-      var searchName = target.name.split('[short_name');
+  _updateShortNameTranslations(event) {
+      var searchName = event.target.name.split('[short_name');
       var locale = searchName[1].split(']')[0];
       var result = this._findByName(this.state.componentsList, searchName[0], 'short_input_name');
       if(result !== null) {
-          var replaceList = this._replaceTranslationValueInTree(this.state.componentsList, result, 'short_name_translations', 'short_name' + locale, target.value);
+          var replaceList = this._replaceTranslationValueInTree(this.state.componentsList, result, 'short_name_translations', 'short_name' + locale, event.target.value);
           this.setState({componentsList: replaceList});
       }
   }
@@ -650,6 +648,7 @@ class ChoiceSetInput extends Component {
   }
 
   _updateComponentTree(list, component) {
+
      this.setState({componentsList: this._renameTreeComponents(list)});
   }
 
@@ -661,7 +660,7 @@ class ChoiceSetInput extends Component {
                 return (
                     <div key={item.short_input_id + '_' + key} className="input-group form-group">
                         <span className="input-group-addon">{key.split('short_name_')[1]}</span>
-                        <input id={item.short_input_id + '_' + key} name={item.short_input_name + '[' + key + ']'} defaultValue={item.short_name_translations[key]} className="form-control" type="text" required/>
+                        <input id={item.short_input_id + '_' + key} name={item.short_input_name + '[' + key + ']'} value={item.short_name_translations[key]} onChange={this._updateShortNameTranslations.bind(this)} className="form-control" type="text" required/>
                     </div>)
             })}
         </div>
@@ -671,7 +670,7 @@ class ChoiceSetInput extends Component {
                 return (
                     <div key={item.long_input_id + '_' + key} className="input-group form-group">
                         <span className="input-group-addon">{key.split('long_name_')[1]}</span>
-                        <input id={item.long_input_id + '_' + key} name={item.long_input_name + '[' + key + ']'} defaultValue={item.long_name_translations[key]} className="form-control" type="text"/>
+                        <input id={item.long_input_id + '_' + key} name={item.long_input_name + '[' + key + ']'} value={item.long_name_translations[key]} onChange={this._updateLongNameTranslations.bind(this)} className="form-control" type="text"/>
                     </div>)
             })}
         </div>
