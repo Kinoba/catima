@@ -18,7 +18,7 @@ class ChoiceSetSearch extends Component {
             selectedCategory: {},
             selectedItem: [],
             disabled: false,
-            hiddenInputValue: null,
+            hiddenInputValue: '',
             inputName: this.props.inputName.split("[default]")
         };
 
@@ -36,7 +36,6 @@ class ChoiceSetSearch extends Component {
     componentDidMount(){
         if(typeof this.props.selectCondition !== 'undefined' && this.props.selectCondition.length !== 0) {
             this.setState({selectedCondition: 'default'});
-            // this.setState({selectedCondition: this.props.selectCondition[0].key});
         }
     }
 
@@ -48,8 +47,6 @@ class ChoiceSetSearch extends Component {
     }
 
     _buildInputNameCondition(condition) {
-      console.log(this.state.inputName);
-      console.log(condition);
         if(this.state.inputName.length === 2) {
             if(condition !== '') return this.state.inputName[0] + '[' + condition + ']' + this.state.inputName[1];
             else return this.state.inputName[0] + '[default]' + this.state.inputName[1];
@@ -63,6 +60,11 @@ class ChoiceSetSearch extends Component {
             var itemData = this._getItemData(this.props.items, item);
             if(typeof itemData !== 'undefined') {
                 item.data = itemData;
+
+                if(this.state.selectedCondition === 'default') {
+                    //The user has clicked on a item that has a category, we should initialize the condition
+                    this.setState({selectedCondition: this.props.selectCondition[0].key});
+                }
             } else {
                 item.data = [];
             }
